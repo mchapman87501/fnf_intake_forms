@@ -1,4 +1,6 @@
 <script lang="ts">
+	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
+
 	enum FormType {
 		Unspecified = '-- Select --',
 		Owner = 'Owner',
@@ -13,14 +15,13 @@
 		FormType.Stray,
 		FormType.PregnantOrNursing,
 		FormType.Rescuer
-	];
-	let selected_form: FormType;
+	]
+	let selected_form: FormType
 </script>
 
-<h1>Intake Forms</h1>
+<h3>Intake Forms</h3>
 
-<label for="form_select">Intake Form:</label>
-<select id="form_select" bind:value={selected_form}>
+<select bind:value={selected_form}>
 	{#each forms as formType}
 		<option value={formType}>
 			{formType}
@@ -29,9 +30,9 @@
 </select>
 
 {#if selected_form == FormType.Owner}
-	<p>TODO: Show Owner Surrender Form</p>
+	<OwnerSurrenderForm />
 {:else if selected_form == null || selected_form == FormType.Unspecified}
-	<p>Pleez select</p>
+	<p>Please select a form.</p>
 {:else}
 	<p>TBD</p>
 {/if}
