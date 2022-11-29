@@ -130,14 +130,14 @@
 	<input type="text" placeholder="Markings" value={catMarkings} /><br />
 
 	<label
-		><input type="checkbox" value={catChipped} on:change={toggleCatChipped} /> microchipped?</label
+		><input type="checkbox" value={catChipped} on:change={toggleCatChipped} /> Microchipped?</label
 	>
 	{#if catChipped}
 		<input type="text" placeholder="Chip number" value={catChipNumber} pattern={catChipPattern} />
 	{/if}
 	<br />
 
-	<div>
+	<div class="shots_and_tests">
 		{#each Object.values(CatShots) as shot}
 			<label>
 				<input type="checkbox" value={shot} on:change={() => toggleShot(shot)} />
@@ -145,19 +145,18 @@
 			</label> &nbsp;
 		{/each}
 		<input class="other_shots" type="text" placeholder="other shot(s)" value={catOtherShots} />
-	</div>
-
-	<label>
-		<input type="checkbox" value={catFelvFivTested} on:change={toggleFelvFivStatus} />
-		FEL/FIV Tested
-	</label>
-
-	{#if catFelvFivTested}
+		<br />
 		<label>
-			<input type="checkbox" value={catFFTestedPositive} /> Positive
+			<input type="checkbox" value={catFelvFivTested} on:change={toggleFelvFivStatus} />
+			FEL/FIV Tested
 		</label>
-	{/if}
-	<br />
+
+		{#if catFelvFivTested}
+			<label>
+				<input type="checkbox" value={catFFTestedPositive} /> Positive
+			</label>
+		{/if}
+	</div>
 
 	<input type="text" placeholder="Name of Previous Vet" value={vetName} />
 	<input type="tel" placeholder="Vet phone" value={vetPhone} /><br />
@@ -178,14 +177,16 @@
 	<span>Reason for surrender:</span><br />
 	<textarea>{reasonForSurrender}</textarea><br />
 
-	<input
-		class="currency"
-		type="text"
-		placeholder="Donation"
-		value={donationAmt}
-		pattern={donationPattern}
-	/><br />
-	<span>Surrender accepted by {currUser}</span>
+	<p class="rep">
+		<input
+			class="currency"
+			type="text"
+			placeholder="Donation"
+			value={donationAmt}
+			pattern={donationPattern}
+		/>
+		Surrender accepted by {currUser}.
+	</p>
 
 	<hr />
 
@@ -231,15 +232,22 @@
 		width: 5em;
 	}
 
+	div.shots_and_tests {
+		margin: 0.5em 0;
+	}
 	.other_shots {
 		width: 90%;
 	}
 
 	.currency {
-		width: 4em;
+		width: 4.5em;
 		text-align: right;
 	}
 
+	p.rep {
+		font-style: italic;
+		font-size: 80%;
+	}
 	.btns {
 		text-align: center;
 	}
