@@ -77,6 +77,12 @@
 	}
 
 	function handleSubmit() {}
+
+	let formValid = false
+	function getFormValid() {
+		return false
+	}
+	$: formValid = getFormValid()
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
@@ -138,7 +144,7 @@
 				{shot}
 			</label> &nbsp;
 		{/each}
-		<input type="text" placeholder="other shot(s)" value={catOtherShots} />
+		<input class="other_shots" type="text" placeholder="other shot(s)" value={catOtherShots} />
 	</div>
 
 	<label>
@@ -185,7 +191,7 @@
 
 	<div class="btns">
 		<button type="reset">Reset</button>
-		<button type="submit">Submit</button>
+		<button type="submit" disabled={!formValid}>Submit</button>
 	</div>
 </form>
 
@@ -211,17 +217,22 @@
 		width: 9em;
 	}
 
+	.zipcode {
+		width: 5em;
+	}
+	.state_abbrev {
+		width: 5em;
+	}
+
 	.name {
 		width: 7em;
 	}
 	.dob_age {
 		width: 5em;
 	}
-	.zipcode {
-		width: 5em;
-	}
-	.state_abbrev {
-		width: 5em;
+
+	.other_shots {
+		width: 90%;
 	}
 
 	.currency {
