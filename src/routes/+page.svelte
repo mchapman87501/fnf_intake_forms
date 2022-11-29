@@ -19,16 +19,18 @@
 	let selected_form: FormType
 </script>
 
-<h3>Intake Forms</h3>
+<label
+	>Form:
+	<select bind:value={selected_form}>
+		{#each forms as formType}
+			<option value={formType}>
+				{formType}
+			</option>
+		{/each}
+	</select>
+</label>
 
-<select bind:value={selected_form}>
-	{#each forms as formType}
-		<option value={formType}>
-			{formType}
-		</option>
-	{/each}
-</select>
-
+<hr />
 {#if selected_form == FormType.Owner}
 	<OwnerSurrenderForm />
 {:else if selected_form == null || selected_form == FormType.Unspecified}
@@ -39,7 +41,7 @@
 
 <style>
 	:global(body) {
-		background-image: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)),
+		background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
 			url('/fnf_logo.png');
 		background-repeat: no-repeat;
 		background-size: contain;

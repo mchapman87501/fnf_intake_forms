@@ -1,4 +1,6 @@
 <script lang="ts">
+	let currUser = '(F&F representative)'
+
 	//-----------------------
 	// Owner info
 	let ownerName = ''
@@ -52,6 +54,11 @@
 	let catOKCats = false
 	let catOKDogs = false
 
+	let reasonForSurrender = ''
+
+	let donationAmt = ''
+	let donationPattern = '\\d+(\\.\\d{2})?'
+
 	function toggleCatChipped() {
 		catChipped = !catChipped
 	}
@@ -102,10 +109,11 @@
 
 	<hr />
 
-	<input type="text" placeholder="Name of cat" value={catName} />
-	<input type="number" placeholder="DOB/Age" value={catDOBAge} />
+	<input class="name" type="text" placeholder="Cat's name" value={catName} />
+	<input class="dob_age" type="text" placeholder="DOB/Age" value={catDOBAge} />
 
 	<select bind:value={catGender}>
+		<option value="M/F">M/F</option>
 		<option value="M">Male</option>
 		<option value="F">Female</option>
 	</select>
@@ -161,6 +169,18 @@
 		<label><input type="checkbox" value={catOKDogs} /> dogs</label>
 	</div>
 
+	<span>Reason for surrender:</span><br />
+	<textarea>{reasonForSurrender}</textarea><br />
+
+	<input
+		class="currency"
+		type="text"
+		placeholder="Donation"
+		value={donationAmt}
+		pattern={donationPattern}
+	/><br />
+	<span>Surrender accepted by {currUser}</span>
+
 	<hr />
 
 	<div class="btns">
@@ -170,7 +190,8 @@
 </form>
 
 <style>
-	:global(:invalid) {
+	input:invalid,
+	textarea:invalid {
 		color: red;
 	}
 
@@ -180,16 +201,32 @@
 
 	label,
 	span {
-		font-size: 80%;
+		font-size: 75%;
+	}
+
+	textarea {
+		width: 90%;
 	}
 	input[type='tel'] {
 		width: 9em;
+	}
+
+	.name {
+		width: 7em;
+	}
+	.dob_age {
+		width: 5em;
 	}
 	.zipcode {
 		width: 5em;
 	}
 	.state_abbrev {
 		width: 5em;
+	}
+
+	.currency {
+		width: 4em;
+		text-align: right;
 	}
 
 	.btns {
