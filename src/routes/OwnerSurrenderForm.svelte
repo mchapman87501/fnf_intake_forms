@@ -75,48 +75,54 @@
 		catFelvFivTested = !catFelvFivTested
 	}
 
-	function getIntakeInfoAsCSV() {
-		function rowToCSV(row: Array<String>): string {
-			let quoted = row.map((col) => {
-				return `"${col}"`
-			})
-			return quoted.join(',')
-		}
-
-		function tableToCSV(table: Array<Array<string>>): string {
-			let rows = table.map((row) => rowToCSV(row))
-			return rows.join('\n')
-		}
-
-		// STUB
+	function getIntakeInfoAsTable(): Array<Array<string>> {
 		const formatter = new Intl.DateTimeFormat('en-US')
 		const nowStr = formatter.format(new Date())
-		const table = [
+		return [
 			['Accepting User', 'Date'],
 			[acceptingUser, nowStr]
 		]
-		return tableToCSV(table)
 	}
 
-	function getIntakeInfoAsDataURL() {
-		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs
-		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
-		const csvData = getIntakeInfoAsCSV()
-		const b64Data = window.btoa(csvData)
-		return `data:text/plain;base64,${b64Data}`
+	// Prototyping - this should be factored out.
+	function getIntakeInfoAsHTMLTable(): string {
+		function rowToHTML(row: Array<string>, cellType: string): string {
+			const cells = row.map((col) => `<${cellType}>${col}</${cellType}>`).join('')
+			return `<tr>${cells}</tr>`
+		}
+		const table = getIntakeInfoAsTable()
+		const header = rowToHTML(table[0], 'th')
+		const dataRows = table
+			.slice(1)
+			.map((row) => rowToHTML(row, 'td'))
+			.join('')
+		return '<table>' + header + dataRows + '</table>'
+	}
+
+	function getIntakeInfoAsCSV(): string {
+		function valueToCSV(v: string): string {
+			const quoted = v.replaceAll('"', '""')
+			return `"${quoted}"`
+		}
+
+		function rowToStr(row: Array<string>): string {
+			return row.map((col) => valueToCSV(col)).join(',')
+		}
+
+		return getIntakeInfoAsTable()
+			.map((row) => rowToStr(row))
+			.join('\n')
+	}
+
+	function copyIntakeFormToClipboard() {
+		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
+		const csvStr = getIntakeInfoAsCSV()
+		console.log('Copying %o', csvStr)
+		navigator.clipboard.writeText(csvStr)
 	}
 
 	function handleSubmit() {
 		console.log('Hello from handleSubmit')
-		// Display the CSV data, inlined as a data URL, in a new tab/window:
-		const dataURL = getIntakeInfoAsDataURL()
-		console.debug('Data URL: %o', dataURL)
-		// Oops, this cannot work for security reasons.
-		// https://blog.mozilla.org/security/2017/11/27/blocking-top-level-navigations-data-urls-firefox-59/
-		window.open(dataURL, '_unnamed')?.focus()
-		// const formData = new FormData(form)
-		// const text = formData.get('acceptingUser') as string
-		// console.log(text)
 		return false // prevent reload
 	}
 
@@ -246,6 +252,7 @@
 	<div class="btns">
 		<button type="reset">Reset</button>
 		<button type="submit" disabled={!formValid}>Submit</button>
+		<button type="button" on:click={copyIntakeFormToClipboard}>Copy Excel to Clipboard</button>
 	</div>
 </form>
 
