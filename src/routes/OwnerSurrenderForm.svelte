@@ -1,5 +1,6 @@
 <script lang="ts">
 	let currUser = '(F&F representative)'
+  let acceptingUser = currUser
 
 	//-----------------------
 	// Owner info
@@ -21,13 +22,15 @@
 	// Cat info
 	let catName = ''
 	let catDOBAge = ''
-	let catGender = 'M/F'
-	let catAltered = false
+
+  let catGender = 'Unknown'
+  let catAltered = 'Unknown'
+  
 	let catBreed = ''
 	let catColor = ''
 	let catMarkings = ''
 
-	let catChipped = false
+	let catChipped = 'Unknown'
 	let catChipNumber = ''
 	let catChipPattern = '\\d+'
 
@@ -59,10 +62,6 @@
 	let donationAmt = ''
 	let donationPattern = '\\d+(\\.\\d{2})?'
 
-	function toggleCatChipped() {
-		catChipped = !catChipped
-	}
-
 	function toggleShot(shot: CatShots) {
 		console.debug('Toggle %o', shot)
 		if (catCurrentShots.has(shot)) {
@@ -76,11 +75,18 @@
 		catFelvFivTested = !catFelvFivTested
 	}
 
-	function handleSubmit() {}
+	function handleSubmit() {
+    console.log("Hello from handleSubmit")
+    const formData = new FormData(form);
+    const text = formData.get('acceptingUser') as string;
+    console.log(text);
+    return false; // prevent reload
+  }
 
 	let formValid = false
 	function getFormValid() {
-		return false
+    console.log("valid tested");
+		return true
 	}
 	$: formValid = getFormValid()
 </script>
@@ -119,20 +125,29 @@
 	<input class="dob_age" type="text" placeholder="DOB/Age" value={catDOBAge} />
 
 	<select bind:value={catGender}>
-		<option value="M/F">M/F</option>
+		<option value="Unknown">M/F Unknown</option>
 		<option value="M">Male</option>
 		<option value="F">Female</option>
 	</select>
-	<label><input type="checkbox" value={catAltered} /> altered</label><br />
 
-	<input type="text" placeholder="Breed" value={catBreed} />
+  <select bind:value={catAltered}>
+    <option value="Unknown">Altered/Intact Unknown</option>
+    <option value="Intact">Intact</option>
+    <option value="Spayed/Neutered">Spayed/Neutered</option>
+  </select>
+  <br />
+
+  <input type="text" placeholder="Breed" value={catBreed} />
 	<input type="text" placeholder="Color" value={catColor} />
 	<input type="text" placeholder="Markings" value={catMarkings} /><br />
 
-	<label
-		><input type="checkbox" value={catChipped} on:change={toggleCatChipped} /> Microchipped?</label
-	>
-	{#if catChipped}
+    <select bind:value={catChipped}>
+    <option value="Unknown">Microchipped Unknown</option>
+    <option value="True">Chipped</option>
+    <option value="False">Not Chipped</option>
+  </select>
+  <br />
+	{#if catChipped=="True"}
 		<input type="text" placeholder="Chip number" value={catChipNumber} pattern={catChipPattern} />
 	{/if}
 	<br />
@@ -185,7 +200,12 @@
 			value={donationAmt}
 			pattern={donationPattern}
 		/>
-		Surrender accepted by {currUser}.
+		Surrender accepted by
+    <input 
+      type="text"
+      placeholder = {currUser}
+      value = {acceptingUser}
+      />
 	</p>
 
 	<hr />

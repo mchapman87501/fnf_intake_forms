@@ -1,38 +1,29 @@
-# create-svelte
+# Overview
+TL;DR: This app's first goal is to accept surrender form info and spit out populated intake information, skipping the paper transcription step between the surrender and intake forms.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+# Goals
+The goal of this application is to automate and streamline the paperwork, and digital work processes for cats cared for by Felines and Friends NM (F&FNM).
 
-## Creating a project
+Felines and Friends NM relies heavily on volunteers for its second chance guaranteed placement mission.  Some of the processes are hands-on with cat care. Some are paper and digital work.  This app will reduce errors and delays while freeing volunteers for the rest of the operations, allowing F&FNM to reach more cats and save more lives.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## The manual process
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+A cat comes to F&F via surrender or transfer with an appropriate surrender form.  These forms include owner surrender, stray surrender, pregnant/nursing cat surrender, and rescue surrender. 
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+A team member transcribes the surrender form into an intake form, standardizing the fields among all types of surrender.
+Most crucially, a unique RESCUE ID is assigned to the cat.
 
-## Developing
+Note: pregnant cats and young kittens are sometimes handled in groups.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-```bash
-npm run dev
+## Automation
+The app takes the surrender information and converts it into the intake form.
+### Flexibility
+Any and all information can be missing or wrong. This is why it is so essential to get a Rescue ID assigned to each cat. Information is updated for the cat based on its Rescue ID.
+### Environment
+This app should be usable on iPhones, iPads and Android devices on and off the Internet.
+### Ease of use
+ For ease of use, the app reproduces the surrender forms.
+ 
+TBD how Rescue ID is generated.  
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
