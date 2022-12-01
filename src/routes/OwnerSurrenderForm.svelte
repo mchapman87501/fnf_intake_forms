@@ -77,9 +77,9 @@
 
 	function handleSubmit() {
     console.log("Hello from handleSubmit")
-    const formData = new FormData(form);
-    const text = formData.get('acceptingUser') as string;
-    console.log(text);
+    // const formData = new FormData(form);
+    // const text = formData.get('acceptingUser') as string;
+    // console.log(text);
     return false; // prevent reload
   }
 
