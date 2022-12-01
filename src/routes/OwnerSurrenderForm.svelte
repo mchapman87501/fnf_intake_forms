@@ -1,11 +1,11 @@
 <script lang="ts">
 	let currUser = '(F&F representative)'
-	let acceptingUser = ''
+	let acceptingUser = currUser
 
 	//-----------------------
 	// Owner info
 	let ownerName = ''
-	let date: Date
+	let surrDate: Date
 	let driverLicNo = ''
 	let dlPattern = '\\d{9}'
 
@@ -77,10 +77,10 @@
 
 	function getIntakeInfoAsTable(): Array<Array<string>> {
 		const formatter = new Intl.DateTimeFormat('en-US')
-		const nowStr = formatter.format(new Date())
+		const surrStr = formatter.format(surrDate)
 		return [
 			['Name of Cat', 'Accepting User', 'Date'],
-			[catName, acceptingUser, nowStr]
+			[catName, acceptingUser, surrStr]
 		]
 	}
 
@@ -122,7 +122,7 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 	<input bind:value={ownerName} placeholder="Owner/Guardian Name" />
-	<input type="date" bind:value={date} /><br />
+	<input type="date" bind:value={surrDate} /><br />
 
 	<input
 		class="lic_no"
