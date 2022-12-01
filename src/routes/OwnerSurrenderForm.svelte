@@ -79,26 +79,12 @@
 		const formatter = new Intl.DateTimeFormat('en-US')
 		const nowStr = formatter.format(new Date())
 		return [
-			['Accepting User', 'Date'],
-			[acceptingUser, nowStr]
+			['Name of Cat', 'Accepting User', 'Date'],
+			[catName, acceptingUser, nowStr]
 		]
 	}
 
 	// Prototyping - this should be factored out.
-	function getIntakeInfoAsHTMLTable(): string {
-		function rowToHTML(row: Array<string>, cellType: string): string {
-			const cells = row.map((col) => `<${cellType}>${col}</${cellType}>`).join('')
-			return `<tr>${cells}</tr>`
-		}
-		const table = getIntakeInfoAsTable()
-		const header = rowToHTML(table[0], 'th')
-		const dataRows = table
-			.slice(1)
-			.map((row) => rowToHTML(row, 'td'))
-			.join('')
-		return '<table>' + header + dataRows + '</table>'
-	}
-
 	function getIntakeInfoAsCSV(): string {
 		function valueToCSV(v: string): string {
 			const quoted = v.replaceAll('"', '""')
@@ -135,8 +121,8 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<input value={ownerName} placeholder="Owner/Guardian Name" />
-	<input type="date" value={date} /><br />
+	<input bind:value={ownerName} placeholder="Owner/Guardian Name" />
+	<input type="date" bind:value={date} /><br />
 
 	<input
 		class="lic_no"
@@ -145,13 +131,13 @@
 		pattern={dlPattern}
 	/><br />
 
-	<input type="text" placeholder="Street Address" value={streetAddr} />
-	<input type="tel" placeholder="Home phone" value={homePhone} /><br />
+	<input type="text" placeholder="Street Address" bind:value={streetAddr} />
+	<input type="tel" placeholder="Home phone" bind:value={homePhone} /><br />
 
-	<input type="text" placeholder="City" value={city} />
+	<input type="text" placeholder="City" bind:value={city} />
 
 	<!-- TODO use a menu -->
-	<input type="text" class="state_abbrev" placeholder="State" value={state} />
+	<input type="text" class="state_abbrev" placeholder="State" bind:value={state} />
 	<input
 		type="text"
 		class="zipcode"
@@ -159,13 +145,13 @@
 		pattern={zipCodePattern}
 		value={zipCode}
 	/>
-	<input type="tel" placeholder="Work/Cell phone" value={workOrCell} /><br />
-	<input type="email" placeholder="Email Address" value={emailAddr} />
+	<input type="tel" placeholder="Work/Cell phone" bind:value={workOrCell} /><br />
+	<input type="email" placeholder="Email Address" bind:value={emailAddr} />
 
 	<hr />
 
-	<input class="name" type="text" placeholder="Cat's name" value={catName} />
-	<input class="dob_age" type="text" placeholder="DOB/Age" value={catDOBAge} />
+	<input class="name" type="text" placeholder="Cat's name" bind:value={catName} />
+	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
 
 	<select bind:value={catGender}>
 		<option value="Unknown">M/F Unknown</option>
@@ -180,9 +166,9 @@
 	</select>
 	<br />
 
-	<input type="text" placeholder="Breed" value={catBreed} />
-	<input type="text" placeholder="Color" value={catColor} />
-	<input type="text" placeholder="Markings" value={catMarkings} /><br />
+	<input type="text" placeholder="Breed" bind:value={catBreed} />
+	<input type="text" placeholder="Color" bind:value={catColor} />
+	<input type="text" placeholder="Markings" bind:value={catMarkings} /><br />
 
 	<select bind:value={catChipped}>
 		<option value="Unknown">Microchipped Unknown</option>
@@ -191,33 +177,38 @@
 	</select>
 	<br />
 	{#if catChipped == 'True'}
-		<input type="text" placeholder="Chip number" value={catChipNumber} pattern={catChipPattern} />
+		<input
+			type="text"
+			placeholder="Chip number"
+			bind:value={catChipNumber}
+			pattern={catChipPattern}
+		/>
 	{/if}
 	<br />
 
 	<div class="shots_and_tests">
 		{#each Object.values(CatShots) as shot}
 			<label>
-				<input type="checkbox" value={shot} on:change={() => toggleShot(shot)} />
+				<input type="checkbox" bind:value={shot} on:change={() => toggleShot(shot)} />
 				{shot}
 			</label> &nbsp;
 		{/each}
-		<input class="other_shots" type="text" placeholder="other shot(s)" value={catOtherShots} />
+		<input class="other_shots" type="text" placeholder="other shot(s)" bind:value={catOtherShots} />
 		<br />
 		<label>
-			<input type="checkbox" value={catFelvFivTested} on:change={toggleFelvFivStatus} />
+			<input type="checkbox" bind:value={catFelvFivTested} on:change={toggleFelvFivStatus} />
 			FEL/FIV Tested
 		</label>
 
 		{#if catFelvFivTested}
 			<label>
-				<input type="checkbox" value={catFFTestedPositive} /> Positive
+				<input type="checkbox" bind:value={catFFTestedPositive} /> Positive
 			</label>
 		{/if}
 	</div>
 
-	<input type="text" placeholder="Name of Previous Vet" value={vetName} />
-	<input type="tel" placeholder="Vet phone" value={vetPhone} /><br />
+	<input type="text" placeholder="Name of Previous Vet" bind:value={vetName} />
+	<input type="tel" placeholder="Vet phone" bind:value={vetPhone} /><br />
 
 	<span>Special needs/habits:</span><br />
 	<textarea>{catSpecialNeeds}</textarea><br />
@@ -227,9 +218,9 @@
 
 	<div>
 		<span>OK with</span>
-		<label><input type="checkbox" value={catOKKinder} /> small children</label>
-		<label><input type="checkbox" value={catOKCats} /> cats</label>
-		<label><input type="checkbox" value={catOKDogs} /> dogs</label>
+		<label><input type="checkbox" bind:value={catOKKinder} /> small children</label>
+		<label><input type="checkbox" bind:value={catOKCats} /> cats</label>
+		<label><input type="checkbox" bind:value={catOKDogs} /> dogs</label>
 	</div>
 
 	<span>Reason for surrender:</span><br />
