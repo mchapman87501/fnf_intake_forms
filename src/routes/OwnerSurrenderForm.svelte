@@ -1,6 +1,6 @@
 <script lang="ts">
 	let currUser = '(F&F representative)'
-  let acceptingUser = currUser
+	let acceptingUser = ''
 
 	//-----------------------
 	// Owner info
@@ -23,9 +23,9 @@
 	let catName = ''
 	let catDOBAge = ''
 
-  let catGender = 'Unknown'
-  let catAltered = 'Unknown'
-  
+	let catGender = 'Unknown'
+	let catAltered = 'Unknown'
+
 	let catBreed = ''
 	let catColor = ''
 	let catMarkings = ''
@@ -75,17 +75,54 @@
 		catFelvFivTested = !catFelvFivTested
 	}
 
+	function getIntakeInfoAsCSV() {
+		function rowToCSV(row: Array<String>): string {
+			let quoted = row.map((col) => {
+				return `"${col}"`
+			})
+			return quoted.join(',')
+		}
+
+		function tableToCSV(table: Array<Array<string>>): string {
+			let rows = table.map((row) => rowToCSV(row))
+			return rows.join('\n')
+		}
+
+		// STUB
+		const formatter = new Intl.DateTimeFormat('en-US')
+		const nowStr = formatter.format(new Date())
+		const table = [
+			['Accepting User', 'Date'],
+			[acceptingUser, nowStr]
+		]
+		return tableToCSV(table)
+	}
+
+	function getIntakeInfoAsDataURL() {
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+		const csvData = getIntakeInfoAsCSV()
+		const b64Data = window.btoa(csvData)
+		return `data:text/plain;base64,${b64Data}`
+	}
+
 	function handleSubmit() {
-    console.log("Hello from handleSubmit")
-    const formData = new FormData(form);
-    const text = formData.get('acceptingUser') as string;
-    console.log(text);
-    return false; // prevent reload
-  }
+		console.log('Hello from handleSubmit')
+		// Display the CSV data, inlined as a data URL, in a new tab/window:
+		const dataURL = getIntakeInfoAsDataURL()
+		console.debug('Data URL: %o', dataURL)
+		// Oops, this cannot work for security reasons.
+		// https://blog.mozilla.org/security/2017/11/27/blocking-top-level-navigations-data-urls-firefox-59/
+		window.open(dataURL, '_unnamed')?.focus()
+		// const formData = new FormData(form)
+		// const text = formData.get('acceptingUser') as string
+		// console.log(text)
+		return false // prevent reload
+	}
 
 	let formValid = false
 	function getFormValid() {
-    console.log("valid tested");
+		console.log('valid tested')
 		return true
 	}
 	$: formValid = getFormValid()
@@ -130,24 +167,24 @@
 		<option value="F">Female</option>
 	</select>
 
-  <select bind:value={catAltered}>
-    <option value="Unknown">Altered/Intact Unknown</option>
-    <option value="Intact">Intact</option>
-    <option value="Spayed/Neutered">Spayed/Neutered</option>
-  </select>
-  <br />
+	<select bind:value={catAltered}>
+		<option value="Unknown">Altered/Intact Unknown</option>
+		<option value="Intact">Intact</option>
+		<option value="Spayed/Neutered">Spayed/Neutered</option>
+	</select>
+	<br />
 
-  <input type="text" placeholder="Breed" value={catBreed} />
+	<input type="text" placeholder="Breed" value={catBreed} />
 	<input type="text" placeholder="Color" value={catColor} />
 	<input type="text" placeholder="Markings" value={catMarkings} /><br />
 
-    <select bind:value={catChipped}>
-    <option value="Unknown">Microchipped Unknown</option>
-    <option value="True">Chipped</option>
-    <option value="False">Not Chipped</option>
-  </select>
-  <br />
-	{#if catChipped=="True"}
+	<select bind:value={catChipped}>
+		<option value="Unknown">Microchipped Unknown</option>
+		<option value="True">Chipped</option>
+		<option value="False">Not Chipped</option>
+	</select>
+	<br />
+	{#if catChipped == 'True'}
 		<input type="text" placeholder="Chip number" value={catChipNumber} pattern={catChipPattern} />
 	{/if}
 	<br />
@@ -201,11 +238,7 @@
 			pattern={donationPattern}
 		/>
 		Surrender accepted by
-    <input 
-      type="text"
-      placeholder = {currUser}
-      value = {acceptingUser}
-      />
+		<input type="text" placeholder={currUser} bind:value={acceptingUser} />
 	</p>
 
 	<hr />
