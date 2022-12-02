@@ -73,8 +73,8 @@
 	let catSpecialNeeds = ''
 	let catMeds = ''
 
-	let catOKKinder = false
-	let catOKCats = false
+	let catOKKinder = "Unknown"
+	let catOKCats = "Unknown"
 	let catOKDogs = false
 
 	let reasonForSurrender = ''
@@ -99,8 +99,8 @@
 		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
 		// use surrDate as-is.
 		return [
-			['Name of Cat', 'Accepting User', 'Date'],
-			[catName, acceptingUser, surrDate]
+			['Name of Cat', 'Accepting User', 'Date', 'Ok with Children', 'OK with Cats'],
+			[catName, acceptingUser, surrDate, catOKKinder, catOKCats]
 		]
 	}
 
@@ -237,25 +237,32 @@
 	<span>Current diet/medications:</span><br />
 	<textarea>{catMeds}</textarea><br />
 
-	<div>
+<div>
 		<fieldset class="fieldset-auto-width">
 			<legend>Ok with Kids:</legend>
-			<input type="radio" id="catOKKinderU" name="catOKKinder" value="unknown" checked />
-			<label for="catOKKinderU">Unknown</label>
-			<input type="radio" id="catOKCatsY" name="catOKKinder" value="yes" />
-			<label for="catOKCatsY">Yes</label>
-			<input type="radio" id="catOKCatsN" name="catOKKinder" value="no" />
-			<label for="catOKCatsN">No</label>
+        <label>
+          <input type=radio bind:group={catOKKinder} name="catOKKinder" value={"Unknown"}>Unknown
+        </label>
+        <label>
+      	  <input type=radio bind:group={catOKKinder} name="catOKKinder"  value={"Yes"}>Yes
+        </label> 
+        <label>
+        	<input type=radio bind:group={catOKKinder} name="catOKKinder" value={"No"}>No
+      </label> 
 		</fieldset>
 		<fieldset class="fieldset-auto-width">
 			<legend>Ok with Cats:</legend>
-			<input type="radio" id="catOKCatsU" name="catOKCats" value="unknown" checked />
-			<label for="catOKCatsU">Unknown</label>
-			<input type="radio" id="catOKCatsY" name="catOKCats" value="yes" />
-			<label for="catOKCatsY">Yes</label>
-			<input type="radio" id="catOKCatsN" name="catOKCats" value="no" />
-			<label for="catOKCatsN">No</label>
+      <label>
+          <input type=radio bind:group={catOKCats} name="catOKCats" value={"Unknown"}>Unknown
+        </label>
+        <label>
+      	  <input type=radio bind:group={catOKCats} name="catOKCats"  value={"Yes"}>Yes
+        </label> 
+        <label>
+        	<input type=radio bind:group={catOKCats} name="catOKCats" value={"No"}>No
+      </label> 
 		</fieldset>
+
 		<span>OK with</span>
 		<!-- 		<label><input type="checkbox" bind:value={catOKKinder} /> small children</label> -->
 		<!-- 		<label><input type="checkbox" bind:value={catOKCats} /> cats</label> -->
