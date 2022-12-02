@@ -3,12 +3,16 @@
   export let FormType
   
   import Comp_ynu_dropdown from './Comp_ynu_dropdown.svelte'
-  // package cat information for passing 
-  // between components
+  import Comp_ynu_radiobuttons from './Comp_ynu_radiobuttons.svelte'
+  
+  // Cat info
+  // package for passing between components
   let cat = {
     OKKinder: String
+    OKCats: String
   }
   cat.OKKinder = 'Unknown'
+  cat.OKCats = 'Unknown'
 
   //Customize form based on selected_form FormType
   let ownerNamePlaceholder = 'Owner/Guardian Name'
@@ -89,7 +93,6 @@
 	let catSpecialNeeds = ''
 	let catMeds = ''
 
-	let catOKCats = "Unknown"
 	let catOKDogs = false
 
 	let reasonForSurrender = ''
@@ -115,7 +118,7 @@
 		// use surrDate as-is.
 		return [
 			['Name of Cat', 'Accepting User', 'Date', 'Ok with Children', 'OK with Cats'],
-			[catName, acceptingUser, surrDate, cat.OKKinder, catOKCats]
+			[catName, acceptingUser, surrDate, cat.OKKinder, cat.OKCats]
 		]
 	}
 
@@ -251,41 +254,34 @@
 	<span>Current diet/medications:</span><br />
 	<textarea>{catMeds}</textarea><br />
 
-<div>
-<!--   Duplicated inputs methods on the same field
-  for demo/refactor purposes
-  Also, it is cool to watch them
-  synchronize -->
-  <Comp_ynu_dropdown title={"OK with kids?"} bind:value={cat.OKKinder}/>
+  <div>
+  <!--   Duplicated inputs methods on the same field
+    for demo/refactor purposes
+    Also, it is cool to watch them
+    synchronize 
+    Also, reminder to pass/share styles with components-->
+    <fieldset class="fieldset-auto-width">
+      <Comp_ynu_dropdown title={"OK with kids?"} bind:value={cat.OKKinder}/>
+    </fieldset>
     
-		<fieldset class="fieldset-auto-width">
-			<legend>Ok with Kids:</legend>
-        <label>
-          <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder" value={"Unknown"}>Unknown
-        </label>
-        <label>
-      	  <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder"  value={"Yes"}>Yes
-        </label> 
-        <label>
-        	<input type=radio bind:group={cat.OKKinder} name="cat.OKKinder" value={"No"}>No
-      </label> 
-		</fieldset>
-		<fieldset class="fieldset-auto-width">
-			<legend>Ok with Cats:</legend>
+    <fieldset class="fieldset-auto-width">
+      <legend>Ok with Kids:</legend>
       <label>
-          <input type=radio bind:group={catOKCats} name="catOKCats" value={"Unknown"}>Unknown
-        </label>
-        <label>
-      	  <input type=radio bind:group={catOKCats} name="catOKCats"  value={"Yes"}>Yes
-        </label> 
-        <label>
-        	<input type=radio bind:group={catOKCats} name="catOKCats" value={"No"}>No
+        <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder" value={"Unknown"}>Unknown
+      </label>
+      <label>
+        <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder"  value={"Yes"}>Yes
+      </label> 
+      <label>
+        <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder" value={"No"}>No
       </label> 
     </fieldset>
-  
+    
+    <fieldset class="fieldset-auto-width">
+      <Comp_ynu_radiobuttons title= {"OK with cats?"} bind:value = {cat.OKCats} />
+    </fieldset>
+    
 		<span>OK with</span>
-		<!-- 		<label><input type="checkbox" bind:value={catOKKinder} /> small children</label> -->
-		<!-- 		<label><input type="checkbox" bind:value={catOKCats} /> cats</label> -->
 		<label><input type="checkbox" bind:checked={catOKDogs} /> dogs</label>
 	</div>
 
