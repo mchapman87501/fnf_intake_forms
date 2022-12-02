@@ -1,24 +1,21 @@
 <script lang="ts">
-  export let selected_form
-  export let FormType
-  
-  import Comp_ynu_dropdown from './Comp_ynu_dropdown.svelte'
-  import Comp_ynu_radiobuttons from './Comp_ynu_radiobuttons.svelte'
-  
-  // Cat info
-  // package for passing between components
-  let cat = {
-    OKKinder: String
-    OKCats: String
-  }
-  cat.OKKinder = 'Unknown'
-  cat.OKCats = 'Unknown'
+	export let selected_form
+	export let FormType
 
-  //Customize form based on selected_form FormType
-  let ownerNamePlaceholder = 'Owner/Guardian Name'
-  if (selected_form == FormType.Rescuer)
-    ownerNamePlaceholder = 'Rescue Organization Name'
-  
+	import Comp_ynu_dropdown from './Comp_ynu_dropdown.svelte'
+	import Comp_ynu_radiobuttons from './Comp_ynu_radiobuttons.svelte'
+
+	// Cat info
+	// package for passing between components
+	let cat = {
+		okKinder: 'Unknown',
+		okCats: 'Unknown'
+	}
+
+	//Customize form based on selected_form FormType
+	let ownerNamePlaceholder = 'Owner/Guardian Name'
+	if (selected_form == FormType.Rescuer) ownerNamePlaceholder = 'Rescue Organization Name'
+
 	function todayStr(): string {
 		function pad(s: string, len: number): string {
 			const overPadded = '00000000' + s
@@ -118,7 +115,7 @@
 		// use surrDate as-is.
 		return [
 			['Name of Cat', 'Accepting User', 'Date', 'Ok with Children', 'OK with Cats'],
-			[catName, acceptingUser, surrDate, cat.OKKinder, cat.OKCats]
+			[catName, acceptingUser, surrDate, cat.okKinder, cat.okCats]
 		]
 	}
 
@@ -156,10 +153,10 @@
 		return true
 	}
 	$: formValid = getFormValid()
-
 </script>
+
 <form on:submit|preventDefault={handleSubmit}>
-    <input bind:value={ownerName} placeholder = {ownerNamePlaceholder}/>
+	<input bind:value={ownerName} placeholder={ownerNamePlaceholder} />
 	<input type="date" bind:value={surrDate} /><br />
 
 	<input
@@ -187,7 +184,7 @@
 	<input type="email" placeholder="Email Address" bind:value={emailAddr} />
 
 	<hr />
-  
+
 	<input class="name" type="text" placeholder="Cat's name" bind:value={catName} />
 	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
 
@@ -254,33 +251,38 @@
 	<span>Current diet/medications:</span><br />
 	<textarea>{catMeds}</textarea><br />
 
-  <div>
-  <!--   Duplicated inputs methods on the same field
+	<div>
+		<!--   Duplicated inputs methods on the same field
     for demo/refactor purposes
     Also, it is cool to watch them
     synchronize 
     Also, reminder to pass/share styles with components-->
-    <fieldset class="fieldset-auto-width">
-      <Comp_ynu_dropdown title={"OK with kids?"} bind:value={cat.OKKinder}/>
-    </fieldset>
-    
-    <fieldset class="fieldset-auto-width">
-      <legend>Ok with Kids:</legend>
-      <label>
-        <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder" value={"Unknown"}>Unknown
-      </label>
-      <label>
-        <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder"  value={"Yes"}>Yes
-      </label> 
-      <label>
-        <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder" value={"No"}>No
-      </label> 
-    </fieldset>
-    
-    <fieldset class="fieldset-auto-width">
-      <Comp_ynu_radiobuttons title= {"OK with cats?"} bind:value = {cat.OKCats} />
-    </fieldset>
-    
+		<fieldset class="fieldset-auto-width">
+			<Comp_ynu_dropdown title={'OK with kids?'} bind:value={cat.okKinder} />
+		</fieldset>
+
+		<fieldset class="fieldset-auto-width">
+			<legend>Ok with Kids:</legend>
+			<label>
+				<input
+					type="radio"
+					bind:group={cat.okKinder}
+					name="cat.OKKinder"
+					value={'Unknown'}
+				/>Unknown
+			</label>
+			<label>
+				<input type="radio" bind:group={cat.okKinder} name="cat.OKKinder" value={'Yes'} />Yes
+			</label>
+			<label>
+				<input type="radio" bind:group={cat.okKinder} name="cat.OKKinder" value={'No'} />No
+			</label>
+		</fieldset>
+
+		<fieldset class="fieldset-auto-width">
+			<Comp_ynu_radiobuttons title={'OK with cats?'} bind:value={cat.okCats} />
+		</fieldset>
+
 		<span>OK with</span>
 		<label><input type="checkbox" bind:checked={catOKDogs} /> dogs</label>
 	</div>
@@ -320,7 +322,7 @@
 	}
 
 	label,
-  legend,
+	legend,
 	span {
 		font-size: 75%;
 	}

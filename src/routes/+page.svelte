@@ -16,11 +16,10 @@
 		FormType.PregnantOrNursing,
 		FormType.Rescuer
 	]
-  
-  let pkg = {
-    selected_form: FormType
-  }
-  
+
+	let pkg = {
+		selected_form: FormType.Unspecified
+	}
 </script>
 
 <label
@@ -36,7 +35,7 @@
 
 <hr />
 {#if pkg.selected_form == FormType.Owner}
-	<OwnerSurrenderForm {...pkg} FormType={FormType}/>
+	<OwnerSurrenderForm {...pkg} {FormType} />
 {:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
 	<p>Please select a form.</p>
 {:else}
