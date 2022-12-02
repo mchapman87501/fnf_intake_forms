@@ -1,4 +1,10 @@
 <script lang="ts">
+  export let formType;
+  
+  let ownerNamePlaceholder = 'Owner/Guardian Name'
+  if (formType == 'Rescuer')
+    ownerNamePlaceholder = 'Rescue Organization Name'
+  
 	function todayStr(): string {
 		function pad(s: string, len: number): string {
 			const overPadded = '00000000' + s
@@ -138,11 +144,11 @@
 		return true
 	}
 	$: formValid = getFormValid()
+
 </script>
-
 <form on:submit|preventDefault={handleSubmit}>
-	<input bind:value={ownerName} placeholder="Owner/Guardian Name" />
-
+  <p>form type also is {formType}</p>
+    <input bind:value={ownerName} placeholder = {ownerNamePlaceholder}/>
 	<input type="date" bind:value={surrDate} /><br />
 
 	<input
@@ -304,6 +310,7 @@
 	}
 
 	label,
+  legend,
 	span {
 		font-size: 75%;
 	}

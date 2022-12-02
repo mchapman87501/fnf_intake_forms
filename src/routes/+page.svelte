@@ -32,7 +32,7 @@
 
 <hr />
 {#if selected_form == FormType.Owner}
-	<OwnerSurrenderForm />
+	<OwnerSurrenderForm formType={selected_form}/>
 {:else if selected_form == null || selected_form == FormType.Unspecified}
 	<p>Please select a form.</p>
 {:else}
