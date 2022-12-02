@@ -1,8 +1,9 @@
 <script lang="ts">
-  export let formType;
+  export let selected_form
+  export let FormType
   
   let ownerNamePlaceholder = 'Owner/Guardian Name'
-  if (formType == 'Rescuer')
+  if (selected_form == FormType.Rescuer)
     ownerNamePlaceholder = 'Rescue Organization Name'
   
 	function todayStr(): string {
@@ -147,7 +148,6 @@
 
 </script>
 <form on:submit|preventDefault={handleSubmit}>
-  <p>form type also is {formType}</p>
     <input bind:value={ownerName} placeholder = {ownerNamePlaceholder}/>
 	<input type="date" bind:value={surrDate} /><br />
 

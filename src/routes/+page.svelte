@@ -16,12 +16,16 @@
 		FormType.PregnantOrNursing,
 		FormType.Rescuer
 	]
-	let selected_form: FormType
+  
+  let pkg = {
+    selected_form: FormType
+  }
+  
 </script>
 
 <label
 	>Form:
-	<select bind:value={selected_form}>
+	<select bind:value={pkg.selected_form}>
 		{#each forms as formType}
 			<option value={formType}>
 				{formType}
@@ -31,9 +35,9 @@
 </label>
 
 <hr />
-{#if selected_form == FormType.Owner}
-	<OwnerSurrenderForm formType={selected_form}/>
-{:else if selected_form == null || selected_form == FormType.Unspecified}
+{#if pkg.selected_form == FormType.Owner}
+	<OwnerSurrenderForm {...pkg} FormType={FormType}/>
+{:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
 	<p>Please select a form.</p>
 {:else}
 	<p>TBD</p>
