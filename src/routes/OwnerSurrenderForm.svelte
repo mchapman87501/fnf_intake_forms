@@ -217,30 +217,28 @@
 	<textarea>{catMeds}</textarea><br />
 
 	<div>
-    <fieldset class="fieldset-auto-width">
-    <legend>Ok with Kids:</legend>
-      <input type="radio" id="catOKKinderU" name="catOKKinder" value="unknown"
-             checked>
-      <label for="catOKKinderU">Unknown</label>
-      <input type="radio" id="catOKCatsY" name="catOKKinder" value="yes">
-      <label for="catOKCatsY">Yes</label>
-      <input type="radio" id="catOKCatsN" name="catOKKinder" value="no">
-      <label for="catOKCatsN">No</label>
-</fieldset>
-    <fieldset class="fieldset-auto-width">
-    <legend>Ok with Cats:</legend>
-      <input type="radio" id="catOKCatsU" name="catOKCats" value="unknown"
-             checked>
-      <label for="catOKCatsU">Unknown</label>
-      <input type="radio" id="catOKCatsY" name="catOKCats" value="yes">
-      <label for="catOKCatsY">Yes</label>
-      <input type="radio" id="catOKCatsN" name="catOKCats" value="no">
-      <label for="catOKCatsN">No</label>
-</fieldset>
-    <span>OK with</span>
-<!-- 		<label><input type="checkbox" bind:value={catOKKinder} /> small children</label> -->
-<!-- 		<label><input type="checkbox" bind:value={catOKCats} /> cats</label> -->
-		<label><input type="checkbox" bind:value={catOKDogs} /> dogs</label>
+		<fieldset class="fieldset-auto-width">
+			<legend>Ok with Kids:</legend>
+			<input type="radio" id="catOKKinderU" name="catOKKinder" value="unknown" checked />
+			<label for="catOKKinderU">Unknown</label>
+			<input type="radio" id="catOKCatsY" name="catOKKinder" value="yes" />
+			<label for="catOKCatsY">Yes</label>
+			<input type="radio" id="catOKCatsN" name="catOKKinder" value="no" />
+			<label for="catOKCatsN">No</label>
+		</fieldset>
+		<fieldset class="fieldset-auto-width">
+			<legend>Ok with Cats:</legend>
+			<input type="radio" id="catOKCatsU" name="catOKCats" value="unknown" checked />
+			<label for="catOKCatsU">Unknown</label>
+			<input type="radio" id="catOKCatsY" name="catOKCats" value="yes" />
+			<label for="catOKCatsY">Yes</label>
+			<input type="radio" id="catOKCatsN" name="catOKCats" value="no" />
+			<label for="catOKCatsN">No</label>
+		</fieldset>
+		<span>OK with</span>
+		<!-- 		<label><input type="checkbox" bind:value={catOKKinder} /> small children</label> -->
+		<!-- 		<label><input type="checkbox" bind:value={catOKCats} /> cats</label> -->
+		<label><input type="checkbox" bind:checked={catOKDogs} /> dogs</label>
 	</div>
 
 	<span>Reason for surrender:</span><br />
@@ -322,7 +320,7 @@
 	.btns {
 		text-align: center;
 	}
-  .fieldset-auto-width {
-    display: inline-block;
-  }
+	.fieldset-auto-width {
+		display: inline-block;
+	}
 </style>
