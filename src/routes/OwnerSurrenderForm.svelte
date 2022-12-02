@@ -1,12 +1,22 @@
 <script lang="ts">
 	function todayStr(): string {
-		const options = {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit'
+		function pad(s: string, len: number): string {
+			const overPadded = '00000000' + s
+			return overPadded.substring(overPadded.length - len)
 		}
-		const formatter = new Intl.DateTimeFormat('en-US', options)
-		return formatter.format(new Date())
+		// Satisfy browsers like chrome that require
+		// 'yyyy-mm-dd' as their input.
+		const today = new Date()
+		const year = today.getFullYear()
+		const month = today.getMonth() + 1
+		const day = today.getDate()
+
+		const yStr = pad(year.toFixed(0), 4)
+		const mStr = pad(month.toFixed(0), 2)
+		const dStr = pad(day.toFixed(0), 2)
+		const result = `${yStr}-${mStr}-${dStr}`
+		console.log('todayStr = %o', result)
+		return result
 	}
 
 	let currUser = '(F&F representative)'
