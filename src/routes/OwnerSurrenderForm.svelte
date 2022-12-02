@@ -1,11 +1,21 @@
 <script lang="ts">
+	function todayStr(): string {
+		const options = {
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit'
+		}
+		const formatter = new Intl.DateTimeFormat('en-US', options)
+		return formatter.format(new Date())
+	}
+
 	let currUser = '(F&F representative)'
 	let acceptingUser = currUser
 
 	//-----------------------
 	// Owner info
 	let ownerName = ''
-	let surrDate: Date
+	let surrDate = todayStr()
 	let driverLicNo = ''
 	let dlPattern = '\\d{9}'
 
@@ -76,11 +86,11 @@
 	}
 
 	function getIntakeInfoAsTable(): Array<Array<string>> {
-		const formatter = new Intl.DateTimeFormat('en-US')
-		const surrStr = formatter.format(surrDate)
+		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
+		// use surrDate as-is.
 		return [
 			['Name of Cat', 'Accepting User', 'Date'],
-			[catName, acceptingUser, surrStr]
+			[catName, acceptingUser, surrDate]
 		]
 	}
 
@@ -122,6 +132,7 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 	<input bind:value={ownerName} placeholder="Owner/Guardian Name" />
+
 	<input type="date" bind:value={surrDate} /><br />
 
 	<input
