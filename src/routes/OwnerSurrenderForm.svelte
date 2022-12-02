@@ -2,6 +2,15 @@
   export let selected_form
   export let FormType
   
+  import Comp_ynu_dropdown from './Comp_ynu_dropdown.svelte'
+  // package cat information for passing 
+  // between components
+  let cat = {
+    OKKinder: String
+  }
+  cat.OKKinder = 'Unknown'
+
+  //Customize form based on selected_form FormType
   let ownerNamePlaceholder = 'Owner/Guardian Name'
   if (selected_form == FormType.Rescuer)
     ownerNamePlaceholder = 'Rescue Organization Name'
@@ -80,7 +89,6 @@
 	let catSpecialNeeds = ''
 	let catMeds = ''
 
-	let catOKKinder = "Unknown"
 	let catOKCats = "Unknown"
 	let catOKDogs = false
 
@@ -107,7 +115,7 @@
 		// use surrDate as-is.
 		return [
 			['Name of Cat', 'Accepting User', 'Date', 'Ok with Children', 'OK with Cats'],
-			[catName, acceptingUser, surrDate, catOKKinder, catOKCats]
+			[catName, acceptingUser, surrDate, cat.OKKinder, catOKCats]
 		]
 	}
 
@@ -176,7 +184,7 @@
 	<input type="email" placeholder="Email Address" bind:value={emailAddr} />
 
 	<hr />
-
+  
 	<input class="name" type="text" placeholder="Cat's name" bind:value={catName} />
 	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
 
@@ -244,16 +252,22 @@
 	<textarea>{catMeds}</textarea><br />
 
 <div>
+<!--   Duplicated inputs methods on the same field
+  for demo/refactor purposes
+  Also, it is cool to watch them
+  synchronize -->
+  <Comp_ynu_dropdown title={"OK with kids?"} bind:value={cat.OKKinder}/>
+    
 		<fieldset class="fieldset-auto-width">
 			<legend>Ok with Kids:</legend>
         <label>
-          <input type=radio bind:group={catOKKinder} name="catOKKinder" value={"Unknown"}>Unknown
+          <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder" value={"Unknown"}>Unknown
         </label>
         <label>
-      	  <input type=radio bind:group={catOKKinder} name="catOKKinder"  value={"Yes"}>Yes
+      	  <input type=radio bind:group={cat.OKKinder} name="cat.OKKinder"  value={"Yes"}>Yes
         </label> 
         <label>
-        	<input type=radio bind:group={catOKKinder} name="catOKKinder" value={"No"}>No
+        	<input type=radio bind:group={cat.OKKinder} name="cat.OKKinder" value={"No"}>No
       </label> 
 		</fieldset>
 		<fieldset class="fieldset-auto-width">
@@ -267,8 +281,8 @@
         <label>
         	<input type=radio bind:group={catOKCats} name="catOKCats" value={"No"}>No
       </label> 
-		</fieldset>
-
+    </fieldset>
+  
 		<span>OK with</span>
 		<!-- 		<label><input type="checkbox" bind:value={catOKKinder} /> small children</label> -->
 		<!-- 		<label><input type="checkbox" bind:value={catOKCats} /> cats</label> -->
