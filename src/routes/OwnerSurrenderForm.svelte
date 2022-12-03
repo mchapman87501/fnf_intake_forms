@@ -154,25 +154,11 @@
 	}
 	$: formValid = getFormValid()
 
-  	
-  let uynChoices = [
-    'Unknown',
-    'Yes',
-    'No'
-  ]
-  
-  let genderChoices = [
-    'F/M Unknown',
-    'Female',
-    'Male'
-  ]
+	let uynChoices = ['Unknown', 'Yes', 'No']
 
-  let alteredChoices = [
-    'Spay/Neuter Unknown',
-    'Spayed/Neutered',
-    'Intact'
-  ]
+	let genderChoices = ['F/M Unknown', 'Female', 'Male']
 
+	let alteredChoices = ['Spay/Neuter Unknown', 'Spayed/Neutered', 'Intact']
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
@@ -208,8 +194,8 @@
 	<input class="name" type="text" placeholder="Cat's name" bind:value={catName} />
 	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
 
-  	<Comp_ynu_dropdown choiceList={genderChoices} bind:value={catGender} />
-      
+	<Comp_ynu_dropdown choiceList={genderChoices} bind:value={catGender} />
+
 	<select bind:value={catGender}>
 		<option value="Unknown">M/F Unknown</option>
 		<option value="M">Male</option>
@@ -280,7 +266,11 @@
     synchronize 
     Also, reminder to pass/share styles with components-->
 		<fieldset class="fieldset-auto-width">
-			<Comp_ynu_dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={cat.okKinder} />
+			<Comp_ynu_dropdown
+				title={'OK with kids?'}
+				choiceList={uynChoices}
+				bind:value={cat.okKinder}
+			/>
 		</fieldset>
 
 		<fieldset class="fieldset-auto-width">
@@ -302,7 +292,7 @@
 		</fieldset>
 
 		<fieldset class="fieldset-auto-width">
-			<Comp_ynu_radiobuttons title={'OK with cats?'} bind:value={cat.okCats} />
+			<Comp_ynu_radiobuttons title={'OK with cats?'} bind:group={cat.okCats} />
 		</fieldset>
 
 		<span>OK with</span>
