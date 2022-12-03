@@ -37,7 +37,7 @@
 	}
 
 	let currUser = '(F&F representative)'
-	let acceptingUser = currUser
+	let acceptingUser = ''
 
 	//-----------------------
 	// Owner info
@@ -147,16 +147,31 @@
 	function dataFromForm(): any {
 		// Without this arcane definition, 'result[name] = value' generates TS error 7503.
 		let result: { [index: string]: string } = {}
-		formEl.childNodes.forEach((node: ChildNode) => {
-			const el = node as HTMLInputElement
-			if (el !== null && el !== undefined) {
-				let name = el.name
-				let value = el.value
-				if (name != '' && name !== undefined && value !== undefined) {
-					result[name] = value
+
+		// This is fragile...
+		const tags = ['input', 'select', 'textarea']
+		for (const childTag of tags) {
+			const elements = Array.from(formEl.getElementsByTagName(childTag))
+			console.log('Processing %o elements: %o', childTag, elements)
+			elements.forEach((node: Node) => {
+				const el = node as HTMLInputElement
+				if (el !== null && el !== undefined) {
+					let name = el.name
+					let value = el.value
+					if (name != '' && name !== undefined && value !== undefined) {
+						result[name] = value
+					} else {
+						console.error(
+							'Error processing node %o, (el %o), name %o, value %o',
+							node,
+							el,
+							name,
+							value
+						)
+					}
 				}
-			}
-		})
+			})
+		}
 		return result
 	}
 
@@ -167,7 +182,7 @@
 
 		const bodyData = dataFromForm()
 		const bodyJSON = JSON.stringify(bodyData)
-		console.log('Submitting body %o', bodyJSON)
+		console.log('Submitting body data %o', bodyData)
 		const rqst = await fetch('/api/owner_surrender_form/', {
 			method: 'POST',
 			headers: {
@@ -230,7 +245,7 @@
 
 	<Comp_ynu_dropdown choiceList={genderChoices} bind:value={catGender} />
 
-	<select bind:value={catGender}>
+	<select name="cat_gender" bind:value={catGender}>
 		<option value="Unknown">M/F Unknown</option>
 		<option value="M">Male</option>
 		<option value="F">Female</option>

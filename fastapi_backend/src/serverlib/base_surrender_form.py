@@ -15,6 +15,8 @@ class BaseSurrenderForm(BaseModel):
     email_addr: str = "Unknown"
 
     cat_age: str = "Unknown"
+    cat_name: str = "Unknown"
+    cat_gender: str = "Unknown"
 
     accepting_user: str = "Unknown"
 

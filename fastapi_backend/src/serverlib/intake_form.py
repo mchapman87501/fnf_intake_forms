@@ -16,6 +16,10 @@ class IntakeForm(BaseModel):
     email: str = Field("Unknown", title="e-mail")
     reason: str = Field("Unknown", title="Reason")
     surrender_transfer_stray: str = Field("Unknown", title="Surrender/Transfer/Stray")
+    # ...
+    name_of_cat: str = Field("Unknown", title="Name of Cat")
+    date_of_birth: str = Field("Unknown", title="Date of Birth / Cat Age")
+    gender: str = Field("Unknown", title="Gender")
     # Etc.
 
     # Does this belong elsewhere?  How tightly should data models be coupled

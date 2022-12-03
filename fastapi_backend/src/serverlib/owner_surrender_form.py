@@ -13,4 +13,9 @@ class OwnerSurrenderForm(BaseSurrenderForm):
             phone_num=self.home_phone,
             email=self.email_addr,
             reason=self.reason_for_surrender,
+            surrender_transfer_stray="Owner Surrender",
+            # ...
+            name_of_cat=self.cat_name,
+            date_of_birth=self.cat_age,
+            gender=self.cat_gender,
         )
