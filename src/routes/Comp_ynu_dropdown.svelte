@@ -1,13 +1,18 @@
 <script lang="ts">
   export let value
-  export let title
+  export let title = ''
+  export let choiceList = []
 </script>
 
-<label>{title}
-<select bind:value>
-<option value="Unknown">Unknown</option>
-<option value="Yes">Yes</option>
-<option value="No">No</option>
-</select>
+<label
+	>{title}
+	<select bind:value >
+		{#each choiceList as choice }
+         <option value= {choice} >
+           {choice}
+			</option>
+		{/each}
+	</select>
 </label>
+
 	
