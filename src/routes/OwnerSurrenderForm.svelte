@@ -334,7 +334,7 @@
 	</div>
 
 	<span>Reason for surrender:</span><br />
-	<textarea>{reasonForSurrender}</textarea><br />
+	<textarea name="reason_for_surrender">{reasonForSurrender}</textarea><br />
 
 	<p class="rep">
 		<input
@@ -345,7 +345,7 @@
 			pattern={donationPattern}
 		/>
 		Surrender accepted by
-		<input type="text" placeholder={currUser} bind:value={acceptingUser} />
+		<input name="accepting_user" type="text" placeholder={currUser} bind:value={acceptingUser} />
 	</p>
 
 	<hr />
