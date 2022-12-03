@@ -4,6 +4,8 @@
 
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
+	import Checkbox from '../components/Checkbox.svelte';
+
 	let uynChoices = ['Unknown', 'Yes', 'No']
 
 	let genderChoices = ['F/M Unknown', 'Female', 'Male']
@@ -302,7 +304,6 @@
 	}
 
 	label,
-	legend,
 	span {
 		font-size: 75%;
 	}
