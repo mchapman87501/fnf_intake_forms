@@ -142,9 +142,25 @@
 		navigator.clipboard.writeText(csvStr)
 	}
 
-	function handleSubmit() {
-		console.log('Hello from handleSubmit')
-		return false // prevent reload
+	let formEl: HTMLFormElement
+	async function handleSubmit() {
+		// There must be a simpler way.
+		const bodyData = {
+			owner_name: ownerName,
+			drivers_license_no: driverLicNo,
+			surrender_date: surrDate
+		}
+		const bodyJSON = JSON.stringify(bodyData)
+		console.log('Submitting body %o', bodyJSON)
+		const rqst = await fetch('/api/owner_surrender_form/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: bodyJSON
+		})
+		const response = await rqst.json()
+		console.log('Got response: %o', response)
 	}
 
 	let formValid = false
@@ -161,11 +177,12 @@
 	let alteredChoices = ['Spay/Neuter Unknown', 'Spayed/Neutered', 'Intact']
 </script>
 
-<form on:submit|preventDefault={handleSubmit}>
-	<input bind:value={ownerName} placeholder={ownerNamePlaceholder} />
-	<input type="date" bind:value={surrDate} /><br />
+<form bind:this={formEl} on:submit|preventDefault={handleSubmit}>
+	<input name="owner_name" bind:value={ownerName} placeholder={ownerNamePlaceholder} />
+	<input name="surrender_date" type="date" bind:value={surrDate} /><br />
 
 	<input
+		name="drivers_license_no"
 		class="lic_no"
 		value={driverLicNo}
 		placeholder="Driver's License #"
