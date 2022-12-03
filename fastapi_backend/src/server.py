@@ -26,7 +26,7 @@ async def get_intake_form(form_data: OwnerSurrenderForm):
 
     This is an aspirational docstring.
     """
-    print("In get_intake_form")
+    print("In get_intake_form", form_data)
     return f"TBD: Received form {form_data}"
 
 

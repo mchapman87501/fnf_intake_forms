@@ -145,7 +145,8 @@
 	let formEl: HTMLFormElement
 
 	function dataFromForm(): any {
-		let result = new Object()
+		// Without this arcane definition, 'result[name] = value' generates TS error 7503.
+		let result: { [index: string]: string } = {}
 		formEl.childNodes.forEach((node: ChildNode) => {
 			const el = node as HTMLInputElement
 			if (el !== null && el !== undefined) {
@@ -204,27 +205,28 @@
 		pattern={dlPattern}
 	/><br />
 
-	<input type="text" placeholder="Street Address" bind:value={streetAddr} />
-	<input type="tel" placeholder="Home phone" bind:value={homePhone} /><br />
+	<input name="street_address" type="text" placeholder="Street Address" bind:value={streetAddr} />
+	<input name="home_phone" type="tel" placeholder="Home phone" bind:value={homePhone} /><br />
 
-	<input type="text" placeholder="City" bind:value={city} />
+	<input name="city" type="text" placeholder="City" bind:value={city} />
 
 	<!-- TODO use a menu -->
-	<input type="text" class="state_abbrev" placeholder="State" bind:value={state} />
+	<input name="state" type="text" class="state_abbrev" placeholder="State" bind:value={state} />
 	<input
+		name="zipcode"
 		type="text"
 		class="zipcode"
 		placeholder="Zip code"
 		pattern={zipCodePattern}
 		value={zipCode}
 	/>
-	<input type="tel" placeholder="Work/Cell phone" bind:value={workOrCell} /><br />
-	<input type="email" placeholder="Email Address" bind:value={emailAddr} />
+	<input name="work_phone" type="tel" placeholder="Work/Cell phone" bind:value={workOrCell} /><br />
+	<input name="email_addr" type="email" placeholder="Email Address" bind:value={emailAddr} />
 
 	<hr />
 
-	<input class="name" type="text" placeholder="Cat's name" bind:value={catName} />
-	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
+	<input name="cat_name" class="name" type="text" placeholder="Cat's name" bind:value={catName} />
+	<input name="cat_age" class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
 
 	<Comp_ynu_dropdown choiceList={genderChoices} bind:value={catGender} />
 

@@ -6,3 +6,12 @@ from pydantic import BaseModel
 class BaseSurrenderForm(BaseModel):
     surrender_date: str
     drivers_license_no: str
+    street_address: str
+    home_phone: str
+    city: str
+    state: str
+    zipcode: str
+    work_phone: str
+    email_addr: str
+
+    cat_age: str
