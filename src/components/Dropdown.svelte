@@ -16,8 +16,7 @@
 </label>
 
 <style>
-	label,
-	legend {
+	label {
 		font-size: 75%;
 	}
 </style>
