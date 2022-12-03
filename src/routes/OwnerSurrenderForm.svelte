@@ -2,14 +2,19 @@
 	export let selected_form
 	export let FormType
 
-	import Comp_ynu_dropdown from './Comp_ynu_dropdown.svelte'
-	import Comp_ynu_radiobuttons from './Comp_ynu_radiobuttons.svelte'
+	import Dropdown from '../components/Dropdown.svelte'
+	import Radiobuttons from '../components/Radiobuttons.svelte'
+	let uynChoices = ['Unknown', 'Yes', 'No']
+
+	let genderChoices = ['F/M Unknown', 'Female', 'Male']
+
+	let alteredChoices = ['Spay/Neuter Unknown', 'Spayed/Neutered', 'Intact']
 
 	// Cat info
 	// package for passing between components
 	let cat = {
-		okKinder: 'Unknown',
-		okCats: 'Unknown'
+		okKinder: uynChoices[0],
+		okCats: uynChoices[0]
 	}
 
 	//Customize form based on selected_form FormType
@@ -60,8 +65,8 @@
 	let catName = ''
 	let catDOBAge = ''
 
-	let catGender = 'F/M Unknown'
-	let catAltered = 'Unknown'
+	let catGender = genderChoices[0]
+	let catAltered = alteredChoices[0]
 
 	let catBreed = ''
 	let catColor = ''
@@ -154,11 +159,6 @@
 	}
 	$: formValid = getFormValid()
 
-	let uynChoices = ['Unknown', 'Yes', 'No']
-
-	let genderChoices = ['F/M Unknown', 'Female', 'Male']
-
-	let alteredChoices = ['Spay/Neuter Unknown', 'Spayed/Neutered', 'Intact']
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
@@ -194,19 +194,9 @@
 	<input class="name" type="text" placeholder="Cat's name" bind:value={catName} />
 	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
 
-	<Comp_ynu_dropdown choiceList={genderChoices} bind:value={catGender} />
+	<Dropdown choiceList={genderChoices} bind:value={catGender} />
 
-	<select bind:value={catGender}>
-		<option value="Unknown">M/F Unknown</option>
-		<option value="M">Male</option>
-		<option value="F">Female</option>
-	</select>
-
-	<select bind:value={catAltered}>
-		<option value="Unknown">Altered/Intact Unknown</option>
-		<option value="Intact">Intact</option>
-		<option value="Spayed/Neutered">Spayed/Neutered</option>
-	</select>
+	<Dropdown choiceList={alteredChoices} bind:value={catAltered} />
 	<br />
 
 	<input type="text" placeholder="Breed" bind:value={catBreed} />
@@ -260,13 +250,9 @@
 	<textarea>{catMeds}</textarea><br />
 
 	<div>
-		<!--   Duplicated inputs methods on the same field
-    for demo/refactor purposes
-    Also, it is cool to watch them
-    synchronize 
-    Also, reminder to pass/share styles with components-->
+		
 		<fieldset class="fieldset-auto-width">
-			<Comp_ynu_dropdown
+			<Dropdown
 				title={'OK with kids?'}
 				choiceList={uynChoices}
 				bind:value={cat.okKinder}
@@ -274,25 +260,7 @@
 		</fieldset>
 
 		<fieldset class="fieldset-auto-width">
-			<legend>Ok with Kids:</legend>
-			<label>
-				<input
-					type="radio"
-					bind:group={cat.okKinder}
-					name="cat.OKKinder"
-					value={'Unknown'}
-				/>Unknown
-			</label>
-			<label>
-				<input type="radio" bind:group={cat.okKinder} name="cat.OKKinder" value={'Yes'} />Yes
-			</label>
-			<label>
-				<input type="radio" bind:group={cat.okKinder} name="cat.OKKinder" value={'No'} />No
-			</label>
-		</fieldset>
-
-		<fieldset class="fieldset-auto-width">
-			<Comp_ynu_radiobuttons title={'OK with cats?'} bind:group={cat.okCats} />
+			<Radiobuttons title={'OK with cats?'} bind:group={cat.okCats} />
 		</fieldset>
 
 		<span>OK with</span>

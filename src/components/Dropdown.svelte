@@ -14,3 +14,10 @@
 		{/each}
 	</select>
 </label>
+
+<style>
+	label,
+	legend {
+		font-size: 75%;
+	}
+</style>
