@@ -2,3 +2,8 @@ fastapi
 pydantic
 uvicorn[standard]
 python-multipart
+
+# Development
+black
+flake8
+pytest
