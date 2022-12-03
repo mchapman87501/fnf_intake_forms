@@ -143,13 +143,28 @@
 	}
 
 	let formEl: HTMLFormElement
+
+	function dataFromForm(): any {
+		let result = new Object()
+		formEl.childNodes.forEach((node: ChildNode) => {
+			const el = node as HTMLInputElement
+			if (el !== null && el !== undefined) {
+				let name = el.name
+				let value = el.value
+				if (name != '' && name !== undefined && value !== undefined) {
+					result[name] = value
+				}
+			}
+		})
+		return result
+	}
+
 	async function handleSubmit() {
-		// There must be a simpler way.
-		const bodyData = {
-			owner_name: ownerName,
-			drivers_license_no: driverLicNo,
-			surrender_date: surrDate
-		}
+		// It's easiest to talk to FastAPI using JSON.
+		// Its handling of form data looks tedious.
+		// This looks less tedious.
+
+		const bodyData = dataFromForm()
 		const bodyJSON = JSON.stringify(bodyData)
 		console.log('Submitting body %o', bodyJSON)
 		const rqst = await fetch('/api/owner_surrender_form/', {
