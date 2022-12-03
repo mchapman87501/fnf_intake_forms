@@ -184,7 +184,7 @@
 	<input
 		name="drivers_license_no"
 		class="lic_no"
-		value={driverLicNo}
+		bind:value={driverLicNo}
 		placeholder="Driver's License #"
 		pattern={dlPattern}
 	/><br />
