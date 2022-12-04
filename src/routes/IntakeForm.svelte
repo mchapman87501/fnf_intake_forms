@@ -3,11 +3,9 @@
 	import SetCatColor2 from '../components/SetCatColor2.svelte'
 	import SetCatColor3 from '../components/SetCatColor3.svelte'
 	import { catInfo } from '../components/stores.js'
+	import { catInfoPkg } from '../components/stores.js'
 
-	let catInfoValue = false
-	catInfo.subscribe((value: any) => {
-		catInfoValue = value
-	})
+
 
 	function handleSubmit() {
 		return false // prevent reload
@@ -22,10 +20,12 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	Stored Cat Info is {catInfoValue}
+	Stored Cat Info is {$catInfo}
 	<SetCatColor1 />
 	<SetCatColor2 />
 	<SetCatColor3 />
+	Cat OK Kids {$catInfoPkg.okKinder}
+	
 </form>
 
 <style>

@@ -6,14 +6,10 @@
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import Checkbox from '../components/Checkbox.svelte'
 	import { catInfo } from '../components/stores.js'
+	import { catInfoPkg } from '../components/stores.js'
 
 	let catColor = 'Unknown'
-	catInfo.subscribe((value: any) => {
-		catColor = value
-	})
-	function setCatColor() {
-		catInfo.set(catColor);
-	}
+
 	let uynChoices = ['Unknown', 'Yes', 'No']
 
 	let genderChoices = ['F/M Unknown', 'Female', 'Male']
@@ -23,7 +19,7 @@
 	// Cat info
 	// package for passing between components
 	let cat = {
-		okKinder: uynChoices[0],
+		// okKinder: uynChoices[0],
 		okCats: uynChoices[0]
 	}
 
@@ -129,7 +125,7 @@
 		// use surrDate as-is.
 		return [
 			['Name of Cat', 'Accepting User', 'Date', 'Ok with Children', 'OK with Cats'],
-			[catName, acceptingUser, surrDate, cat.okKinder, cat.okCats]
+			[catName, acceptingUser, surrDate, $catInfoPkg.okKinder, cat.okCats]
 		]
 	}
 
@@ -208,7 +204,7 @@
 	<br />
 
 	<input type="text" placeholder="Breed" bind:value={catBreed} />
-	<input type="text" placeholder="Color" bind:value={catColor} on:change={setCatColor} />
+	<input type="text" placeholder="Color" bind:value={$catInfo} />
 	<input type="text" placeholder="Markings" bind:value={catMarkings} /><br />
 
 	<select bind:value={catChipped}>
@@ -259,7 +255,7 @@
 
 	<div>
 		<fieldset class="fieldset-auto-width">
-			<Dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={cat.okKinder} />
+			<Dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={$catInfoPkg.okKinder} />
 		</fieldset>
 
 		<fieldset class="fieldset-auto-width">
