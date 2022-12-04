@@ -2,10 +2,10 @@
 	import { catInfo } from './stores.js';
 
 	function changeCatInfo() {
-		catInfo.set( 'black');
+		catInfo.set('white');
 	}
 </script>
 
 <button on:click={changeCatInfo}>
-	Set Cat Info to 3
+	Set Cat Info to 2
 </button>
