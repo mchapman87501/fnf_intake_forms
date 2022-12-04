@@ -4,8 +4,16 @@
 
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
-	import Checkbox from '../components/Checkbox.svelte';
+	import Checkbox from '../components/Checkbox.svelte'
+	import { catInfo } from '../components/stores.js'
 
+	let catColor = 'Unknown'
+	catInfo.subscribe((value: any) => {
+		catColor = value
+	})
+	function setCatColor() {
+		catInfo.set(catColor);
+	}
 	let uynChoices = ['Unknown', 'Yes', 'No']
 
 	let genderChoices = ['F/M Unknown', 'Female', 'Male']
@@ -71,7 +79,6 @@
 	let catAltered = alteredChoices[0]
 
 	let catBreed = ''
-	let catColor = ''
 	let catMarkings = ''
 
 	let catChipped = 'Unknown'
@@ -160,7 +167,6 @@
 		return true
 	}
 	$: formValid = getFormValid()
-
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
@@ -202,7 +208,7 @@
 	<br />
 
 	<input type="text" placeholder="Breed" bind:value={catBreed} />
-	<input type="text" placeholder="Color" bind:value={catColor} />
+	<input type="text" placeholder="Color" bind:value={catColor} on:change={setCatColor} />
 	<input type="text" placeholder="Markings" bind:value={catMarkings} /><br />
 
 	<select bind:value={catChipped}>
@@ -252,13 +258,8 @@
 	<textarea>{catMeds}</textarea><br />
 
 	<div>
-		
 		<fieldset class="fieldset-auto-width">
-			<Dropdown
-				title={'OK with kids?'}
-				choiceList={uynChoices}
-				bind:value={cat.okKinder}
-			/>
+			<Dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={cat.okKinder} />
 		</fieldset>
 
 		<fieldset class="fieldset-auto-width">

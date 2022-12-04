@@ -1,20 +1,16 @@
 <script lang="ts">
+	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
-
 	enum FormType {
 		Unspecified = '-- Select --',
-		Owner = 'Owner',
-		Stray = 'Stray',
-		PregnantOrNursing = 'Pregnant/Nursing',
-		Rescuer = 'Rescuer'
+		Surrender = 'Surrender',
+		Intake = 'Intake'
 	}
 
 	let forms = [
 		FormType.Unspecified,
-		FormType.Owner,
-		FormType.Stray,
-		FormType.PregnantOrNursing,
-		FormType.Rescuer
+		FormType.Surrender,
+		FormType.Intake
 	]
 
 	let pkg = {
@@ -34,8 +30,10 @@
 </label>
 
 <hr />
-{#if pkg.selected_form == FormType.Owner}
+{#if pkg.selected_form == FormType.Surrender}
 	<OwnerSurrenderForm {...pkg} {FormType} />
+	{:else if pkg.selected_form == FormType.Intake}
+	<IntakeForm/>
 {:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
 	<p>Please select a form.</p>
 {:else}

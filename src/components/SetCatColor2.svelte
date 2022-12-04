@@ -7,5 +7,5 @@
 </script>
 
 <button on:click={changeCatInfo}>
-	Set Cat Info to 2
+	Set Cat Info to white
 </button>
