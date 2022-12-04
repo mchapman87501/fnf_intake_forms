@@ -175,23 +175,29 @@
 		return result
 	}
 
-	async function handleSubmit() {
-		// It's easiest to talk to FastAPI using JSON.
-		// Its handling of form data looks tedious.
-		// This looks less tedious.
+	const backendBaseURL = '/api/v1'
 
+	async function handleSubmit() {
 		const bodyData = dataFromForm()
 		const bodyJSON = JSON.stringify(bodyData)
 		console.log('Submitting body data %o', bodyData)
-		const rqst = await fetch('/api/owner_surrender_form/', {
+		// TODO move backend communications like this to src/lib.
+		const rqst = await fetch('/api/v1/owner_surrender_form/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: bodyJSON
 		})
-		const response = await rqst.json()
-		console.log('Got response: %o', response)
+
+		if (rqst.status == 401) {
+			// Unauthorized -- need to redirect to login.
+			// Would be nice to do this as a dialog...
+			alert('You need to log in.')
+		} else if (rqst.status == 200) {
+			const response = await rqst.json()
+			console.log('Got response: %o', response)
+		}
 	}
 
 	let formValid = false

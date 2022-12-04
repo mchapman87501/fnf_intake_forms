@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { session_username, session_token } from '$lib/hooks/auth'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
 
 	enum FormType {
@@ -22,8 +23,16 @@
 	}
 </script>
 
-<label
-	>Form:
+<p>Session username: {$session_username}</p>
+<p>Session token: {$session_token}</p>
+{#if $session_username != ''}
+	<p>Welcome, {session_username}.</p>
+{:else}
+	<p><a href="/login">Log In</a></p>
+{/if}
+
+<label>
+	Form:
 	<select bind:value={pkg.selected_form}>
 		{#each forms as formType}
 			<option value={formType}>
