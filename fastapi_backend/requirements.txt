@@ -2,6 +2,8 @@ fastapi
 pydantic
 uvicorn[standard]
 python-multipart
+python-jose[cryptography]
+passlib[bcrypt]
 
 # Development
 black

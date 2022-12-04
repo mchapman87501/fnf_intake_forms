@@ -4,11 +4,13 @@ from pathlib import Path
 
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, status
 from fastapi.staticfiles import StaticFiles
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 
 from .serverlib.owner_surrender_form import OwnerSurrenderForm
 from .serverlib.user import User
 from .serverlib.user_in_db import UserInDB
+from .serverlib.jwt_token_mgmt import get_current_active_user, Token
+from .serverlib.oauth_impl import oauth_endpoint
 
 # The main app serves static files from the "/" URL path,
 # and api calls from "/api".
@@ -23,51 +25,20 @@ front_end_root = server_root / "build"
 
 api_app = APIRouter(prefix="/api/v1")
 
-# -----------------------------------------------------------------------
-# Authentication and authorization middleware.
-oauth_token_url = "yalnets"
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"/api/v1/{oauth_token_url}")
-
-
-def fake_decode_token(token: str) -> UserInDB | None:
-    return UserInDB.retrieve(token)
-
-
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
-    user = fake_decode_token(token)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
-
-
-async def get_current_active_user(
-    current_user: User = Depends(get_current_user),
-) -> User:
-    if current_user.disabled:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive User"
-        )
-    return current_user
-
-
-@api_app.post("/" + oauth_token_url)
+#-----------------------------------------------------------------------
+# OAuth2 authentication endpoint
+@api_app.post("/" + oauth_endpoint)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    print("In login")
-    user = UserInDB.retrieve(form_data.username)
     auth_fail = HTTPException(
-        status_code=status.HTTP_400_BAD_REQUEST,
+        status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not authenticate",
+        headers={"WWW-Authenticate": "Bearer"}
     )
+    user = UserInDB.authenticate(form_data.username, form_data.password)
     if user is None:
         raise auth_fail
-    hashed_pass = UserInDB.hashita(form_data.password)
-    if hashed_pass != user.hpass:
-        raise auth_fail
-    return {"access_token": user.username, "token_type": "bearer"}
+    access_token = Token.create_access_token(data={"sub": user.username})
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 # -----------------------------------------------------------------------
