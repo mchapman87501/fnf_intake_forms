@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { session_token } from '$lib/hooks/auth'
 	export let selected_form
 	export let FormType
 
@@ -160,14 +161,6 @@
 					let value = el.value
 					if (name != '' && name !== undefined && value !== undefined) {
 						result[name] = value
-					} else {
-						console.error(
-							'Error processing node %o, (el %o), name %o, value %o',
-							node,
-							el,
-							name,
-							value
-						)
 					}
 				}
 			})
@@ -178,14 +171,22 @@
 	const backendBaseURL = '/api/v1'
 
 	async function handleSubmit() {
+		const tokenDict = $session_token
+		if (tokenDict == null) {
+			alert('You must be logged in to submit a form.')
+			return
+		}
+		const bearerToken = tokenDict['access_token']
+		console.log('Submitting form with auth token %o', bearerToken)
 		const bodyData = dataFromForm()
 		const bodyJSON = JSON.stringify(bodyData)
-		console.log('Submitting body data %o', bodyData)
 		// TODO move backend communications like this to src/lib.
 		const rqst = await fetch('/api/v1/owner_surrender_form/', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				// Send along our session token, if there is one.
+				Authorization: 'Bearer ' + bearerToken
 			},
 			body: bodyJSON
 		})

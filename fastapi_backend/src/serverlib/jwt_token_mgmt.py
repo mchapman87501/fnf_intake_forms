@@ -26,11 +26,6 @@ class Token(BaseModel):
         result = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         return result
 
-class TokenData(BaseModel):
-    username: str | None = None
-
-
-
 async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     cred_exc = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -41,10 +36,12 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")  # type: ignore
 
+        print("get_current_user - payload:", payload)
+        print("get_current_user - username:", username)
         if username is None:
             raise cred_exc
-        token_data = TokenData(username=username)
-    except JWTError:
+    except JWTError as info:
+        print("get_current_user - error:", info)
         raise cred_exc
 
     user = UserInDB.retrieve(username)

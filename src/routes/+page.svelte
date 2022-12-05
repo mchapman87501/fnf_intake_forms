@@ -21,12 +21,20 @@
 	let pkg = {
 		selected_form: FormType.Unspecified
 	}
+
+	let sess_token: any = null
+	session_token.subscribe((value) => {
+		sess_token = value
+	})
+
+	let sess_username = ''
+	session_username.subscribe((value) => {
+		sess_username = value
+	})
 </script>
 
-<p>Session username: {$session_username}</p>
-<p>Session token: {$session_token}</p>
-{#if $session_username != ''}
-	<p>Welcome, {session_username}.</p>
+{#if sess_username != ''}
+	<p>Welcome, {sess_username}.</p>
 {:else}
 	<p><a href="/login">Log In</a></p>
 {/if}

@@ -1,5 +1,8 @@
 <script lang="ts">
+	import { goto } from '$app/navigation'
 	import { session_token, session_username } from '$lib/hooks/auth'
+	// I'm not using sapper, but this may be relevant:
+	// https://stackoverflow.com/a/60426501
 
 	let username = ''
 	let password = ''
@@ -27,10 +30,12 @@
 		if (!rqst.ok) {
 			error = rqst.statusText
 		} else {
-			session_username.set(username)
-			session_token.set(await rqst.json())
+			const token = await rqst.json()
+			session_username.update((curr) => username)
+			session_token.update((curr) => token)
+			// Use goto to preserve the store content.
 			// TODO redirect to whatever page sent us here.
-			window.location.href = '/'
+			goto('/')
 		}
 	}
 </script>
