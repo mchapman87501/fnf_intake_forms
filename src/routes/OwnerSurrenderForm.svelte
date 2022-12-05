@@ -1,18 +1,18 @@
 <script lang="ts">
-
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import Checkbox from '../components/Checkbox.svelte'
+
 	import { catInfo } from '../components/stores.js'
 	import { catInfoPkg } from '../components/stores.js'
 
 	import { uynChoices, genderChoices, alteredChoices } from '../components/definitions.svelte'
-	import {initializeCatInfoPkg } from '../components/storefns.svelte'
-
+	import { initializeCatInfoPkg } from '../components/storefns.svelte'
+	import { getIntakeInfoAsCSV } from '../components/UtilFns.svelte'
 
 	//Customize form based on selected_form FormType
 	let ownerNamePlaceholder = 'Owner/Guardian Name'
-	
+
 	function todayStr(): string {
 		function pad(s: string, len: number): string {
 			const overPadded = '00000000' + s
@@ -94,35 +94,22 @@
 	function getIntakeInfoAsTable(): Array<Array<string>> {
 		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
 		// use surrDate as-is.
-		return [
-			['Name of Cat', 'Accepting User', 'Date', 'Ok with Children', 'OK with Cats'],
-			[$catInfoPkg.catName, $catInfoPkg.intakeFnFRepr, surrDate, $catInfoPkg.okKinder, $catInfoPkg.okCats]
-		]
+		return [catInfoPkgHeaders(), catInfoPkgValues()]
 	}
 
-	// Prototyping - this should be factored out.
-	function getIntakeInfoAsCSV(): string {
-		function valueToCSV(v: string): string {
-			const quoted = v.replaceAll('"', '""')
-			return `"${quoted}"`
-		}
-
-		function rowToStr(row: Array<string>): string {
-			return row.map((col) => valueToCSV(col)).join(',')
-		}
-
-		return getIntakeInfoAsTable()
-			.map((row) => rowToStr(row))
-			.join('\n')
+	export function catInfoPkgHeaders() {
+		return ['Recvd From Name', 'Recvd From Phone', 'Recvd From Email']
+	}
+	export function catInfoPkgValues() {
+		return [$catInfoPkg.recdFromName, $catInfoPkg.recdFromPhone, $catInfoPkg.recdFromEmail]
 	}
 
 	function copyIntakeFormToClipboard() {
 		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
-		const csvStr = getIntakeInfoAsCSV()
-		console.log('Copying %o', csvStr)
+		const csvStr = getIntakeInfoAsCSV(getIntakeInfoAsTable())
+		console.log('Trying to copy Copying %o', csvStr)
 		navigator.clipboard.writeText(csvStr)
 	}
-
 	function handleSubmit() {
 		console.log('Hello from handleSubmit')
 		return false // prevent reload
@@ -188,11 +175,7 @@
 	</select>
 	<br />
 	{#if catChipped == 'True'}
-		<input
-			type="text"
-			placeholder="Chip number"
-			bind:value={$catInfoPkg.microchipNum}
-		/>
+		<input type="text" placeholder="Chip number" bind:value={$catInfoPkg.microchipNum} />
 	{/if}
 	<br />
 
@@ -240,7 +223,7 @@
 	</div>
 
 	<span>Reason for surrender:</span><br />
-	<textarea bind:value={$catInfoPkg.intakeReason}></textarea><br />
+	<textarea bind:value={$catInfoPkg.intakeReason} /><br />
 
 	<p class="rep">
 		<input
@@ -257,7 +240,6 @@
 	<hr />
 
 	<div class="btns">
-	
 		<button type="submit" disabled={!formValid}>Submit</button>
 		<button type="button" on:click={copyIntakeFormToClipboard}>Copy Excel to Clipboard</button>
 		<!-- TODO place the Clear form button far away from others to avoid accidental presses -->

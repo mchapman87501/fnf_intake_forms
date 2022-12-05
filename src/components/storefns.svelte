@@ -3,6 +3,7 @@
 	import { get } from 'svelte/store'
 	import { uynChoices, genderChoices, alteredChoices } from '../components/definitions.svelte'
 
+
 	export function initializeCatInfoPkg() {
 		let temp = get(catInfoPkg)
 		temp.recdFromName = ''
