@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-	import { catInfo, catInfoPkg } from './stores'
+	import { catPkg } from './stores'
 	import { get } from 'svelte/store'
 	import { uynChoices, genderChoices, alteredChoices } from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
 
-	export function initializeCatInfoPkg() {
-		let temp = get(catInfoPkg)
+	export function initializecatPkg() {
+		let temp = get(catPkg)
 		temp.recdFromName = ''
 		temp.recdFromPhone = ''
 		temp.recdFromEmail = ''
@@ -31,12 +31,12 @@
 		temp.microchipNum = ''
 		temp.FELVFIVPositive = false
 
-		catInfoPkg.set(temp)
+		catPkg.set(temp)
 	}
 
 	export function setOKKinder(val: string) {
-		let temp = get(catInfoPkg)
+		let temp = get(catPkg)
 		temp.okKinder = val
-		catInfoPkg.set(temp)
+		catPkg.set(temp)
 	}
 </script>

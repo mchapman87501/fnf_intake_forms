@@ -1,7 +1,5 @@
 import { writable } from 'svelte/store';
 
-export const catInfo = writable('cat info');
-
 let cat = {
     recdFromName: '',
     recdFromPhone: '',
@@ -22,4 +20,4 @@ let cat = {
     FELVFIVPositive:false,
     specialNeeds:''
 }
-export const catInfoPkg = writable(cat);
+export const catPkg = writable(cat);

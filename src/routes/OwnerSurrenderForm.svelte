@@ -3,11 +3,10 @@
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import Checkbox from '../components/Checkbox.svelte'
 
-	import { catInfo } from '../components/stores.js'
-	import { catInfoPkg } from '../components/stores.js'
+	import { catPkg } from '../components/stores.js'
 
 	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
-	import { initializeCatInfoPkg } from '../components/StoreFns.svelte'
+	import { initializecatPkg } from '../components/StoreFns.svelte'
 	import { getIntakeInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
 
 	//Customize form based on selected_form FormType
@@ -94,10 +93,10 @@
 	function getIntakeInfoAsTable(): Array<Array<string>> {
 		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
 		// use intakeDate as-is.
-		return [catInfoPkgHeaders(), catInfoPkgValues()]
+		return [catPkgHeaders(), catPkgValues()]
 	}
 
-	export function catInfoPkgHeaders() {
+	export function catPkgHeaders() {
 		return [
 			'Recvd From Name',
 			'Recvd From Phone',
@@ -126,25 +125,25 @@
 			'RVRCP#3'
 		]
 	}
-	export function catInfoPkgValues() {
+	export function catPkgValues() {
 		return [
-			$catInfoPkg.recdFromName,
-			$catInfoPkg.recdFromPhone,
-			$catInfoPkg.recdFromEmail,
-			$catInfoPkg.intakeReason,
+			$catPkg.recdFromName,
+			$catPkg.recdFromPhone,
+			$catPkg.recdFromEmail,
+			$catPkg.intakeReason,
 			'TBD',
 			'TBD',
 			'TBD',
 			'TBD',
 			'FigureThis',
-			$catInfoPkg.catName,
-			$catInfoPkg.age,
-			$catInfoPkg.gender,
-			$catInfoPkg.altered,
-			$catInfoPkg.breed,
+			$catPkg.catName,
+			$catPkg.age,
+			$catPkg.gender,
+			$catPkg.altered,
+			$catPkg.breed,
 			'TBD',
 			// readability marker
-			$catInfoPkg.color,
+			$catPkg.color,
 			"TBD",
 			"TBD",
 			"TBD",
@@ -176,12 +175,12 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<!-- TODO reset all fields, not just those in catInfoPkg -->
+	<!-- TODO reset all fields, not just those in catPkg -->
 	<div class="btns">
-		<button type="button" on:click={initializeCatInfoPkg}>Clear all fields all forms</button>
+		<button type="button" on:click={initializecatPkg}>Clear all fields all forms</button>
 	</div>
-	<input bind:value={$catInfoPkg.recdFromName} placeholder={ownerNamePlaceholder} />
-	<input type="date" bind:value={$catInfoPkg.intakeDate} /><br />
+	<input bind:value={$catPkg.recdFromName} placeholder={ownerNamePlaceholder} />
+	<input type="date" bind:value={$catPkg.intakeDate} /><br />
 
 	<input
 		class="lic_no"
@@ -192,7 +191,7 @@
 
 	<input type="text" placeholder="Street Address" bind:value={streetAddr} />
 	<!-- TODO should Intake.svelte use Home, Cell or logic of two  -->
-	<input type="tel" placeholder="Home phone" bind:value={$catInfoPkg.recdFromPhone} /><br />
+	<input type="tel" placeholder="Home phone" bind:value={$catPkg.recdFromPhone} /><br />
 
 	<input type="text" placeholder="City" bind:value={city} />
 
@@ -206,22 +205,22 @@
 		value={zipCode}
 	/>
 	<input type="tel" placeholder="Work/Cell phone" bind:value={workOrCell} /><br />
-	<input type="email" placeholder="Email Address" bind:value={$catInfoPkg.recdFromEmail} />
+	<input type="email" placeholder="Email Address" bind:value={$catPkg.recdFromEmail} />
 
 	<hr />
 
-	<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.catName} />
-	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={$catInfoPkg.age} />
+	<input class="name" type="text" placeholder="Cat's name" bind:value={$catPkg.catName} />
+	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={$catPkg.age} />
 
 	<!-- TODO gender/altered is combined on paper forms - note this -->
 	<!-- TODO intialize items with custom lists with list default -->
-	<Dropdown choiceList={genderChoices} bind:value={$catInfoPkg.gender} />
+	<Dropdown choiceList={genderChoices} bind:value={$catPkg.gender} />
 
-	<Dropdown choiceList={alteredChoices} bind:value={$catInfoPkg.altered} />
+	<Dropdown choiceList={alteredChoices} bind:value={$catPkg.altered} />
 	<br />
 
-	<input type="text" placeholder="Breed" bind:value={$catInfoPkg.breed} />
-	<input type="text" placeholder="Color" bind:value={$catInfoPkg.color} />
+	<input type="text" placeholder="Breed" bind:value={$catPkg.breed} />
+	<input type="text" placeholder="Color" bind:value={$catPkg.color} />
 	<input type="text" placeholder="Markings" bind:value={catMarkings} /><br />
 
 	<select bind:value={catChipped}>
@@ -231,7 +230,7 @@
 	</select>
 	<br />
 	{#if catChipped == 'True'}
-		<input type="text" placeholder="Chip number" bind:value={$catInfoPkg.microchipNum} />
+		<input type="text" placeholder="Chip number" bind:value={$catPkg.microchipNum} />
 	{/if}
 	<br />
 
@@ -260,26 +259,26 @@
 	<input type="tel" placeholder="Vet phone" bind:value={vetPhone} /><br />
 
 	<span>Special needs/habits:</span><br />
-	<textarea bind:value={$catInfoPkg.specialNeeds} /><br />
+	<textarea bind:value={$catPkg.specialNeeds} /><br />
 
 	<span>Current diet/medications:</span><br />
 	<textarea>{catMeds}</textarea><br />
 
 	<div>
 		<fieldset class="fieldset-auto-width">
-			<Dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={$catInfoPkg.okKinder} />
+			<Dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={$catPkg.okKinder} />
 		</fieldset>
 
 		<fieldset class="fieldset-auto-width">
-			<Radiobuttons title={'OK with cats?'} bind:group={$catInfoPkg.okCats} />
+			<Radiobuttons title={'OK with cats?'} bind:group={$catPkg.okCats} />
 		</fieldset>
 
 		<span>OK with</span>
-		<label><input type="checkbox" bind:checked={$catInfoPkg.okDogs} /> dogs</label>
+		<label><input type="checkbox" bind:checked={$catPkg.okDogs} /> dogs</label>
 	</div>
 
 	<span>Reason for surrender:</span><br />
-	<textarea bind:value={$catInfoPkg.intakeReason} /><br />
+	<textarea bind:value={$catPkg.intakeReason} /><br />
 
 	<p class="rep">
 		<input
@@ -290,7 +289,7 @@
 			pattern={donationPattern}
 		/>
 		Surrender accepted by
-		<input type="text" placeholder={currUser} bind:value={$catInfoPkg.intakeFnFRepr} />
+		<input type="text" placeholder={currUser} bind:value={$catPkg.intakeFnFRepr} />
 	</p>
 
 	<hr />
