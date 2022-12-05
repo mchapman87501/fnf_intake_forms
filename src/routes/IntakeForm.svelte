@@ -4,6 +4,109 @@
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
 	import { initializecatPkg } from '../components/StoreFns.svelte'
+	import { getInfoAsCSV } from '../components/UtilFns.svelte'
+
+		function catPkgHeadersIntake() {
+		return [
+			'Recvd From Name',
+			'Recvd From Phone',
+			'Recvd From Email',
+			'Intake Reason',
+			'Surrender/Stray/Transfer',
+			'Shelter Num',
+			'Relinq/Courtesy Listing',
+			'Show or Web Only',
+			'Rescue ID',
+			'Cat Name',
+			'Cat Age/DOB',
+			'Gender',
+			'Altered/Intact',
+			'Breed',
+			'Hair length',
+			// readability marker
+			'Color',
+			'Current Weight',
+			'Est Size at Maturity',
+			'Distinctive Features',
+			'Spay/Neuter Date',
+			'Spay/Neuter Facility',
+			'RVRCP#1',
+			'RVRCP#2',
+			'RVRCP#3',
+			// readability marker
+			"Rabies Expires",
+			"FELV/FIV Test Date",
+			"FELV/FIV Pos/Neg",
+			"Microchip Num",
+			"Ok with Kids",
+			"Ok with Dogs",
+			"Ok with Cats",
+			"Bite History",
+			"Declawed",
+			"Special Needs",
+			"Temperment",
+			"Mother/Littermates",
+			"Known History",
+			"Internal-other Comments",
+			"Foster Home upon Intake"
+		]
+	}
+	function catPkgValuesIntake() {
+		return [
+			$catPkg.recdFromName,
+			$catPkg.recdFromPhone,
+			$catPkg.recdFromEmail,
+			$catPkg.intakeReason,
+			'TBD',
+			'TBD',
+			'TBD',
+			'TBD',
+			'FigureThis',
+			$catPkg.catName,
+			$catPkg.age,
+			$catPkg.gender,
+			$catPkg.altered,
+			$catPkg.breed,
+			'TBD',
+			// readability marker
+			$catPkg.color,
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			// readability marker
+			"TBD",
+			"TBD",
+			"TBD",
+			$catPkg.microchipNum,
+			$catPkg.okKinder,
+			$catPkg.okCats,
+			$catPkg.okDogs.toString(),
+			"TBD",
+			"TBD",
+			$catPkg.specialNeeds,
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD foster home",
+		]
+	}
+	function getInfoAsTable(): Array<Array<string>> {
+		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
+		// use intakeDate as-is.
+		return [catPkgHeadersIntake(), catPkgValuesIntake()]
+	}
+	function copyFormToClipboard() {
+		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
+		const csvStr = getInfoAsCSV(getInfoAsTable())
+		console.log('Copying %o', csvStr)
+		navigator.clipboard.writeText(csvStr)
+	}
 
 	function handleSubmit() {
 		return false // prevent reload
@@ -17,6 +120,10 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
+	<div class="btns">
+		<!-- TODO reset all fields, not just those in catPkg -->
+		<button type="button" on:click={initializecatPkg}>Clear all data all forms</button>
+	</div>
 	<div class="fieldset-auto-width">
 		<label
 			>Received:
@@ -81,10 +188,12 @@
 	<span>Special needs/habits:</span><br />
 	<textarea bind:value={$catPkg.specialNeeds} /><br />
 
-	<div class="btns">
-		<!-- TODO reset all fields, not just those in catPkg -->
-		<button type="button" on:click={initializecatPkg}>Clear form</button>
-	</div>
+
+		<div class="btns">
+			<button type="submit" disabled={!formValid}>Submit</button>
+			<button type="button" on:click={copyFormToClipboard}>Copy Excel of Intake Form to Clipboard</button>
+		</div>
+	
 </form>
 
 <style>

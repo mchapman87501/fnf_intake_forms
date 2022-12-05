@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	export function getIntakeInfoAsCSV(tableInfo: string[][]): string {
+	export function getInfoAsCSV(tableInfo: string[][]): string {
 		function valueToCSV(v: string): string {
 			const quoted = v.replaceAll('"', '""')
 			return `"${quoted}"`

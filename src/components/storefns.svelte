@@ -4,7 +4,6 @@
 	import { uynChoices, genderChoices, alteredChoices } from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
-
 	export function initializecatPkg() {
 		let temp = get(catPkg)
 		temp.recdFromName = ''
@@ -31,12 +30,6 @@
 		temp.microchipNum = ''
 		temp.FELVFIVPositive = false
 
-		catPkg.set(temp)
-	}
-
-	export function setOKKinder(val: string) {
-		let temp = get(catPkg)
-		temp.okKinder = val
 		catPkg.set(temp)
 	}
 </script>

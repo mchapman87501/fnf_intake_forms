@@ -7,36 +7,15 @@
 
 	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
 	import { initializecatPkg } from '../components/StoreFns.svelte'
-	import { getIntakeInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
+	import { getInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
 
-	//Customize form based on selected_form FormType
 	let ownerNamePlaceholder = 'Owner/Guardian Name'
 
-	// function todayStr(): string {
-	// 	function pad(s: string, len: number): string {
-	// 		const overPadded = '00000000' + s
-	// 		return overPadded.substring(overPadded.length - len)
-	// 	}
-	// 	// Satisfy browsers like chrome that require
-	// 	// 'yyyy-mm-dd' as their input.
-	// 	const today = new Date()
-	// 	const year = today.getFullYear()
-	// 	const month = today.getMonth() + 1
-	// 	const day = today.getDate()
-
-	// 	const yStr = pad(year.toFixed(0), 4)
-	// 	const mStr = pad(month.toFixed(0), 2)
-	// 	const dStr = pad(day.toFixed(0), 2)
-	// 	const result = `${yStr}-${mStr}-${dStr}`
-	// 	console.log('todayStr = %o', result)
-	// 	return result
-	// }
-
+	
 	let currUser = '(F&F representative)'
 
 	//-----------------------
 	// Owner info
-	// let surrDate = todayStr()
 	let driverLicNo = ''
 	let dlPattern = '\\d{9}'
 
@@ -50,8 +29,6 @@
 
 	//----------------------
 	// Cat info
-	let catDOBAge = ''
-
 	let catMarkings = ''
 
 	let catChipped = 'Unknown'
@@ -95,8 +72,8 @@
 		// use intakeDate as-is.
 		return [catPkgHeaders(), catPkgValues()]
 	}
-
-	export function catPkgHeaders() {
+	// TODO reflect Surrender form ASK user
+	function catPkgHeaders() {
 		return [
 			'Recvd From Name',
 			'Recvd From Phone',
@@ -122,10 +99,26 @@
 			'Spay/Neuter Facility',
 			'RVRCP#1',
 			'RVRCP#2',
-			'RVRCP#3'
+			'RVRCP#3',
+			// readability marker
+			"Rabies Expires",
+			"FELV/FIV Test Date",
+			"FELV/FIV Pos/Neg",
+			"Microchip Num",
+			"Ok with Kids",
+			"Ok with Dogs",
+			"Ok with Cats",
+			"Bite History",
+			"Declawed",
+			"Special Needs",
+			"Temperment",
+			"Mother/Littermates",
+			"Known History",
+			"Internal-other Comments",
+			"Foster Home upon Intake"
 		]
 	}
-	export function catPkgValues() {
+	function catPkgValues() {
 		return [
 			$catPkg.recdFromName,
 			$catPkg.recdFromPhone,
@@ -151,14 +144,29 @@
 			"TBD",
 			"TBD",
 			"TBD",
-			"TBD"
-
+			"TBD",
+			// readability marker
+			"TBD",
+			"TBD",
+			"TBD",
+			$catPkg.microchipNum,
+			$catPkg.okKinder,
+			$catPkg.okCats,
+			$catPkg.okDogs.toString(),
+			"TBD",
+			"TBD",
+			$catPkg.specialNeeds,
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD foster home",
 		]
 	}
 
-	function copyIntakeFormToClipboard() {
+	function copyFormToClipboard() {
 		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
-		const csvStr = getIntakeInfoAsCSV(getIntakeInfoAsTable())
+		const csvStr = getInfoAsCSV(getIntakeInfoAsTable())
 		console.log('Copying %o', csvStr)
 		navigator.clipboard.writeText(csvStr)
 	}
@@ -296,7 +304,7 @@
 
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>
-		<button type="button" on:click={copyIntakeFormToClipboard}>Copy Excel to Clipboard</button>
+		<button type="button" on:click={copyFormToClipboard}>Copy Excel to Clipboard</button>
 	</div>
 </form>
 
