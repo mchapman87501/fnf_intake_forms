@@ -6,8 +6,8 @@
 	import { catInfo } from '../components/stores.js'
 	import { catInfoPkg } from '../components/stores.js'
 
-	import { uynChoices, genderChoices, alteredChoices } from '../components/definitions.svelte'
-	import { initializeCatInfoPkg } from '../components/storefns.svelte'
+	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
+	import { initializeCatInfoPkg } from '../components/StoreFns.svelte'
 	import { getIntakeInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
 
 	//Customize form based on selected_form FormType

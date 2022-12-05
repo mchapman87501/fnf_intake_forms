@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import { catInfo, catInfoPkg } from './stores'
 	import { get } from 'svelte/store'
-	import { uynChoices, genderChoices, alteredChoices } from '../components/definitions.svelte'
+	import { uynChoices, genderChoices, alteredChoices } from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
 
