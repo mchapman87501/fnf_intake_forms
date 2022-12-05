@@ -1,9 +1,7 @@
 <script lang="ts">
 	import SetCatColor from '../components/SetCatColor.svelte'
-
 	import { catInfo } from '../components/stores.js'
 	import { catInfoPkg } from '../components/stores.js'
-
 
 	function handleSubmit() {
 		return false // prevent reload
