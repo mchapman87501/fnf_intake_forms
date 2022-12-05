@@ -30,9 +30,10 @@
 		if (!rqst.ok) {
 			error = rqst.statusText
 		} else {
-			const token = await rqst.json()
+			const tokenObj = await rqst.json()
+			const accessToken: string = tokenObj['access_token']
 			session_username.update((curr) => username)
-			session_token.update((curr) => token)
+			session_token.update((curr) => accessToken)
 			// Use goto to preserve the store content.
 			// TODO redirect to whatever page sent us here.
 			goto('/')

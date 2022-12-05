@@ -171,12 +171,12 @@
 	const backendBaseURL = '/api/v1'
 
 	async function handleSubmit() {
-		const tokenDict = $session_token
-		if (tokenDict == null) {
+		const bearerToken = $session_token
+		if (bearerToken == null) {
 			alert('You must be logged in to submit a form.')
 			return
 		}
-		const bearerToken = tokenDict['access_token']
+
 		console.log('Submitting form with auth token %o', bearerToken)
 		const bodyData = dataFromForm()
 		const bodyJSON = JSON.stringify(bodyData)
