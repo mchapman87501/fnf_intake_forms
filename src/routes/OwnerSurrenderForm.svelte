@@ -6,11 +6,11 @@
 	import { catInfo } from '../components/stores.js'
 	import { catInfoPkg } from '../components/stores.js'
 
-	import { uynChoices,genderChoices } from '../components/definitions.svelte'
+	import { uynChoices, genderChoices, alteredChoices } from '../components/definitions.svelte'
 
 	let catColor = 'Unknown'
 
-	let alteredChoices = ['Spay/Neuter Unknown', 'Spayed/Neutered', 'Intact']
+	
 
 
 	//Customize form based on selected_form FormType
@@ -37,7 +37,6 @@
 	}
 
 	let currUser = '(F&F representative)'
-	let acceptingUser = currUser
 
 	//-----------------------
 	// Owner info
@@ -59,10 +58,6 @@
 	// Cat info
 	let catDOBAge = ''
 
-	let catGender = genderChoices[0]
-	let catAltered = alteredChoices[0]
-
-	let catBreed = ''
 	let catMarkings = ''
 
 	let catChipped = 'Unknown'
@@ -113,7 +108,7 @@
 		// use surrDate as-is.
 		return [
 			['Name of Cat', 'Accepting User', 'Date', 'Ok with Children', 'OK with Cats'],
-			[$catInfoPkg.name, acceptingUser, surrDate, $catInfoPkg.okKinder, $catInfoPkg.okCats]
+			[$catInfoPkg.catName, $catInfoPkg.intakeFnFRepr, surrDate, $catInfoPkg.okKinder, $catInfoPkg.okCats]
 		]
 	}
 
@@ -154,7 +149,7 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<input bind:value={ownerName} placeholder={ownerNamePlaceholder} />
+	<input bind:value={$catInfoPkg.recdFromName} placeholder={ownerNamePlaceholder} />
 	<input type="date" bind:value={surrDate} /><br />
 
 	<input
@@ -165,7 +160,8 @@
 	/><br />
 
 	<input type="text" placeholder="Street Address" bind:value={streetAddr} />
-	<input type="tel" placeholder="Home phone" bind:value={homePhone} /><br />
+	<!-- TODO should Intake.svelte use Home, Cell or logic of two  -->
+	<input type="tel" placeholder="Home phone" bind:value={$catInfoPkg.recdFromPhone} /><br />
 
 	<input type="text" placeholder="City" bind:value={city} />
 
@@ -179,16 +175,18 @@
 		value={zipCode}
 	/>
 	<input type="tel" placeholder="Work/Cell phone" bind:value={workOrCell} /><br />
-	<input type="email" placeholder="Email Address" bind:value={emailAddr} />
+	<input type="email" placeholder="Email Address" bind:value={$catInfoPkg.recdFromEmail} />
 
 	<hr />
 
-	<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.name} />
+	<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.catName} />
 	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
 
+	<!-- TODO gender/altered is combined on paper forms - note this -->
+	<!-- TODO intialize items with custom lists with list default -->
 	<Dropdown choiceList={genderChoices} bind:value={$catInfoPkg.gender} />
 
-	<Dropdown choiceList={alteredChoices} bind:value={catAltered} />
+	<Dropdown choiceList={alteredChoices} bind:value={$catInfoPkg.altered} />
 	<br />
 
 	<input type="text" placeholder="Breed" bind:value={$catInfoPkg.breed} />
@@ -251,11 +249,11 @@
 		</fieldset>
 
 		<span>OK with</span>
-		<label><input type="checkbox" bind:checked={catOKDogs} /> dogs</label>
+		<label><input type="checkbox" bind:checked={$catInfoPkg.okDogs} /> dogs</label>
 	</div>
 
 	<span>Reason for surrender:</span><br />
-	<textarea>{reasonForSurrender}</textarea><br />
+	<textarea bind:value={$catInfoPkg.intakeReason}></textarea><br />
 
 	<p class="rep">
 		<input
@@ -266,7 +264,7 @@
 			pattern={donationPattern}
 		/>
 		Surrender accepted by
-		<input type="text" placeholder={currUser} bind:value={acceptingUser} />
+		<input type="text" placeholder={currUser} bind:value={$catInfoPkg.intakeFnFRepr} />
 	</p>
 
 	<hr />

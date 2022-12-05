@@ -10,10 +10,13 @@ let cat = {
     intakeDate: '',
     intakeFnFRepr: '',
     catName : '',
+    gender : 'Unknown',
+    altered :'Unknown',
     breed: '',
     color: '',
-    gender : 'Unknown',
-    okKinder: 'Unknown',
-    okCats: 'Unknown'
+    
+    okCats: 'Unknown',
+    okDogs: false,
+    okKinder: 'Unknown'
 }
 export const catInfoPkg = writable(cat);
