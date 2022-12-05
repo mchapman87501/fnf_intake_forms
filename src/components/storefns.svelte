@@ -1,10 +1,21 @@
 <script lang="ts" context="module">
-	import { catPkg } from './stores'
+	import { catPkg, firstRun} from './stores'
 	import { get } from 'svelte/store'
 	import { uynChoices, genderChoices, alteredChoices } from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
+	export function initSession() {
+		console.log("init")
+		if ( get(firstRun)) {
+			console.log("Setting")
+			initializecatPkg()
+			firstRun.set(false)
+		}
+		
+		
+	}
 
 	export function initializecatPkg() {
+		console.log("initializecatPkg")
 		let temp = get(catPkg)
 		temp.recdFromName = ''
 		temp.recdFromPhone = ''

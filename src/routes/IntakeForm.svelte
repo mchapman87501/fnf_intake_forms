@@ -1,12 +1,14 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
+
 	import { catPkg } from '../components/stores.js'
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
-	import { initializecatPkg } from '../components/StoreFns.svelte'
+	import { initializecatPkg, initSession } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 
-		function catPkgHeadersIntake() {
+	function catPkgHeadersIntake() {
 		return [
 			'Recvd From Name',
 			'Recvd From Phone',
@@ -34,21 +36,21 @@
 			'RVRCP#2',
 			'RVRCP#3',
 			// readability marker
-			"Rabies Expires",
-			"FELV/FIV Test Date",
-			"FELV/FIV Pos/Neg",
-			"Microchip Num",
-			"Ok with Kids",
-			"Ok with Dogs",
-			"Ok with Cats",
-			"Bite History",
-			"Declawed",
-			"Special Needs",
-			"Temperment",
-			"Mother/Littermates",
-			"Known History",
-			"Internal-other Comments",
-			"Foster Home upon Intake"
+			'Rabies Expires',
+			'FELV/FIV Test Date',
+			'FELV/FIV Pos/Neg',
+			'Microchip Num',
+			'Ok with Kids',
+			'Ok with Dogs',
+			'Ok with Cats',
+			'Bite History',
+			'Declawed',
+			'Special Needs',
+			'Temperament',
+			'Mother/Littermates',
+			'Known History',
+			'Internal-other Comments',
+			'Foster Home upon Intake'
 		]
 	}
 	function catPkgValuesIntake() {
@@ -70,30 +72,30 @@
 			'TBD',
 			// readability marker
 			$catPkg.color,
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
+			'TBD',
+			'TBD',
+			'TBD',
+			'TBD',
+			'TBD',
+			'TBD',
+			'TBD',
+			'TBD',
 			// readability marker
-			"TBD",
-			"TBD",
-			"TBD",
+			'TBD',
+			'TBD',
+			'TBD',
 			$catPkg.microchipNum,
 			$catPkg.okKinder,
 			$catPkg.okCats,
 			$catPkg.okDogs.toString(),
-			"TBD",
-			"TBD",
+			'TBD',
+			'TBD',
 			$catPkg.specialNeeds,
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD foster home",
+			'TBD',
+			'TBD',
+			'TBD',
+			'TBD',
+			'TBD foster home'
 		]
 	}
 	function getInfoAsTable(): Array<Array<string>> {
@@ -128,12 +130,7 @@
 		<label
 			>Received:
 			<!-- TODO: initialize/synchronize intake date  -->
-			<input
-				class="name"
-				type="date"
-				placeholder="Intake date"
-				bind:value={$catPkg.intakeDate}
-			/>
+			<input class="name" type="date" placeholder="Intake date" bind:value={$catPkg.intakeDate} />
 		</label>
 		<label
 			>By:
@@ -188,12 +185,12 @@
 	<span>Special needs/habits:</span><br />
 	<textarea bind:value={$catPkg.specialNeeds} /><br />
 
-
-		<div class="btns">
-			<button type="submit" disabled={!formValid}>Submit</button>
-			<button type="button" on:click={copyFormToClipboard}>Copy Excel of Intake Form to Clipboard</button>
-		</div>
-	
+	<div class="btns">
+		<button type="submit" disabled={!formValid}>Submit</button>
+		<button type="button" on:click={copyFormToClipboard}
+			>Copy Excel of Intake Form to Clipboard</button
+		>
+	</div>
 </form>
 
 <style>

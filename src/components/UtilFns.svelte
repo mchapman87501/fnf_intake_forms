@@ -1,16 +1,18 @@
 <script lang="ts" context="module">
+	
 	export function getInfoAsCSV(tableInfo: string[][]): string {
 		function valueToCSV(v: string): string {
 			const quoted = v.replaceAll('"', '""')
 			return `"${quoted}"`
 		}
 
-		function rowToStr2(row: Array<string>): string {
+		function rowToStr(row: Array<string>): string {
 			return row.map((col) => valueToCSV(col)).join(',')
 		}
 
-		return tableInfo.map((row) => rowToStr2(row)).join('\n')
+		return tableInfo.map((row) => rowToStr(row)).join('\n')
 	}
+
 	export function todayStr(): string {
 		function pad(s: string, len: number): string {
 			const overPadded = '00000000' + s

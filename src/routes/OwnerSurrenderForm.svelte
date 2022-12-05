@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import Checkbox from '../components/Checkbox.svelte'
@@ -6,13 +8,14 @@
 	import { catPkg } from '../components/stores.js'
 
 	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
-	import { initializecatPkg } from '../components/StoreFns.svelte'
+	import { initializecatPkg, initSession } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
 
 	let ownerNamePlaceholder = 'Owner/Guardian Name'
 
 	
 	let currUser = '(F&F representative)'
+	onMount( ()=>{initSession()});
 
 	//-----------------------
 	// Owner info
@@ -111,7 +114,7 @@
 			"Bite History",
 			"Declawed",
 			"Special Needs",
-			"Temperment",
+			"Temperament",
 			"Mother/Littermates",
 			"Known History",
 			"Internal-other Comments",
@@ -166,7 +169,7 @@
 
 	function copyFormToClipboard() {
 		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
-		const csvStr = getInfoAsCSV(getIntakeInfoAsTable())
+		const csvStr = getInfoAsCSV([catPkgHeaders(), catPkgValues()])
 		console.log('Copying %o', csvStr)
 		navigator.clipboard.writeText(csvStr)
 	}
@@ -176,7 +179,6 @@
 
 	let formValid = false
 	function getFormValid() {
-		console.log('valid tested')
 		return true
 	}
 	$: formValid = getFormValid()

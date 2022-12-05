@@ -1,5 +1,8 @@
 import { writable } from 'svelte/store';
 
+//Initialize on mount only on first run
+export const firstRun = writable(true);
+
 let cat = {
     recdFromName: '',
     recdFromPhone: '',
