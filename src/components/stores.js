@@ -1,8 +1,15 @@
 import { writable } from 'svelte/store';
 
 export const catInfo = writable('cat info');
+
 let cat = {
-    name : '',
+    recdFromName: '',
+    recdFromPhone: '',
+    recdFromEmail: '',
+    intakeReason: '',
+    intakeDate: '',
+    intakeFnFRepr: '',
+    catName : '',
     breed: '',
     color: '',
     gender : 'Unknown',

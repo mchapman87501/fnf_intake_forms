@@ -4,4 +4,5 @@
 	
 	export let uynChoices = ['Unknown', 'Yes', 'No']
     export let genderChoices = ['F/M Unknown', 'Female', 'Male']
+	export let ownerNamePlaceholder = 'Owner/Guardian Name'
 </script>

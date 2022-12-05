@@ -16,9 +16,21 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
+	<div class = "fieldset-auto-width">
+	<label>Received from: 
+		<!-- TODO: initialize/synchronize intake date  -->
+		<input class="name" type="date" placeholder="Intake date" bind:value={$catInfoPkg.intakeDate} /> 
+		<input class="name" type="text" placeholder="Name" bind:value={$catInfoPkg.recdFromName} />
+		<input class="name" type="text" placeholder="Email" bind:value={$catInfoPkg.recdFromEmail} />
+		<input class="name" type="text" placeholder="Phone" bind:value={$catInfoPkg.recdFromPhone} />
+		<input class="name" type="text" placeholder="Intake reason" bind:value={$catInfoPkg.intakeReason} />
+	
+	</label>
+	</div>
+	<br>
 	<label
 		>Cat's name:
-		<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.name} />
+		<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.catName} />
 		<Dropdown choiceList={genderChoices} bind:value={$catInfoPkg.gender} />
 		<input type="text" placeholder="Breed" bind:value={$catInfoPkg.breed} />
 		<input type="text" placeholder="Color" bind:value={$catInfoPkg.color} />
