@@ -16,12 +16,6 @@
 
 	let alteredChoices = ['Spay/Neuter Unknown', 'Spayed/Neutered', 'Intact']
 
-	// Cat info
-	// package for passing between components
-	let cat = {
-		// okKinder: uynChoices[0],
-		okCats: uynChoices[0]
-	}
 
 	//Customize form based on selected_form FormType
 	let ownerNamePlaceholder = 'Owner/Guardian Name'
@@ -125,7 +119,7 @@
 		// use surrDate as-is.
 		return [
 			['Name of Cat', 'Accepting User', 'Date', 'Ok with Children', 'OK with Cats'],
-			[catName, acceptingUser, surrDate, $catInfoPkg.okKinder, cat.okCats]
+			[catName, acceptingUser, surrDate, $catInfoPkg.okKinder, $catInfoPkg.okCats]
 		]
 	}
 
@@ -259,7 +253,7 @@
 		</fieldset>
 
 		<fieldset class="fieldset-auto-width">
-			<Radiobuttons title={'OK with cats?'} bind:group={cat.okCats} />
+			<Radiobuttons title={'OK with cats?'} bind:group={$catInfoPkg.okCats} />
 		</fieldset>
 
 		<span>OK with</span>
