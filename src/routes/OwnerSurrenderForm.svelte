@@ -191,8 +191,8 @@
 	<Dropdown choiceList={alteredChoices} bind:value={catAltered} />
 	<br />
 
-	<input type="text" placeholder="Breed" bind:value={catBreed} />
-	<input type="text" placeholder="Color" bind:value={$catInfo} />
+	<input type="text" placeholder="Breed" bind:value={$catInfoPkg.breed} />
+	<input type="text" placeholder="Color" bind:value={$catInfoPkg.color} />
 	<input type="text" placeholder="Markings" bind:value={catMarkings} /><br />
 
 	<select bind:value={catChipped}>

@@ -20,6 +20,8 @@
 		>Cat's name:
 		<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.name} />
 		<Dropdown choiceList={genderChoices} bind:value={$catInfoPkg.gender} />
+		<input type="text" placeholder="Breed" bind:value={$catInfoPkg.breed} />
+		<input type="text" placeholder="Color" bind:value={$catInfoPkg.color} />
 	</label>
 	<div>
 		<fieldset class="fieldset-auto-width">
@@ -33,8 +35,7 @@
 </form>
 
 <style>
-	label,
-	span {
+	label {
 		font-size: 75%;
 	}
 	.fieldset-auto-width {
