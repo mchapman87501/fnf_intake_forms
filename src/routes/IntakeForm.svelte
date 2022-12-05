@@ -55,6 +55,14 @@
 		<input type="text" placeholder="Breed" bind:value={$catInfoPkg.breed} />
 		<input type="text" placeholder="Color" bind:value={$catInfoPkg.color} />
 	</label>
+	<!-- TODO must coordinate with Microchipped flag in OwnerSurrenderForm.svelte -->
+	<!-- <input type="text" placeholder="Chip number" bind:value={$catInfoPkg.microchipNum} /> -->
+
+	<!-- TODO must coordinate with FELFIVTested toggle in OwnerSurrenderForm.svelte -->
+	<!-- <label>
+		<input type="checkbox" bind:value={$catInfoPkg.FELVFIVPositive} /> FELV/FIV Positive
+	</label> -->
+
 	<div>
 		<fieldset class="fieldset-auto-width">
 			<Radiobuttons title={'OK with cats?'} bind:group={$catInfoPkg.okCats} />
@@ -65,6 +73,8 @@
 			<Dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={$catInfoPkg.okKinder} />
 		</fieldset>
 	</div>
+	<span>Special needs/habits:</span><br />
+	<textarea bind:value={$catInfoPkg.specialNeeds}/><br />
 </form>
 
 <style>
