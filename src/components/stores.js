@@ -14,9 +14,11 @@ let cat = {
     altered :'Unknown',
     breed: '',
     color: '',
-    
     okCats: 'Unknown',
     okDogs: false,
-    okKinder: 'Unknown'
+    okKinder: 'Unknown',
+    microchipNum: '',
+    FELVFIVPositive:false,
+    specialNeeds:''
 }
 export const catInfoPkg = writable(cat);

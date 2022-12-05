@@ -7,10 +7,7 @@
 	import { catInfoPkg } from '../components/stores.js'
 
 	import { uynChoices, genderChoices, alteredChoices } from '../components/definitions.svelte'
-
-	let catColor = 'Unknown'
-
-	
+	import {initializeCatInfoPkg } from '../components/storefns.svelte'
 
 
 	//Customize form based on selected_form FormType
@@ -40,7 +37,6 @@
 
 	//-----------------------
 	// Owner info
-	let ownerName = ''
 	let surrDate = todayStr()
 	let driverLicNo = ''
 	let dlPattern = '\\d{9}'
@@ -52,7 +48,6 @@
 	let zipCode = ''
 	let zipCodePattern = '\\d{5}'
 	let workOrCell = ''
-	let emailAddr = ''
 
 	//----------------------
 	// Cat info
@@ -61,8 +56,6 @@
 	let catMarkings = ''
 
 	let catChipped = 'Unknown'
-	let catChipNumber = ''
-	let catChipPattern = '\\d+'
 
 	enum CatShots {
 		FVRCP = 'FVRCP',
@@ -80,12 +73,7 @@
 	let vetName = ''
 	let vetPhone = ''
 
-	let catSpecialNeeds = ''
 	let catMeds = ''
-
-	let catOKDogs = false
-
-	let reasonForSurrender = ''
 
 	let donationAmt = ''
 	let donationPattern = '\\d+(\\.\\d{2})?'
@@ -203,8 +191,7 @@
 		<input
 			type="text"
 			placeholder="Chip number"
-			bind:value={catChipNumber}
-			pattern={catChipPattern}
+			bind:value={$catInfoPkg.microchipNum}
 		/>
 	{/if}
 	<br />
@@ -234,7 +221,7 @@
 	<input type="tel" placeholder="Vet phone" bind:value={vetPhone} /><br />
 
 	<span>Special needs/habits:</span><br />
-	<textarea>{catSpecialNeeds}</textarea><br />
+	<textarea bind:value={$catInfoPkg.specialNeeds} /><br />
 
 	<span>Current diet/medications:</span><br />
 	<textarea>{catMeds}</textarea><br />
@@ -270,9 +257,13 @@
 	<hr />
 
 	<div class="btns">
-		<button type="reset">Reset</button>
+	
 		<button type="submit" disabled={!formValid}>Submit</button>
 		<button type="button" on:click={copyIntakeFormToClipboard}>Copy Excel to Clipboard</button>
+		<!-- TODO place the Clear form button far away from others to avoid accidental presses -->
+		<button type="button">safe space</button>
+		<!-- TODO reset all fields, not just those in catInfoPkg -->
+		<button type="button" on:click={initializeCatInfoPkg}>Clear form</button>
 	</div>
 </form>
 

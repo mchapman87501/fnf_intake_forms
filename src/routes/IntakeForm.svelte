@@ -3,6 +3,7 @@
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import { uynChoices, genderChoices, alteredChoices } from '../components/definitions.svelte'
+	import {initializeCatInfoPkg} from '../components/storefns.svelte'
 
 	function handleSubmit() {
 		return false // prevent reload
@@ -75,9 +76,18 @@
 	</div>
 	<span>Special needs/habits:</span><br />
 	<textarea bind:value={$catInfoPkg.specialNeeds}/><br />
+
+	<div class="btns">
+		<!-- TODO reset all fields, not just those in catInfoPkg -->
+			<button type="button" on:click={initializeCatInfoPkg}>Clear form</button>
+	</div>
+	
 </form>
 
 <style>
+	.btns {
+		text-align: center;
+	}
 	label {
 		font-size: 75%;
 	}
