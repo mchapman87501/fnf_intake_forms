@@ -51,6 +51,7 @@
 	<label
 		>Cat's name:
 		<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.catName} />
+		<input type="text" placeholder="Age" bind:value={$catInfoPkg.age} />
 		<Dropdown choiceList={genderChoices} bind:value={$catInfoPkg.gender} />
 		<Dropdown choiceList={alteredChoices} bind:value={$catInfoPkg.altered} />
 		<input type="text" placeholder="Breed" bind:value={$catInfoPkg.breed} />

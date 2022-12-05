@@ -8,36 +8,36 @@
 
 	import { uynChoices, genderChoices, alteredChoices } from '../components/definitions.svelte'
 	import { initializeCatInfoPkg } from '../components/storefns.svelte'
-	import { getIntakeInfoAsCSV } from '../components/UtilFns.svelte'
+	import { getIntakeInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
 
 	//Customize form based on selected_form FormType
 	let ownerNamePlaceholder = 'Owner/Guardian Name'
 
-	function todayStr(): string {
-		function pad(s: string, len: number): string {
-			const overPadded = '00000000' + s
-			return overPadded.substring(overPadded.length - len)
-		}
-		// Satisfy browsers like chrome that require
-		// 'yyyy-mm-dd' as their input.
-		const today = new Date()
-		const year = today.getFullYear()
-		const month = today.getMonth() + 1
-		const day = today.getDate()
+	// function todayStr(): string {
+	// 	function pad(s: string, len: number): string {
+	// 		const overPadded = '00000000' + s
+	// 		return overPadded.substring(overPadded.length - len)
+	// 	}
+	// 	// Satisfy browsers like chrome that require
+	// 	// 'yyyy-mm-dd' as their input.
+	// 	const today = new Date()
+	// 	const year = today.getFullYear()
+	// 	const month = today.getMonth() + 1
+	// 	const day = today.getDate()
 
-		const yStr = pad(year.toFixed(0), 4)
-		const mStr = pad(month.toFixed(0), 2)
-		const dStr = pad(day.toFixed(0), 2)
-		const result = `${yStr}-${mStr}-${dStr}`
-		console.log('todayStr = %o', result)
-		return result
-	}
+	// 	const yStr = pad(year.toFixed(0), 4)
+	// 	const mStr = pad(month.toFixed(0), 2)
+	// 	const dStr = pad(day.toFixed(0), 2)
+	// 	const result = `${yStr}-${mStr}-${dStr}`
+	// 	console.log('todayStr = %o', result)
+	// 	return result
+	// }
 
 	let currUser = '(F&F representative)'
 
 	//-----------------------
 	// Owner info
-	let surrDate = todayStr()
+	// let surrDate = todayStr()
 	let driverLicNo = ''
 	let dlPattern = '\\d{9}'
 
@@ -93,25 +93,77 @@
 
 	function getIntakeInfoAsTable(): Array<Array<string>> {
 		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
-		// use surrDate as-is.
+		// use intakeDate as-is.
 		return [catInfoPkgHeaders(), catInfoPkgValues()]
 	}
 
 	export function catInfoPkgHeaders() {
-		return ['Recvd From Name', 'Recvd From Phone', 'Recvd From Email']
+		return [
+			'Recvd From Name',
+			'Recvd From Phone',
+			'Recvd From Email',
+			'Intake Reason',
+			'Surrender/Stray/Transfer',
+			'Shelter Num',
+			'Relinq/Courtesy Listing',
+			'Show or Web Only',
+			'Rescue ID',
+			'Cat Name',
+			'Cat Age/DOB',
+			'Gender',
+			'Altered/Intact',
+			'Breed',
+			'Hair length',
+			// readability marker
+			'Color',
+			'Current Weight',
+			'Est Size at Maturity',
+			'Distinctive Features',
+			'Spay/Neuter Date',
+			'Spay/Neuter Facility',
+			'RVRCP#1',
+			'RVRCP#2',
+			'RVRCP#3'
+		]
 	}
 	export function catInfoPkgValues() {
-		return [$catInfoPkg.recdFromName, $catInfoPkg.recdFromPhone, $catInfoPkg.recdFromEmail]
+		return [
+			$catInfoPkg.recdFromName,
+			$catInfoPkg.recdFromPhone,
+			$catInfoPkg.recdFromEmail,
+			$catInfoPkg.intakeReason,
+			'TBD',
+			'TBD',
+			'TBD',
+			'TBD',
+			'FigureThis',
+			$catInfoPkg.catName,
+			$catInfoPkg.age,
+			$catInfoPkg.gender,
+			$catInfoPkg.altered,
+			$catInfoPkg.breed,
+			'TBD',
+			// readability marker
+			$catInfoPkg.color,
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD",
+			"TBD"
+
+		]
 	}
 
 	function copyIntakeFormToClipboard() {
 		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
 		const csvStr = getIntakeInfoAsCSV(getIntakeInfoAsTable())
-		console.log('Trying to copy Copying %o', csvStr)
+		console.log('Copying %o', csvStr)
 		navigator.clipboard.writeText(csvStr)
 	}
 	function handleSubmit() {
-		console.log('Hello from handleSubmit')
 		return false // prevent reload
 	}
 
@@ -124,8 +176,12 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
+	<!-- TODO reset all fields, not just those in catInfoPkg -->
+	<div class="btns">
+		<button type="button" on:click={initializeCatInfoPkg}>Clear all fields all forms</button>
+	</div>
 	<input bind:value={$catInfoPkg.recdFromName} placeholder={ownerNamePlaceholder} />
-	<input type="date" bind:value={surrDate} /><br />
+	<input type="date" bind:value={$catInfoPkg.intakeDate} /><br />
 
 	<input
 		class="lic_no"
@@ -155,7 +211,7 @@
 	<hr />
 
 	<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.catName} />
-	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
+	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={$catInfoPkg.age} />
 
 	<!-- TODO gender/altered is combined on paper forms - note this -->
 	<!-- TODO intialize items with custom lists with list default -->
@@ -242,10 +298,6 @@
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>
 		<button type="button" on:click={copyIntakeFormToClipboard}>Copy Excel to Clipboard</button>
-		<!-- TODO place the Clear form button far away from others to avoid accidental presses -->
-		<button type="button">safe space</button>
-		<!-- TODO reset all fields, not just those in catInfoPkg -->
-		<button type="button" on:click={initializeCatInfoPkg}>Clear form</button>
 	</div>
 </form>
 

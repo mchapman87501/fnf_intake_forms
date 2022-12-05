@@ -10,6 +10,7 @@ let cat = {
     intakeDate: '',
     intakeFnFRepr: '',
     catName : '',
+    age : '',
     gender : 'Unknown',
     altered :'Unknown',
     breed: '',

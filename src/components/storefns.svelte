@@ -2,6 +2,7 @@
 	import { catInfo, catInfoPkg } from './stores'
 	import { get } from 'svelte/store'
 	import { uynChoices, genderChoices, alteredChoices } from '../components/definitions.svelte'
+	import { todayStr } from './UtilFns.svelte'
 
 
 	export function initializeCatInfoPkg() {
@@ -10,10 +11,12 @@
 		temp.recdFromPhone = ''
 		temp.recdFromEmail = ''
 
-		temp.intakeFnFRepr = ''
+		temp.intakeFnFRepr = '(F & F representative)'
 		temp.intakeReason = ''
+		temp.intakeDate = todayStr()
 
 		temp.catName = 'Frank'
+		temp.age = ''
 		temp.color = ''
 		temp.breed = ''
 

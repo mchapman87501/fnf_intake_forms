@@ -1,16 +1,33 @@
 <script lang="ts" context="module">
-export function getIntakeInfoAsCSV(tableInfo : string[][]): string {
-    function valueToCSV(v: string): string {
-        const quoted = v.replaceAll('"', '""')
-        return `"${quoted}"`
-    }
+	export function getIntakeInfoAsCSV(tableInfo: string[][]): string {
+		function valueToCSV(v: string): string {
+			const quoted = v.replaceAll('"', '""')
+			return `"${quoted}"`
+		}
 
-    function rowToStr2(row: Array<string>): string {
-        return row.map((col) => valueToCSV(col)).join(',')
-    }
+		function rowToStr2(row: Array<string>): string {
+			return row.map((col) => valueToCSV(col)).join(',')
+		}
 
-    return tableInfo
-        .map((row) => rowToStr2(row))
-        .join('\n')
-}
+		return tableInfo.map((row) => rowToStr2(row)).join('\n')
+	}
+	export function todayStr(): string {
+		function pad(s: string, len: number): string {
+			const overPadded = '00000000' + s
+			return overPadded.substring(overPadded.length - len)
+		}
+		// Satisfy browsers like chrome that require
+		// 'yyyy-mm-dd' as their input.
+		const today = new Date()
+		const year = today.getFullYear()
+		const month = today.getMonth() + 1
+		const day = today.getDate()
+
+		const yStr = pad(year.toFixed(0), 4)
+		const mStr = pad(month.toFixed(0), 2)
+		const dStr = pad(day.toFixed(0), 2)
+		const result = `${yStr}-${mStr}-${dStr}`
+		console.log('todayStr = %o', result)
+		return result
+	}
 </script>
