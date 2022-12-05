@@ -30,7 +30,7 @@
 
 <hr />
 {#if pkg.selected_form == FormType.Surrender}
-	<OwnerSurrenderForm {...pkg} {FormType} />
+	<OwnerSurrenderForm  />
 {:else if pkg.selected_form == FormType.Intake}
 	<IntakeForm />
 {:else if pkg.selected_form == FormType.Workspace}

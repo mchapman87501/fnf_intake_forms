@@ -2,8 +2,7 @@
 	import { catInfoPkg } from '../components/stores.js'
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
-	let uynChoices = ['Unknown', 'Yes', 'No']
-	
+	import { uynChoices, genderChoices } from '../components/definitions.svelte'
 
 	function handleSubmit() {
 		return false // prevent reload
@@ -11,15 +10,17 @@
 
 	let formValid = false
 	function getFormValid() {
-		console.log('valid tested')
 		return true
 	}
 	$: formValid = getFormValid()
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	Cat OK Kids {$catInfoPkg.okKinder}
-	Cat OK Cats {$catInfoPkg.okCats}
+	<label
+		>Cat's name:
+		<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.name} />
+		<Dropdown choiceList={genderChoices} bind:value={$catInfoPkg.gender} />
+	</label>
 	<div>
 		<fieldset class="fieldset-auto-width">
 			<Dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={$catInfoPkg.okKinder} />
@@ -28,10 +29,15 @@
 		<fieldset class="fieldset-auto-width">
 			<Radiobuttons title={'OK with cats?'} bind:group={$catInfoPkg.okCats} />
 		</fieldset>
-
 	</div>
-
 </form>
 
 <style>
+	label,
+	span {
+		font-size: 75%;
+	}
+	.fieldset-auto-width {
+		display: inline-block;
+	}
 </style>

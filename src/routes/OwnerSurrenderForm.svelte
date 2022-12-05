@@ -1,6 +1,4 @@
 <script lang="ts">
-	export let selected_form
-	export let FormType
 
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
@@ -8,19 +6,16 @@
 	import { catInfo } from '../components/stores.js'
 	import { catInfoPkg } from '../components/stores.js'
 
+	import { uynChoices,genderChoices } from '../components/definitions.svelte'
+
 	let catColor = 'Unknown'
-
-	let uynChoices = ['Unknown', 'Yes', 'No']
-
-	let genderChoices = ['F/M Unknown', 'Female', 'Male']
 
 	let alteredChoices = ['Spay/Neuter Unknown', 'Spayed/Neutered', 'Intact']
 
 
 	//Customize form based on selected_form FormType
 	let ownerNamePlaceholder = 'Owner/Guardian Name'
-	if (selected_form == FormType.Rescuer) ownerNamePlaceholder = 'Rescue Organization Name'
-
+	
 	function todayStr(): string {
 		function pad(s: string, len: number): string {
 			const overPadded = '00000000' + s
@@ -62,7 +57,6 @@
 
 	//----------------------
 	// Cat info
-	let catName = ''
 	let catDOBAge = ''
 
 	let catGender = genderChoices[0]
@@ -119,7 +113,7 @@
 		// use surrDate as-is.
 		return [
 			['Name of Cat', 'Accepting User', 'Date', 'Ok with Children', 'OK with Cats'],
-			[catName, acceptingUser, surrDate, $catInfoPkg.okKinder, $catInfoPkg.okCats]
+			[$catInfoPkg.name, acceptingUser, surrDate, $catInfoPkg.okKinder, $catInfoPkg.okCats]
 		]
 	}
 
@@ -189,10 +183,10 @@
 
 	<hr />
 
-	<input class="name" type="text" placeholder="Cat's name" bind:value={catName} />
+	<input class="name" type="text" placeholder="Cat's name" bind:value={$catInfoPkg.name} />
 	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={catDOBAge} />
 
-	<Dropdown choiceList={genderChoices} bind:value={catGender} />
+	<Dropdown choiceList={genderChoices} bind:value={$catInfoPkg.gender} />
 
 	<Dropdown choiceList={alteredChoices} bind:value={catAltered} />
 	<br />
