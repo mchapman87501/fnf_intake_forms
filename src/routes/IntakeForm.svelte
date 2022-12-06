@@ -55,9 +55,9 @@
 	}
 	function catPkgValuesIntake() {
 		return [
-			$recvdFromPkg.recvdFromName,
-			$recvdFromPkg.recvdFromHomePhone,
-			$recvdFromPkg.recvdFromEmail,
+			$recvdFromPkg.fromName,
+			$recvdFromPkg.homePhone,
+			$recvdFromPkg.email,
 			$catPkg.intakeReason,
 			'TBD',
 			'TBD',
@@ -137,9 +137,9 @@
 	<div>
 		<label
 			>From:
-			<input class="name" type="text" placeholder="Name" bind:value={$recvdFromPkg.recvdFromName} />
-			<input class="name" type="text" placeholder="Email" bind:value={$recvdFromPkg.recvdFromEmail} />
-			<input class="name" type="text" placeholder="Phone" bind:value={$recvdFromPkg.recvdFromHomePhone} />
+			<input class="name" type="text" placeholder="Name" bind:value={$recvdFromPkg.fromName} />
+			<input class="name" type="text" placeholder="Email" bind:value={$recvdFromPkg.email} />
+			<input class="name" type="text" placeholder="Phone" bind:value={$recvdFromPkg.homePhone} />
 		</label>
 		<label
 			>Reason:

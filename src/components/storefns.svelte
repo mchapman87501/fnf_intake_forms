@@ -18,23 +18,23 @@
 
 	export function initializeRecvdFromPkg() {
 		let temp = get(recvdFromPkg)
-		temp.recvdFromName = ''
-		temp.recvdFromHomePhone = ''
-		temp.recvdFromEmail = ''
-		temp.recvdFromAddress = ''
-		temp.recvdFromCity = ''
-		temp.recvdFromDateOfRescue = todayStr()
-		temp.recvdFromDescriptionOfRescue = ''
-		temp.recvdFromDonationAmount = ''
-		temp.recvdFromDonationForm = ''
-		temp.recvdFromDriversLic = ''
-		temp.recvdFromLocationOfRescue = ''
-		temp.recvdFromShelterNum = ''
-		temp.recvdFromState = ''
-		temp.recvdFromType = ''
-		temp.recvdFromWantsMomBack = ''
-		temp.recvdFromWorkCellPhone = ''
-		temp.recvdFromZip = ''
+		temp.fromName = ''
+		temp.homePhone = ''
+		temp.email = ''
+		temp.address = ''
+		temp.city = ''
+		temp.dateOfRescue = todayStr()
+		temp.descriptionOfRescue = ''
+		temp.donationAmount = ''
+		temp.donationForm = ''
+		temp.driversLic = ''
+		temp.locationOfRescue = ''
+		temp.shelterNum = ''
+		temp.state = ''
+		temp.surrenderType = ''
+		temp.wantsMomBack = ''
+		temp.workCellPhone = ''
+		temp.zip = ''
 		recvdFromPkg.set(temp)
 	}
 
@@ -60,6 +60,8 @@
 		temp.specialNeeds = ''
 		temp.microchipNum = ''
 		temp.FELVFIVPositive = false
+		temp.FELVFIVTested = false
+		temp.FELVFIVTestedDate = ''
 
 		catPkg.set(temp)
 	}

@@ -46,8 +46,8 @@
 	let catCurrentShots: Set<CatShots> = new Set()
 	let catOtherShots = ''
 
-	let catFelvFivTested = false
-	let catFFTestedPositive = false
+	// let catFelvFivTested = false
+	// let catFFTestedPositive = false
 
 	let vetName = ''
 	let vetPhone = ''
@@ -64,10 +64,6 @@
 		} else {
 			catCurrentShots.add(shot)
 		}
-	}
-
-	function toggleFelvFivStatus() {
-		catFelvFivTested = !catFelvFivTested
 	}
 
 	// TODO reflect Surrender form 
@@ -137,18 +133,18 @@
 	function surrenderValues() {
 		return [
 			$catPkg.intakeDate,
-			$recvdFromPkg.recvdFromName,
-			$recvdFromPkg.recvdFromDriversLic,
-			$recvdFromPkg.recvdFromAddress,
-			$recvdFromPkg.recvdFromHomePhone,
-			$recvdFromPkg.recvdFromCity,
-			$recvdFromPkg.recvdFromState,
-			$recvdFromPkg.recvdFromZip,
-			$recvdFromPkg.recvdFromEmail,
+			$recvdFromPkg.fromName,
+			$recvdFromPkg.driversLic,
+			$recvdFromPkg.address,
+			$recvdFromPkg.homePhone,
+			$recvdFromPkg.city,
+			$recvdFromPkg.state,
+			$recvdFromPkg.zip,
+			$recvdFromPkg.email,
 
 			$catPkg.intakeReason,
-			$recvdFromPkg.recvdFromDonationAmount,
-			$recvdFromPkg.recvdFromDonationForm,
+			$recvdFromPkg.donationAmount,
+			$recvdFromPkg.donationForm,
 			$catPkg.intakeFnFRepr]
 	// ]
 	// 		$catPkg.intakeReason,
@@ -211,32 +207,32 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 
-	<input bind:value={$recvdFromPkg.recvdFromName} placeholder={ownerNamePlaceholder} />
+	<input bind:value={$recvdFromPkg.fromName} placeholder={ownerNamePlaceholder} />
 	<input type="date" bind:value={$catPkg.intakeDate} /><br />
 
 	<input
 		class="lic_no"
-		bind:value={$recvdFromPkg.recvdFromDriversLic}
+		bind:value={$recvdFromPkg.driversLic}
 		placeholder="Driver's License #"
 	/><br />
 
-	<input type="text" placeholder="Street Address" bind:value={$recvdFromPkg.recvdFromAddress} />
+	<input type="text" placeholder="Street Address" bind:value={$recvdFromPkg.address} />
 	<!-- TODO should Intake.svelte use Home, Cell or logic of two  -->
-	<input type="tel" placeholder="Home phone" bind:value={$recvdFromPkg.recvdFromHomePhone} /><br />
+	<input type="tel" placeholder="Home phone" bind:value={$recvdFromPkg.homePhone} /><br />
 
-	<input type="text" placeholder="City" bind:value={$recvdFromPkg.recvdFromCity} />
+	<input type="text" placeholder="City" bind:value={$recvdFromPkg.city} />
 
 	<!-- TODO use a menu -->
-	<input type="text" class="state_abbrev" placeholder="State" bind:value={$recvdFromPkg.recvdFromState} />
+	<input type="text" class="state_abbrev" placeholder="State" bind:value={$recvdFromPkg.state} />
 	<input
 		type="text"
 		class="zipcode"
 		placeholder="Zip code"
 		pattern={zipCodePattern}
-		bind:value={$recvdFromPkg.recvdFromZip}
+		bind:value={$recvdFromPkg.zip}
 	/>
-	<input type="tel" placeholder="Work/Cell phone" bind:value={$recvdFromPkg.recvdFromWorkCellPhone} /><br />
-	<input type="email" placeholder="Email Address" bind:value={$recvdFromPkg.recvdFromEmail} />
+	<input type="tel" placeholder="Work/Cell phone" bind:value={$recvdFromPkg.workCellPhone} /><br />
+	<input type="email" placeholder="Email Address" bind:value={$recvdFromPkg.email} />
 
 	<hr />
 
@@ -275,14 +271,17 @@
 		<input class="other_shots" type="text" placeholder="other shot(s)" bind:value={catOtherShots} />
 		<br />
 		<label>
-			<input type="checkbox" bind:value={catFelvFivTested} on:change={toggleFelvFivStatus} />
+			<input type="checkbox" bind:checked={$catPkg.FELVFIVTested}  />
 			FEL/FIV Tested
 		</label>
 
-		{#if catFelvFivTested}
+		{#if $catPkg.FELVFIVTested}
 			<label>
-				<input type="checkbox" bind:value={catFFTestedPositive} /> Positive
+				<input type="checkbox" bind:checked={$catPkg.FELVFIVPositive} /> Positive
 			</label>
+			<label>Test Date
+			<input type="text" placeholder="Date Tested for FELV/FIV" bind:value={$catPkg.FELVFIVTestedDate} />
+		</label>
 		{/if}
 	</div>
 
@@ -316,10 +315,10 @@
 			class="currency"
 			type="text"
 			placeholder="Donation"
-			bind:value={$recvdFromPkg.recvdFromDonationAmount}
+			bind:value={$recvdFromPkg.donationAmount}
 			pattern={donationPattern}
 		/>
-		<input type="text" placeholder="Form of Payment" bind:value={$recvdFromPkg.recvdFromDonationForm} />
+		<input type="text" placeholder="Form of Payment" bind:value={$recvdFromPkg.donationForm} />
 		Surrender accepted by
 		<input type="text" placeholder={currUser} bind:value={$catPkg.intakeFnFRepr} />
 	</p>
