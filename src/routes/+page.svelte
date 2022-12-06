@@ -1,12 +1,12 @@
 <script lang="ts">
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
-	import { initForms } from '../components/StoreFns.svelte';
+	import { initForms } from '../components/StoreFns.svelte'
 
 	enum FormType {
 		Unspecified = '-- Select --',
 		Surrender = 'Surrender',
-		Intake = 'Intake',
+		Intake = 'Intake'
 	}
 
 	let forms = [FormType.Unspecified, FormType.Surrender, FormType.Intake]
@@ -15,9 +15,8 @@
 		selected_form: FormType.Unspecified
 	}
 </script>
-	
-<div class="fieldset-auto-width">
-<label
+
+<label class="right-margin"
 	>Form:
 	<select bind:value={pkg.selected_form}>
 		{#each forms as formType}
@@ -27,14 +26,13 @@
 		{/each}
 	</select>
 </label>
- <!-- TODO format this better -->
-<label>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-<button  type="button" on:click={initForms}>Reset all Forms to Defaults</button>
-</label></div>
+<label>
+	<button type="button" on:click={initForms}>&#9888; Reset all Forms to Defaults</button>
+</label>
 
 <hr />
 {#if pkg.selected_form == FormType.Surrender}
-	<OwnerSurrenderForm  />
+	<OwnerSurrenderForm />
 {:else if pkg.selected_form == FormType.Intake}
 	<IntakeForm />
 {:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
@@ -51,5 +49,8 @@
 		background-size: contain;
 		background-position: 50% 0%;
 	}
-	
+	.right-margin {
+    margin-right: 50%;
+	}
+
 </style>

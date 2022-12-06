@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import { catPkg, firstRun, recvdFromPkg } from './stores'
 	import { get } from 'svelte/store'
-	import { uynChoices, genderChoices, alteredChoices } from './Definitions.svelte'
+	import { uynChoices, genderChoices, alteredChoices, surrenderChoices, okKidsChoices, okCatsChoices } from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
 	export function initForms() {
@@ -31,7 +31,7 @@
 		temp.locationOfRescue = ''
 		temp.shelterNum = ''
 		temp.state = ''
-		temp.surrenderType = ''
+		temp.surrenderType = surrenderChoices[0]
 		temp.wantsMomBack = ''
 		temp.workCellPhone = ''
 		temp.zip = ''
@@ -45,7 +45,7 @@
 		temp.intakeReason = ''
 		temp.intakeDate = todayStr()
 
-		temp.catName = 'Frank'
+		temp.catName = ''
 		temp.age = ''
 		temp.color = ''
 		temp.breed = ''
@@ -53,8 +53,8 @@
 		temp.gender = genderChoices[0]
 		temp.altered = alteredChoices[0]
 
-		temp.okKinder = uynChoices[0]
-		temp.okCats = uynChoices[0]
+		temp.okKinder = okKidsChoices[0]
+		temp.okCats = okCatsChoices[0]
 		temp.okDogs = false
 
 		temp.specialNeeds = ''

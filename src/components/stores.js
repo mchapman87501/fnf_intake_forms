@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-//Initialize on mount only on first runfelv
+//Initialize on mount only on first run
 export const firstRun = writable(true);
 let  recvdFrom = {
     fromName: '',

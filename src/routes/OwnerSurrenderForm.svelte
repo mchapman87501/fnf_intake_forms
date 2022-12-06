@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount } from 'svelte'
 
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
@@ -7,15 +7,26 @@
 
 	import { catPkg, recvdFromPkg } from '../components/stores.js'
 
-	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
+	import {
+		uynChoices,
+		genderChoices,
+		alteredChoices,
+		surrenderChoices,
+		surrenderChoiceTransfer,
+		surrenderChoiceSurrender,
+		surrenderChoiceStray,
+		okKidsChoices,
+		okCatsChoices
+	} from '../components/Definitions.svelte'
 	import { initSession } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
 
 	let ownerNamePlaceholder = 'Owner/Guardian Name'
 
-	
 	let currUser = '(F&F representative)'
-	onMount( ()=>{initSession()});
+	onMount(() => {
+		initSession()
+	})
 
 	//-----------------------
 	// Owner info
@@ -66,7 +77,7 @@
 		}
 	}
 
-	// TODO reflect Surrender form 
+	// TODO reflect Surrender form
 	function surrenderHeaders() {
 		return [
 			'Intake Date',
@@ -82,13 +93,12 @@
 			'Intake Reason',
 			'Donation Amount',
 			'Donation Type',
-			'F&F Representative']
+			'F&F Representative'
+		]
 
 		// 	'Recvd From Phone',
 		// 	'Recvd From Email',
 		// 	'Intake Reason',
-
-
 
 		// 	'Surrender/Stray/Transfer',
 		// 	'Shelter Num',
@@ -129,7 +139,7 @@
 		// 	"Foster Home upon Intake"
 		// ]
 	}
-	
+
 	function surrenderValues() {
 		return [
 			$catPkg.intakeDate,
@@ -145,47 +155,48 @@
 			$catPkg.intakeReason,
 			$recvdFromPkg.donationAmount,
 			$recvdFromPkg.donationForm,
-			$catPkg.intakeFnFRepr]
-	// ]
-	// 		$catPkg.intakeReason,
-	// 		'TBD',
-	// 		'TBD',
-	// 		'TBD',
-	// 		'TBD',
-	// 		'FigureThis',
-	// 		$catPkg.catName,
-	// 		$catPkg.age,
-	// 		$catPkg.gender,
-	// 		$catPkg.altered,
-	// 		$catPkg.breed,
-	// 		'TBD',
-	// 		// readability marker
-	// 		$catPkg.color,
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD",
-	// 		// readability marker
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD",
-	// 		$catPkg.microchipNum,
-	// 		$catPkg.okKinder,
-	// 		$catPkg.okCats,
-	// 		$catPkg.okDogs.toString(),
-	// 		"TBD",
-	// 		"TBD",
-	// 		$catPkg.specialNeeds,
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD",
-	// 		"TBD foster home",
-	// 	]
+			$catPkg.intakeFnFRepr
+		]
+		// ]
+		// 		$catPkg.intakeReason,
+		// 		'TBD',
+		// 		'TBD',
+		// 		'TBD',
+		// 		'TBD',
+		// 		'FigureThis',
+		// 		$catPkg.catName,
+		// 		$catPkg.age,
+		// 		$catPkg.gender,
+		// 		$catPkg.altered,
+		// 		$catPkg.breed,
+		// 		'TBD',
+		// 		// readability marker
+		// 		$catPkg.color,
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD",
+		// 		// readability marker
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD",
+		// 		$catPkg.microchipNum,
+		// 		$catPkg.okKinder,
+		// 		$catPkg.okCats,
+		// 		$catPkg.okDogs.toString(),
+		// 		"TBD",
+		// 		"TBD",
+		// 		$catPkg.specialNeeds,
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD",
+		// 		"TBD foster home",
+		// 	]
 	}
 
 	function copyFormToClipboard() {
@@ -206,15 +217,13 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-
 	<input bind:value={$recvdFromPkg.fromName} placeholder={ownerNamePlaceholder} />
-	<input type="date" bind:value={$catPkg.intakeDate} /><br />
+	<input type="date" bind:value={$catPkg.intakeDate} />
 
-	<input
-		class="lic_no"
-		bind:value={$recvdFromPkg.driversLic}
-		placeholder="Driver's License #"
-	/><br />
+	<br />
+
+	<input class="lic_no" bind:value={$recvdFromPkg.driversLic} placeholder="Driver's License #" /><br
+	/>
 
 	<input type="text" placeholder="Street Address" bind:value={$recvdFromPkg.address} />
 	<!-- TODO should Intake.svelte use Home, Cell or logic of two  -->
@@ -239,10 +248,7 @@
 	<input class="name" type="text" placeholder="Cat's name" bind:value={$catPkg.catName} />
 	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={$catPkg.age} />
 
-	<!-- TODO gender/altered is combined on paper forms - note this -->
-	<!-- TODO intialize items with custom lists with list default -->
 	<Dropdown choiceList={genderChoices} bind:value={$catPkg.gender} />
-
 	<Dropdown choiceList={alteredChoices} bind:value={$catPkg.altered} />
 	<br />
 
@@ -255,12 +261,11 @@
 		<option value="True">Chipped</option>
 		<option value="False">Not Chipped</option>
 	</select>
-	<br />
 	{#if catChipped == 'True'}
 		<input type="text" placeholder="Chip number" bind:value={$catPkg.microchipNum} />
 	{/if}
 	<br />
-
+	
 	<div class="shots_and_tests">
 		{#each Object.values(CatShots) as shot}
 			<label>
@@ -271,7 +276,7 @@
 		<input class="other_shots" type="text" placeholder="other shot(s)" bind:value={catOtherShots} />
 		<br />
 		<label>
-			<input type="checkbox" bind:checked={$catPkg.FELVFIVTested}  />
+			<input type="checkbox" bind:checked={$catPkg.FELVFIVTested} />
 			FEL/FIV Tested
 		</label>
 
@@ -279,9 +284,14 @@
 			<label>
 				<input type="checkbox" bind:checked={$catPkg.FELVFIVPositive} /> Positive
 			</label>
-			<label>Test Date
-			<input type="text" placeholder="Date Tested for FELV/FIV" bind:value={$catPkg.FELVFIVTestedDate} />
-		</label>
+			<label
+				>
+				<input
+					type="text"
+					placeholder="Date Tested for FELV/FIV"
+					bind:value={$catPkg.FELVFIVTestedDate}
+				/>
+			</label>
 		{/if}
 	</div>
 
@@ -294,19 +304,13 @@
 	<span>Current diet/medications:</span><br />
 	<textarea>{catMeds}</textarea><br />
 
-	<div>
-		<fieldset class="fieldset-auto-width">
-			<Dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={$catPkg.okKinder} />
-		</fieldset>
+	<Dropdown choiceList={okKidsChoices} bind:value={$catPkg.okKinder} />
+	<Dropdown choiceList={okCatsChoices} bind:value={$catPkg.okCats} />
+	
 
-		<fieldset class="fieldset-auto-width">
-			<Radiobuttons title={'OK with cats?'} bind:group={$catPkg.okCats} />
-		</fieldset>
-
-		<span>OK with</span>
-		<label><input type="checkbox" bind:checked={$catPkg.okDogs} /> dogs</label>
-	</div>
-
+	<span>OK with</span>
+	<label><input type="checkbox" bind:checked={$catPkg.okDogs} /> dogs</label>
+	<br />
 	<span>Reason for surrender:</span><br />
 	<textarea bind:value={$catPkg.intakeReason} /><br />
 
@@ -327,7 +331,9 @@
 
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>
-		<button type="button" on:click={copyFormToClipboard}>Copy Surrender Form to Clipboard (Excel)</button>
+		<button type="button" on:click={copyFormToClipboard}
+			>Copy Surrender Form to Clipboard (Excel)</button
+		>
 	</div>
 </form>
 

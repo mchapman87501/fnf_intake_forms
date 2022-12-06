@@ -1,17 +1,14 @@
 <script lang="ts">
 	export let group: string
-	export let title: string
+	export let title = ''
+	export let choiceList: string[] = []
 </script>
-
-<legend>{title}</legend>
-<label>
-	<input type="radio" bind:group value={'Unknown'} />Unknown
-</label>
-<label>
-	<input type="radio" bind:group value={'Yes'} />Yes
-</label>
-<label>
-	<input type="radio" bind:group value={'No'} />No
+<label
+	>{title}
+	{#each choiceList as choice}
+		<input type="radio" bind:group value={choice} />
+			{choice}
+	{/each}
 </label>
 
 <style>
