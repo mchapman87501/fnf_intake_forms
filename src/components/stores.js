@@ -1,7 +1,11 @@
 import { writable } from 'svelte/store';
 
-//Initialize on mount only on first run
+// Initialize on mount on first run only
+// The user clears the forms after that
 export const firstRun = writable(true);
+
+// Information about the party from
+// whom the cat was received
 let  recvdFrom = {
     fromName: '',
     driversLic: '',
@@ -12,34 +16,36 @@ let  recvdFrom = {
     zip:'',
     workCellPhone:'',
     email: '',
+    donationAmount:'',
+    donationForm:'',
     surrenderType:'',
-    shelterNum:'',
     dateOfRescue:'',
     locationOfRescue:'',
     descriptionOfRescue:'',
+    shelterNum:'',
     wantsMomBack:'',   
-    donationAmount:'',
-    donationForm:''
 }
 export const recvdFromPkg = writable(recvdFrom);
+
+// Information about the cat
 let cat = {
    
-    intakeReason: '',
     intakeDate: '',
-    intakeFnFRepr: '',
     catName : '',
     age : '',
     gender : 'Unknown',
     altered :'Unknown',
-    breed: '',
     color: '',
-    okCats: 'Unknown',
-    okDogs: false,
-    okKinder: 'Unknown',
+    breed: '',
     microchipNum: '',
     FELVFIVTested:false,
     FELVFIVPositive:false,
     FELVFIVTestedDate: '',
-    specialNeeds:''
+    specialNeeds:'',
+    okKinder: 'Unknown',
+    okCats: 'Unknown',
+    okDogs: false,
+    intakeReason: '',
+    intakeFnFRepr: ''
 }
 export const catPkg = writable(cat);

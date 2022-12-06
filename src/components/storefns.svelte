@@ -19,50 +19,52 @@
 	export function initializeRecvdFromPkg() {
 		let temp = get(recvdFromPkg)
 		temp.fromName = ''
-		temp.homePhone = ''
-		temp.email = ''
+		temp.driversLic = ''
 		temp.address = ''
+		temp.homePhone = ''
 		temp.city = ''
-		temp.dateOfRescue = todayStr()
-		temp.descriptionOfRescue = ''
+		temp.state = ''
+		temp.zip = ''
+		temp.workCellPhone = ''
+		temp.email = ''
+
 		temp.donationAmount = ''
 		temp.donationForm = ''
-		temp.driversLic = ''
-		temp.locationOfRescue = ''
-		temp.shelterNum = ''
-		temp.state = ''
+
 		temp.surrenderType = surrenderChoices[0]
+		temp.dateOfRescue = todayStr()
+		temp.locationOfRescue = ''
+		temp.descriptionOfRescue = ''
+		temp.shelterNum = ''
 		temp.wantsMomBack = ''
-		temp.workCellPhone = ''
-		temp.zip = ''
+		
 		recvdFromPkg.set(temp)
 	}
 
 	export function initializeCatPkg() {
 		let temp = get(catPkg)
-
-		temp.intakeFnFRepr = '(F & F representative)'
-		temp.intakeReason = ''
+	
 		temp.intakeDate = todayStr()
 
 		temp.catName = ''
 		temp.age = ''
-		temp.color = ''
-		temp.breed = ''
-
 		temp.gender = genderChoices[0]
 		temp.altered = alteredChoices[0]
-
-		temp.okKinder = okKidsChoices[0]
-		temp.okCats = okCatsChoices[0]
-		temp.okDogs = false
-
-		temp.specialNeeds = ''
+		temp.color = ''
+		temp.breed = ''
 		temp.microchipNum = ''
+
 		temp.FELVFIVPositive = false
 		temp.FELVFIVTested = false
 		temp.FELVFIVTestedDate = ''
 
+		temp.specialNeeds = ''
+		temp.okKinder = okKidsChoices[0]
+		temp.okCats = okCatsChoices[0]
+		temp.okDogs = false
+
+		temp.intakeReason = ''
+		temp.intakeFnFRepr = '(F & F representative)'
 		catPkg.set(temp)
 	}
 </script>
