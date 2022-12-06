@@ -1,7 +1,16 @@
 <script lang="ts" context="module">
 	import { catPkg, firstRun, recvdFromPkg } from './stores'
 	import { get } from 'svelte/store'
-	import { uynChoices, genderChoices, alteredChoices, surrenderChoices, okKidsChoices, okCatsChoices, microchippedChoices } from './Definitions.svelte'
+	import {
+		uynChoices,
+		genderChoices,
+		alteredChoices,
+		surrenderChoices,
+		okKidsChoices,
+		okCatsChoices,
+		microchippedChoices,
+		relinquishCourtesyChoices
+	} from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
 	export function initForms() {
@@ -15,7 +24,11 @@
 			firstRun.set(false)
 		}
 	}
-
+	export function setSurrenderType(val: string) {
+	let temp = get(recvdFromPkg)
+	temp.surrenderType = val
+	recvdFromPkg.set(temp)
+}
 	export function initializeRecvdFromPkg() {
 		let temp = get(recvdFromPkg)
 		temp.fromName = ''
@@ -36,14 +49,15 @@
 		temp.locationOfRescue = ''
 		temp.descriptionOfRescue = ''
 		temp.shelterNum = ''
+		temp.relinquishCourtesyListing = relinquishCourtesyChoices[0]
 		temp.wantsMomBack = false
-		
+
 		recvdFromPkg.set(temp)
 	}
 
 	export function initializeCatPkg() {
 		let temp = get(catPkg)
-	
+
 		temp.intakeDate = todayStr()
 
 		temp.catName = ''
@@ -59,16 +73,15 @@
 		temp.FELVFIVPositive = false
 		temp.FELVFIVTested = false
 		temp.FELVFIVTestedDate = ''
-		temp.currentShots = false 
-		temp.namePrevVet= ''
-		temp.phonePrevVet= ''
-		temp.dietMedications= ''
-		temp.tameFeral= ''
-		temp.illnessInjuryObs= ''
-		temp.personalityObs= ''
-		temp.strayNotes= ''
-		temp.intakeNotes= ''
-
+		temp.currentShots = false
+		temp.namePrevVet = ''
+		temp.phonePrevVet = ''
+		temp.dietMedications = ''
+		temp.tameFeral = ''
+		temp.illnessInjuryObs = ''
+		temp.personalityObs = ''
+		temp.strayNotes = ''
+		temp.intakeNotes = ''
 
 		temp.specialNeeds = ''
 		temp.okKinder = okKidsChoices[0]

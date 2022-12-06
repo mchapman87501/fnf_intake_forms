@@ -2,11 +2,25 @@
 	import { onMount } from 'svelte'
 
 	import { catPkg, recvdFromPkg } from '../components/stores.js'
+
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
-	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
+	import {
+		uynChoices,
+		genderChoices,
+		alteredChoices,
+		surrenderChoices,
+		surrenderChoiceTransfer
+	} from '../components/Definitions.svelte'
 	import { initSession } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
+
+	import OkWith from '../components/OkWith.svelte'
+	import ReceivedFrom from '../components/ReceivedFrom.svelte'
+	import CatnameDobGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
+	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
+	import Microchip from '../components/Microchip.svelte'
+	import IntakeReason from '../components/IntakeReason.svelte'
 
 	function catPkgHeadersIntake() {
 		return [
@@ -122,63 +136,19 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-
-	<div class="fieldset-auto-width">
-		<label
-			>Received:
-			<!-- TODO: initialize/synchronize intake date  -->
-			<input class="name" type="date" placeholder="Intake date" bind:value={$catPkg.intakeDate} />
-		</label>
-		<label
-			>By:
-			<input class="name" type="text" placeholder="Name" bind:value={$catPkg.intakeFnFRepr} />
-		</label>
-	</div>
-	<div>
-		<label
-			>From:
-			<input class="name" type="text" placeholder="Name" bind:value={$recvdFromPkg.fromName} />
-			<input class="name" type="text" placeholder="Email" bind:value={$recvdFromPkg.email} />
-			<input class="name" type="text" placeholder="Phone" bind:value={$recvdFromPkg.homePhone} />
-		</label>
-		<label
-			>Reason:
-			<input
-				class="name"
-				type="text"
-				placeholder="Intake reason"
-				bind:value={$catPkg.intakeReason}
-			/>
-		</label>
-	</div>
+	<ReceivedFrom /><br />
+	<IntakeReason /><br />
+	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} /> 
+	{#if $recvdFromPkg.surrenderType == surrenderChoiceTransfer}
+		<input type="text" placeholder={'Shelter ID'} bind:value={$recvdFromPkg.shelterNum} />
+	{/if}
 	<br />
-	<label
-		>Cat's name:
-		<input class="name" type="text" placeholder="Cat's name" bind:value={$catPkg.catName} />
-		<input type="text" placeholder="Age" bind:value={$catPkg.age} />
-		<Dropdown choiceList={genderChoices} bind:value={$catPkg.gender} />
-		<Dropdown choiceList={alteredChoices} bind:value={$catPkg.altered} />
-		<input type="text" placeholder="Breed" bind:value={$catPkg.breed} />
-		<input type="text" placeholder="Color" bind:value={$catPkg.color} />
-	</label>
-	<!-- TODO must coordinate with Microchipped flag in OwnerSurrenderForm.svelte -->
-	<!-- <input type="text" placeholder="Chip number" bind:value={$catPkg.microchipNum} /> -->
+	<CatnameDobGenderAltered /><br />
+	<BreedColorMarkings /><br />
+	<Microchip /><br />
 
-	<!-- TODO must coordinate with FELFIVTested toggle in OwnerSurrenderForm.svelte -->
-	<!-- <label>
-		<input type="checkbox" bind:value={$catPkg.FELVFIVPositive} /> FELV/FIV Positive
-	</label> -->
+	<OkWith /><br />
 
-	<div>
-		<fieldset class="fieldset-auto-width">
-			<Radiobuttons title={'OK with cats?'} bind:group={$catPkg.okCats} />
-		</fieldset>
-		<span>OK with</span>
-		<label><input type="checkbox" bind:checked={$catPkg.okDogs} /> dogs</label>
-		<fieldset class="fieldset-auto-width">
-			<Dropdown title={'OK with kids?'} choiceList={uynChoices} bind:value={$catPkg.okKinder} />
-		</fieldset>
-	</div>
 	<span>Special needs/habits:</span><br />
 	<textarea bind:value={$catPkg.specialNeeds} /><br />
 
@@ -196,8 +166,5 @@
 	}
 	label {
 		font-size: 75%;
-	}
-	.fieldset-auto-width {
-		display: inline-block;
 	}
 </style>

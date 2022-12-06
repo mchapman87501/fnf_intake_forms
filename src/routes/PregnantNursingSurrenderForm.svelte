@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { recvdFromPkg } from '../components/stores'
-	import { initSession } from '../components/StoreFns.svelte'
+	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
 
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 
@@ -12,9 +12,11 @@
 	import ShotsFIVTestedVetInfo from '../components/ShotsFIVTestedVetInfo.svelte'
 	import OkWith from '../components/OkWith.svelte'
 	import RescueDateLocation from '../components/RescueDateLocation.svelte'
+	import { surrenderChoiceSurrender } from '../components/Definitions.svelte'
 
 	onMount(() => {
 		initSession()
+		setSurrenderType(surrenderChoiceSurrender)
 	})
 
 	// TODO reflect Surrender form

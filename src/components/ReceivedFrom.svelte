@@ -5,11 +5,10 @@
 
 	import { catPkg, recvdFromPkg } from '../components/stores.js'
 
-	let ownerNamePlaceholder = 'Owner/Guardian Name2'
 	let zipCodePattern = '\\d{5}'
 </script>
 
-<input bind:value={$recvdFromPkg.fromName} placeholder={ownerNamePlaceholder} />
+<input bind:value={$recvdFromPkg.fromName} placeholder={'Owner/Guardian/Rescuer Name'} />
 <input type="date" bind:value={$catPkg.intakeDate} />
 
 <br />

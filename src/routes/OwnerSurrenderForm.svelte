@@ -23,14 +23,13 @@
 		microchippedChoiceChipped,
 		microchippedChoices
 	} from '../components/Definitions.svelte'
-	import { initSession } from '../components/StoreFns.svelte'
+	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
-
-	let ownerNamePlaceholder = 'Owner/Guardian Name'
 
 	let currUser = '(F&F representative)'
 	onMount(() => {
 		initSession()
+		setSurrenderType(surrenderChoiceSurrender)
 	})
 
 	//-----------------------

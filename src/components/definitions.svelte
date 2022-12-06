@@ -9,10 +9,11 @@
 	export const okCatsChoices = ['OK Cats Unknown', 'OK Cats', 'Not OK Cats']
 	export const okDogsChoices = ['OK Dogs Unknown', 'OK Dogs', 'Not OK Dogs']
 
+	export const relinquishCourtesyChoices = ['Relinquish/Courtesy Unknown','Relinquish','Courtesy Listing']
+
 	export const surrenderChoiceTransfer = 'Transfer'
 	export const surrenderChoiceSurrender = 'Surrender'
 	export const surrenderChoiceStray = 'Stray'
 	export const surrenderChoices = [surrenderChoiceSurrender,surrenderChoiceTransfer, surrenderChoiceStray]
 	
-	export const ownerNamePlaceholder = 'Owner/Guardian Name'
 </script>

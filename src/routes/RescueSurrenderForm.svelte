@@ -1,9 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { initSession } from '../components/StoreFns.svelte'
+	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
+	import { recvdFromPkg, catPkg } from '../components/stores'
+	
+	import { relinquishCourtesyChoices, surrenderChoiceTransfer } from '../components/Definitions.svelte'
 
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 
+	import Dropdown from '../components/Dropdown.svelte'
 	import ReceivedFrom from '../components/ReceivedFrom.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
@@ -14,6 +18,7 @@
 
 	onMount(() => {
 		initSession()
+		setSurrenderType(surrenderChoiceTransfer)
 	})
 
 	// TODO reflect Surrender form
@@ -44,7 +49,17 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 	<ReceivedFrom />
-
+	
+	<hr/>
+	
+	<label>
+		<input
+			type="text"
+			placeholder="Shelter Number:"
+			bind:value={$recvdFromPkg.shelterNum}
+		/>
+	</label>
+	<Dropdown choiceList={relinquishCourtesyChoices} bind:value={$recvdFromPkg.relinquishCourtesyListing}/>
 	<hr />
 
 	<CatnameDobGenderAltered /><br />
@@ -70,5 +85,8 @@
 <style>
 	.btns {
 		text-align: center;
+	}
+	label {
+		font-size: 75%;
 	}
 </style>

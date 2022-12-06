@@ -23,6 +23,7 @@ let  recvdFrom = {
     locationOfRescue:'',
     descriptionOfRescue:'',
     shelterNum:'',
+    relinquishCourtesyListing:'',
     wantsMomBack:false,   
 }
 export const recvdFromPkg = writable(recvdFrom);

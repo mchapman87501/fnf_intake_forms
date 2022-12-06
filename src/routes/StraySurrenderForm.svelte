@@ -7,11 +7,13 @@
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 
-	import { initSession } from '../components/StoreFns.svelte'
+	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
+	import { surrenderChoiceStray } from '../components/Definitions.svelte'
 
 	onMount(() => {
 		initSession()
+		setSurrenderType(surrenderChoiceStray)
 	})
 
 
