@@ -2,14 +2,16 @@
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
 	import { initForms } from '../components/StoreFns.svelte'
+	import StraySurrender from './StraySurrender.svelte'
 
 	enum FormType {
 		Unspecified = '-- Select --',
 		Surrender = 'Surrender',
+		Stray = 'Stray',
 		Intake = 'Intake'
 	}
 
-	let forms = [FormType.Unspecified, FormType.Surrender, FormType.Intake]
+	let forms = [FormType.Unspecified, FormType.Surrender, FormType.Stray, FormType.Intake]
 
 	let pkg = {
 		selected_form: FormType.Unspecified
@@ -35,6 +37,8 @@
 	<OwnerSurrenderForm />
 {:else if pkg.selected_form == FormType.Intake}
 	<IntakeForm />
+{:else if pkg.selected_form == FormType.Stray}
+	<StraySurrender />
 {:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
 	<p>Please select a form.</p>
 {:else}
@@ -50,7 +54,6 @@
 		background-position: 50% 0%;
 	}
 	.right-margin {
-    margin-right: 50%;
+		margin-right: 50%;
 	}
-
 </style>

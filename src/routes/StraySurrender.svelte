@@ -7,6 +7,9 @@
 
 	import { catPkg, recvdFromPkg } from '../components/stores.js'
 
+	import ReceivedFrom from '../components/ReceivedFrom.svelte'
+	import ReceivedBy from '../components/ReceivedBy.svelte'
+
 	import {
 		uynChoices,
 		genderChoices,
@@ -210,33 +213,9 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<input bind:value={$recvdFromPkg.fromName} placeholder={ownerNamePlaceholder} />
-	<input type="date" bind:value={$catPkg.intakeDate} />
-
-	<br />
-
-	<input class="lic_no" bind:value={$recvdFromPkg.driversLic} placeholder="Driver's License #" /><br
-	/>
-
-	<input type="text" placeholder="Street Address" bind:value={$recvdFromPkg.address} />
-	<!-- TODO should Intake.svelte use Home, Cell or logic of two  -->
-	<input type="tel" placeholder="Home phone" bind:value={$recvdFromPkg.homePhone} /><br />
-
-	<input type="text" placeholder="City" bind:value={$recvdFromPkg.city} />
-
-	<!-- TODO use a menu -->
-	<input type="text" class="state_abbrev" placeholder="State" bind:value={$recvdFromPkg.state} />
-	<input
-		type="text"
-		class="zipcode"
-		placeholder="Zip code"
-		pattern={zipCodePattern}
-		bind:value={$recvdFromPkg.zip}
-	/>
-	<input type="tel" placeholder="Work/Cell phone" bind:value={$recvdFromPkg.workCellPhone} /><br />
-	<input type="email" placeholder="Email Address" bind:value={$recvdFromPkg.email} />
-
+	
 	<hr />
+	<ReceivedFrom/>
 
 	<input class="name" type="text" placeholder="Cat's name" bind:value={$catPkg.catName} />
 	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={$catPkg.age} />
@@ -307,18 +286,7 @@
 	<textarea bind:value={$catPkg.intakeReason} /><br />
 
 	<hr />
-	<p class="rep">
-		<input
-			class="currency"
-			type="text"
-			placeholder="Donation"
-			bind:value={$recvdFromPkg.donationAmount}
-			pattern={donationPattern}
-		/>
-		<input type="text" placeholder="Form of Payment" bind:value={$recvdFromPkg.donationForm} />
-		Surrender accepted by
-		<input type="text" placeholder={currUser} bind:value={$catPkg.intakeFnFRepr} />
-	</p>
+	<ReceivedBy/>
 
 	<hr />
 
