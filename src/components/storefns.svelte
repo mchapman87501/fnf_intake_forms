@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { catPkg, firstRun} from './stores'
+	import { catPkg, firstRun, recvdFromPkg} from './stores'
 	import { get } from 'svelte/store'
 	import { uynChoices, genderChoices, alteredChoices } from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
@@ -10,12 +10,17 @@
 		}
 	}
 
+	export function initializeRecvdFromPkg() {
+		let temp = get(recvdFromPkg)
+		temp.recvdFromName = ''
+		temp.recvdFromHomePhone = ''
+		temp.recvdFromEmail = ''
+		recvdFromPkg.set(temp)
+	}
+
 	export function initializeCatPkg() {
 		let temp = get(catPkg)
-		temp.recdFromName = ''
-		temp.recdFromPhone = ''
-		temp.recdFromEmail = ''
-
+		
 		temp.intakeFnFRepr = '(F & F representative)'
 		temp.intakeReason = ''
 		temp.intakeDate = todayStr()

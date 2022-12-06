@@ -5,7 +5,7 @@
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import Checkbox from '../components/Checkbox.svelte'
 
-	import { catPkg } from '../components/stores.js'
+	import { catPkg, recvdFromPkg } from '../components/stores.js'
 
 	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
 	import { initSession } from '../components/StoreFns.svelte'
@@ -75,6 +75,7 @@
 		// use intakeDate as-is.
 		return [catPkgHeaders(), catPkgValues()]
 	}
+
 	// TODO reflect Surrender form ASK user
 	function catPkgHeaders() {
 		return [
@@ -121,11 +122,12 @@
 			"Foster Home upon Intake"
 		]
 	}
+	
 	function catPkgValues() {
 		return [
-			$catPkg.recdFromName,
-			$catPkg.recdFromPhone,
-			$catPkg.recdFromEmail,
+			$recvdFromPkg.recvdFromName,
+			$recvdFromPkg.recvdFromHomePhone,
+			$recvdFromPkg.recvdFromEmail,
 			$catPkg.intakeReason,
 			'TBD',
 			'TBD',
@@ -186,7 +188,7 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 
-	<input bind:value={$catPkg.recdFromName} placeholder={ownerNamePlaceholder} />
+	<input bind:value={$recvdFromPkg.recvdFromName} placeholder={ownerNamePlaceholder} />
 	<input type="date" bind:value={$catPkg.intakeDate} /><br />
 
 	<input
@@ -198,7 +200,7 @@
 
 	<input type="text" placeholder="Street Address" bind:value={streetAddr} />
 	<!-- TODO should Intake.svelte use Home, Cell or logic of two  -->
-	<input type="tel" placeholder="Home phone" bind:value={$catPkg.recdFromPhone} /><br />
+	<input type="tel" placeholder="Home phone" bind:value={$recvdFromPkg.recvdFromHomePhone} /><br />
 
 	<input type="text" placeholder="City" bind:value={city} />
 
@@ -212,7 +214,7 @@
 		value={zipCode}
 	/>
 	<input type="tel" placeholder="Work/Cell phone" bind:value={workOrCell} /><br />
-	<input type="email" placeholder="Email Address" bind:value={$catPkg.recdFromEmail} />
+	<input type="email" placeholder="Email Address" bind:value={$recvdFromPkg.recvdFromEmail} />
 
 	<hr />
 

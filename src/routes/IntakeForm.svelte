@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
-	import { catPkg } from '../components/stores.js'
+	import { catPkg, recvdFromPkg } from '../components/stores.js'
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
@@ -55,9 +55,9 @@
 	}
 	function catPkgValuesIntake() {
 		return [
-			$catPkg.recdFromName,
-			$catPkg.recdFromPhone,
-			$catPkg.recdFromEmail,
+			$recvdFromPkg.recvdFromName,
+			$recvdFromPkg.recvdFromHomePhone,
+			$recvdFromPkg.recvdFromEmail,
 			$catPkg.intakeReason,
 			'TBD',
 			'TBD',
@@ -137,9 +137,9 @@
 	<div>
 		<label
 			>From:
-			<input class="name" type="text" placeholder="Name" bind:value={$catPkg.recdFromName} />
-			<input class="name" type="text" placeholder="Email" bind:value={$catPkg.recdFromEmail} />
-			<input class="name" type="text" placeholder="Phone" bind:value={$catPkg.recdFromPhone} />
+			<input class="name" type="text" placeholder="Name" bind:value={$recvdFromPkg.recvdFromName} />
+			<input class="name" type="text" placeholder="Email" bind:value={$recvdFromPkg.recvdFromEmail} />
+			<input class="name" type="text" placeholder="Phone" bind:value={$recvdFromPkg.recvdFromHomePhone} />
 		</label>
 		<label
 			>Reason:
