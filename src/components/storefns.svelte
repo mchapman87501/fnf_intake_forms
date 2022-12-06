@@ -1,11 +1,17 @@
 <script lang="ts" context="module">
-	import { catPkg, firstRun, recvdFromPkg} from './stores'
+	import { catPkg, firstRun, recvdFromPkg } from './stores'
 	import { get } from 'svelte/store'
 	import { uynChoices, genderChoices, alteredChoices } from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
+
+	export function initForms() {
+		initializeCatPkg()
+		initializeRecvdFromPkg()
+	}
+
 	export function initSession() {
-		if ( get(firstRun)) {
-			initializeCatPkg()
+		if (get(firstRun)) {
+			initForms()
 			firstRun.set(false)
 		}
 	}
@@ -15,12 +21,26 @@
 		temp.recvdFromName = ''
 		temp.recvdFromHomePhone = ''
 		temp.recvdFromEmail = ''
+		temp.recvdFromAddress = ''
+		temp.recvdFromCity = ''
+		temp.recvdFromDateOfRescue = todayStr()
+		temp.recvdFromDescriptionOfRescue = ''
+		temp.recvdFromDonationAmount = ''
+		temp.recvdFromDonationForm = ''
+		temp.recvdFromDriversLic = ''
+		temp.recvdFromLocationOfRescue = ''
+		temp.recvdFromShelterNum = ''
+		temp.recvdFromState = ''
+		temp.recvdFromType = ''
+		temp.recvdFromWantsMomBack = ''
+		temp.recvdFromWorkCellPhone = ''
+		temp.recvdFromZip = ''
 		recvdFromPkg.set(temp)
 	}
 
 	export function initializeCatPkg() {
 		let temp = get(catPkg)
-		
+
 		temp.intakeFnFRepr = '(F & F representative)'
 		temp.intakeReason = ''
 		temp.intakeDate = todayStr()

@@ -185,7 +185,7 @@
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>
 		<button type="button" on:click={copyFormToClipboard}
-			>Copy Excel of Intake Form to Clipboard</button
+			>Copy Intake Form to Clipboard (Excel)</button
 		>
 	</div>
 </form>

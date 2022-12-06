@@ -70,108 +70,131 @@
 		catFelvFivTested = !catFelvFivTested
 	}
 
-	function getIntakeInfoAsTable(): Array<Array<string>> {
-		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
-		// use intakeDate as-is.
-		return [catPkgHeaders(), catPkgValues()]
-	}
-
-	// TODO reflect Surrender form ASK user
-	function catPkgHeaders() {
+	// TODO reflect Surrender form 
+	function surrenderHeaders() {
 		return [
+			'Intake Date',
 			'Recvd From Name',
-			'Recvd From Phone',
-			'Recvd From Email',
+			'Drivers Lic',
+			'Address',
+			'Home Phone',
+			'City',
+			'State',
+			'Zip',
+			'Work/Cell Phone',
+			'Email',
 			'Intake Reason',
-			'Surrender/Stray/Transfer',
-			'Shelter Num',
-			'Relinq/Courtesy Listing',
-			'Show or Web Only',
-			'Rescue ID',
-			'Cat Name',
-			'Cat Age/DOB',
-			'Gender',
-			'Altered/Intact',
-			'Breed',
-			'Hair length',
-			// readability marker
-			'Color',
-			'Current Weight',
-			'Est Size at Maturity',
-			'Distinctive Features',
-			'Spay/Neuter Date',
-			'Spay/Neuter Facility',
-			'RVRCP#1',
-			'RVRCP#2',
-			'RVRCP#3',
-			// readability marker
-			"Rabies Expires",
-			"FELV/FIV Test Date",
-			"FELV/FIV Pos/Neg",
-			"Microchip Num",
-			"Ok with Kids",
-			"Ok with Dogs",
-			"Ok with Cats",
-			"Bite History",
-			"Declawed",
-			"Special Needs",
-			"Temperament",
-			"Mother/Littermates",
-			"Known History",
-			"Internal-other Comments",
-			"Foster Home upon Intake"
-		]
+			'Donation Amount',
+			'Donation Type',
+			'F&F Representative']
+
+		// 	'Recvd From Phone',
+		// 	'Recvd From Email',
+		// 	'Intake Reason',
+
+
+
+		// 	'Surrender/Stray/Transfer',
+		// 	'Shelter Num',
+		// 	'Relinq/Courtesy Listing',
+		// 	'Show or Web Only',
+		// 	'Rescue ID',
+		// 	'Cat Name',
+		// 	'Cat Age/DOB',
+		// 	'Gender',
+		// 	'Altered/Intact',
+		// 	'Breed',
+		// 	'Hair length',
+		// 	// readability marker
+		// 	'Color',
+		// 	'Current Weight',
+		// 	'Est Size at Maturity',
+		// 	'Distinctive Features',
+		// 	'Spay/Neuter Date',
+		// 	'Spay/Neuter Facility',
+		// 	'RVRCP#1',
+		// 	'RVRCP#2',
+		// 	'RVRCP#3',
+		// 	// readability marker
+		// 	"Rabies Expires",
+		// 	"FELV/FIV Test Date",
+		// 	"FELV/FIV Pos/Neg",
+		// 	"Microchip Num",
+		// 	"Ok with Kids",
+		// 	"Ok with Dogs",
+		// 	"Ok with Cats",
+		// 	"Bite History",
+		// 	"Declawed",
+		// 	"Special Needs",
+		// 	"Temperament",
+		// 	"Mother/Littermates",
+		// 	"Known History",
+		// 	"Internal-other Comments",
+		// 	"Foster Home upon Intake"
+		// ]
 	}
 	
-	function catPkgValues() {
+	function surrenderValues() {
 		return [
+			$catPkg.intakeDate,
 			$recvdFromPkg.recvdFromName,
+			$recvdFromPkg.recvdFromDriversLic,
+			$recvdFromPkg.recvdFromAddress,
 			$recvdFromPkg.recvdFromHomePhone,
+			$recvdFromPkg.recvdFromCity,
+			$recvdFromPkg.recvdFromState,
+			$recvdFromPkg.recvdFromZip,
 			$recvdFromPkg.recvdFromEmail,
+
 			$catPkg.intakeReason,
-			'TBD',
-			'TBD',
-			'TBD',
-			'TBD',
-			'FigureThis',
-			$catPkg.catName,
-			$catPkg.age,
-			$catPkg.gender,
-			$catPkg.altered,
-			$catPkg.breed,
-			'TBD',
-			// readability marker
-			$catPkg.color,
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			// readability marker
-			"TBD",
-			"TBD",
-			"TBD",
-			$catPkg.microchipNum,
-			$catPkg.okKinder,
-			$catPkg.okCats,
-			$catPkg.okDogs.toString(),
-			"TBD",
-			"TBD",
-			$catPkg.specialNeeds,
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD",
-			"TBD foster home",
-		]
+			$recvdFromPkg.recvdFromDonationAmount,
+			$recvdFromPkg.recvdFromDonationForm,
+			$catPkg.intakeFnFRepr]
+	// ]
+	// 		$catPkg.intakeReason,
+	// 		'TBD',
+	// 		'TBD',
+	// 		'TBD',
+	// 		'TBD',
+	// 		'FigureThis',
+	// 		$catPkg.catName,
+	// 		$catPkg.age,
+	// 		$catPkg.gender,
+	// 		$catPkg.altered,
+	// 		$catPkg.breed,
+	// 		'TBD',
+	// 		// readability marker
+	// 		$catPkg.color,
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD",
+	// 		// readability marker
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD",
+	// 		$catPkg.microchipNum,
+	// 		$catPkg.okKinder,
+	// 		$catPkg.okCats,
+	// 		$catPkg.okDogs.toString(),
+	// 		"TBD",
+	// 		"TBD",
+	// 		$catPkg.specialNeeds,
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD",
+	// 		"TBD foster home",
+	// 	]
 	}
 
 	function copyFormToClipboard() {
 		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
-		const csvStr = getInfoAsCSV([catPkgHeaders(), catPkgValues()])
+		const csvStr = getInfoAsCSV([surrenderHeaders(), surrenderValues()])
 		console.log('Copying %o', csvStr)
 		navigator.clipboard.writeText(csvStr)
 	}
@@ -193,27 +216,26 @@
 
 	<input
 		class="lic_no"
-		value={driverLicNo}
+		bind:value={$recvdFromPkg.recvdFromDriversLic}
 		placeholder="Driver's License #"
-		pattern={dlPattern}
 	/><br />
 
-	<input type="text" placeholder="Street Address" bind:value={streetAddr} />
+	<input type="text" placeholder="Street Address" bind:value={$recvdFromPkg.recvdFromAddress} />
 	<!-- TODO should Intake.svelte use Home, Cell or logic of two  -->
 	<input type="tel" placeholder="Home phone" bind:value={$recvdFromPkg.recvdFromHomePhone} /><br />
 
-	<input type="text" placeholder="City" bind:value={city} />
+	<input type="text" placeholder="City" bind:value={$recvdFromPkg.recvdFromCity} />
 
 	<!-- TODO use a menu -->
-	<input type="text" class="state_abbrev" placeholder="State" bind:value={state} />
+	<input type="text" class="state_abbrev" placeholder="State" bind:value={$recvdFromPkg.recvdFromState} />
 	<input
 		type="text"
 		class="zipcode"
 		placeholder="Zip code"
 		pattern={zipCodePattern}
-		value={zipCode}
+		bind:value={$recvdFromPkg.recvdFromZip}
 	/>
-	<input type="tel" placeholder="Work/Cell phone" bind:value={workOrCell} /><br />
+	<input type="tel" placeholder="Work/Cell phone" bind:value={$recvdFromPkg.recvdFromWorkCellPhone} /><br />
 	<input type="email" placeholder="Email Address" bind:value={$recvdFromPkg.recvdFromEmail} />
 
 	<hr />
@@ -294,9 +316,10 @@
 			class="currency"
 			type="text"
 			placeholder="Donation"
-			value={donationAmt}
+			bind:value={$recvdFromPkg.recvdFromDonationAmount}
 			pattern={donationPattern}
 		/>
+		<input type="text" placeholder="Form of Payment" bind:value={$recvdFromPkg.recvdFromDonationForm} />
 		Surrender accepted by
 		<input type="text" placeholder={currUser} bind:value={$catPkg.intakeFnFRepr} />
 	</p>
@@ -305,7 +328,7 @@
 
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>
-		<button type="button" on:click={copyFormToClipboard}>Copy Excel to Clipboard</button>
+		<button type="button" on:click={copyFormToClipboard}>Copy Surrender Form to Clipboard (Excel)</button>
 	</div>
 </form>
 

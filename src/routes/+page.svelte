@@ -1,7 +1,7 @@
 <script lang="ts">
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
-	import { initializeCatPkg } from '../components/StoreFns.svelte';
+	import { initForms } from '../components/StoreFns.svelte';
 
 	enum FormType {
 		Unspecified = '-- Select --',
@@ -29,7 +29,7 @@
 </label>
  <!-- TODO format this better -->
 <label>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-<button  type="button" on:click={initializeCatPkg}>Reset all Forms to Defaults</button>
+<button  type="button" on:click={initForms}>Reset all Forms to Defaults</button>
 </label></div>
 
 <hr />
