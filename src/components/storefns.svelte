@@ -32,7 +32,7 @@
 		temp.donationForm = ''
 
 		temp.surrenderType = surrenderChoices[0]
-		temp.dateOfRescue = todayStr()
+		temp.dateOfRescue = ''
 		temp.locationOfRescue = ''
 		temp.descriptionOfRescue = ''
 		temp.shelterNum = ''

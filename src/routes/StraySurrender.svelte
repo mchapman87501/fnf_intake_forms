@@ -214,79 +214,29 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 	
-	<hr />
-	<ReceivedFrom/>
-
-	<input class="name" type="text" placeholder="Cat's name" bind:value={$catPkg.catName} />
-	<input class="dob_age" type="text" placeholder="DOB/Age" bind:value={$catPkg.age} />
-
-	<Dropdown choiceList={genderChoices} bind:value={$catPkg.gender} />
-	<Dropdown choiceList={alteredChoices} bind:value={$catPkg.altered} />
+	<input class="rescueDate" type="text" placeholder="Date cat was found" bind:value={$recvdFromPkg.dateOfRescue} />
 	<br />
+	<span>Location where cat was found:</span><br />
+	<textarea bind:value={$recvdFromPkg.locationOfRescue} /><br />
+
 
 	<input type="text" placeholder="Breed" bind:value={$catPkg.breed} />
 	<input type="text" placeholder="Color" bind:value={$catPkg.color} />
-	<input type="text" placeholder="Markings" bind:value={$catPkg.markings} /><br />
+	<input type="text" placeholder="Markings" bind:value={$catPkg.markings} />
+	<input type="text" placeholder="Tame/Feral" bind:value={$catPkg.tameFeral}/> <br />
 
-	<Dropdown choiceList={microchippedChoices} bind:value={$catPkg.microchipped} />
-
-	{#if $catPkg.microchipped == microchippedChoiceChipped}
-		<input type="text" placeholder="Chip number" bind:value={$catPkg.microchipNum} />
-	{/if}
-	<br />
-
-	<div class="shots_and_tests">
-		<!-- {#each Object.values(CatShots) as shot}
-			<label>
-				<input type="checkbox" bind:value={shot} on:change={() => toggleShot(shot)} />
-				{shot}
-			</label> &nbsp;
-		{/each}
-		<input class="other_shots" type="text" placeholder="other shot(s)" bind:value={catOtherShots} /> -->
-		<label>
-			<input type="checkbox" bind:checked={$catPkg.currentShots} />
-			Current on Shots
-		</label>
-		<label>
-			<input type="checkbox" bind:checked={$catPkg.FELVFIVTested} />
-			FEL/FIV Tested
-		</label>
-
-
-		{#if $catPkg.FELVFIVTested}
-			<label>
-				<input type="checkbox" bind:checked={$catPkg.FELVFIVPositive} /> Positive
-			</label>
-			<label>
-				<input
-					type="text"
-					placeholder="Date Tested for FELV/FIV"
-					bind:value={$catPkg.FELVFIVTestedDate}
-				/>
-			</label>
-		{/if}
-	</div>
-	
-	<input type="text" placeholder="Name of Previous Vet" bind:value={$catPkg.namePrevVet} />
-	<input type="tel" placeholder="Vet phone" bind:value={$catPkg.phonePrevVet} /><br />
-
-	<span>Special needs/habits:</span><br />
-	<textarea bind:value={$catPkg.specialNeeds} /><br />
-
-	<span>Current diet/medications:</span><br />
-	<textarea>{catMeds}</textarea><br />
-
-	<Dropdown choiceList={okKidsChoices} bind:value={$catPkg.okKinder} />
-	<Dropdown choiceList={okCatsChoices} bind:value={$catPkg.okCats} />
-
-	<span>OK with</span>
-	<label><input type="checkbox" bind:checked={$catPkg.okDogs} /> dogs</label>
-	<br />
-	<span>Reason for surrender:</span><br />
-	<textarea bind:value={$catPkg.intakeReason} /><br />
+	<span>Illness or injuries observed</span><br />
+	<textarea bind:value={$catPkg.illnessInjuryObs} /><br />
+	<span>Personality observed</span><br />
+	<textarea bind:value={$catPkg.personalityObs} /><br />
+	<span>Notes</span><br />
+	<textarea bind:value={$catPkg.strayNotes} /><br />
 
 	<hr />
+	<ReceivedFrom/>
 	<ReceivedBy/>
+	<span>Intake Notes</span><br />
+	<textarea bind:value={$catPkg.intakeNotes} /><br />
 
 	<hr />
 
