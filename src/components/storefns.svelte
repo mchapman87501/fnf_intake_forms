@@ -4,18 +4,13 @@
 	import { uynChoices, genderChoices, alteredChoices } from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 	export function initSession() {
-		console.log("init")
 		if ( get(firstRun)) {
-			console.log("Setting")
-			initializecatPkg()
+			initializeCatPkg()
 			firstRun.set(false)
 		}
-		
-		
 	}
 
-	export function initializecatPkg() {
-		console.log("initializecatPkg")
+	export function initializeCatPkg() {
 		let temp = get(catPkg)
 		temp.recdFromName = ''
 		temp.recdFromPhone = ''

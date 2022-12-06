@@ -5,7 +5,7 @@
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
-	import { initializecatPkg, initSession } from '../components/StoreFns.svelte'
+	import { initSession } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 
 	function catPkgHeadersIntake() {
@@ -122,10 +122,7 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<div class="btns">
-		<!-- TODO reset all fields, not just those in catPkg -->
-		<button type="button" on:click={initializecatPkg}>Clear all data all forms</button>
-	</div>
+
 	<div class="fieldset-auto-width">
 		<label
 			>Received:

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
+	import { initializeCatPkg } from '../components/StoreFns.svelte';
 
 	enum FormType {
 		Unspecified = '-- Select --',
@@ -14,7 +15,8 @@
 		selected_form: FormType.Unspecified
 	}
 </script>
-
+	
+<div class="fieldset-auto-width">
 <label
 	>Form:
 	<select bind:value={pkg.selected_form}>
@@ -25,6 +27,10 @@
 		{/each}
 	</select>
 </label>
+ <!-- TODO format this better -->
+<label>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+<button  type="button" on:click={initializeCatPkg}>Reset all Forms to Defaults</button>
+</label></div>
 
 <hr />
 {#if pkg.selected_form == FormType.Surrender}
@@ -45,4 +51,5 @@
 		background-size: contain;
 		background-position: 50% 0%;
 	}
+	
 </style>

@@ -8,7 +8,7 @@
 	import { catPkg } from '../components/stores.js'
 
 	import { uynChoices, genderChoices, alteredChoices } from '../components/Definitions.svelte'
-	import { initializecatPkg, initSession } from '../components/StoreFns.svelte'
+	import { initSession } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
 
 	let ownerNamePlaceholder = 'Owner/Guardian Name'
@@ -185,10 +185,7 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<!-- TODO reset all fields, not just those in catPkg -->
-	<div class="btns">
-		<button type="button" on:click={initializecatPkg}>Clear all fields all forms</button>
-	</div>
+
 	<input bind:value={$catPkg.recdFromName} placeholder={ownerNamePlaceholder} />
 	<input type="date" bind:value={$catPkg.intakeDate} /><br />
 
