@@ -36,7 +36,16 @@
 <input type="email" placeholder="Email Address" bind:value={$recvdFromPkg.email} />
 
 <style>
-	label {
-		font-size: 75%;
+	.zipcode {
+		width: 5em;
+	}
+	.lic_no {
+		width: 9em;
+	}
+	input[type='tel'] {
+		width: 9em;
+	}
+	.state_abbrev {
+		width: 5em;
 	}
 </style>

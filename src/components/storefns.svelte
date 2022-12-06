@@ -36,7 +36,7 @@
 		temp.locationOfRescue = ''
 		temp.descriptionOfRescue = ''
 		temp.shelterNum = ''
-		temp.wantsMomBack = ''
+		temp.wantsMomBack = false
 		
 		recvdFromPkg.set(temp)
 	}

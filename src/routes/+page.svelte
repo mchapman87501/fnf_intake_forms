@@ -1,17 +1,29 @@
 <script lang="ts">
+	import { initForms } from '../components/StoreFns.svelte'
+
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
-	import { initForms } from '../components/StoreFns.svelte'
-	import StraySurrender from './StraySurrender.svelte'
+	import PregnantNursingSurrenderForm from './PregnantNursingSurrenderForm.svelte'
+	import RescueSurrenderForm from './RescueSurrenderForm.svelte'
+	import StraySurrenderForm from './StraySurrenderForm.svelte'
 
 	enum FormType {
 		Unspecified = '-- Select --',
 		Surrender = 'Surrender',
 		Stray = 'Stray',
+		Rescue = 'Rescue',
+		PregnantNursing = 'Pregnant/Nursing',
 		Intake = 'Intake'
 	}
 
-	let forms = [FormType.Unspecified, FormType.Surrender, FormType.Stray, FormType.Intake]
+	let forms = [
+		FormType.Unspecified,
+		FormType.Surrender,
+		FormType.Stray,
+		FormType.Rescue,
+		FormType.PregnantNursing,
+		FormType.Intake
+	]
 
 	let pkg = {
 		selected_form: FormType.Unspecified
@@ -38,7 +50,11 @@
 {:else if pkg.selected_form == FormType.Intake}
 	<IntakeForm />
 {:else if pkg.selected_form == FormType.Stray}
-	<StraySurrender />
+	<StraySurrenderForm />
+{:else if pkg.selected_form == FormType.Rescue}
+	<RescueSurrenderForm />
+{:else if pkg.selected_form == FormType.PregnantNursing}
+	<PregnantNursingSurrenderForm />
 {:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
 	<p>Please select a form.</p>
 {:else}

@@ -271,7 +271,7 @@
 	<textarea bind:value={$catPkg.specialNeeds} /><br />
 
 	<span>Current diet/medications:</span><br />
-	<textarea>{catMeds}</textarea><br />
+	<textarea bind:value={$catPkg.dietMedications}/><br />
 
 	<Dropdown choiceList={okKidsChoices} bind:value={$catPkg.okKinder} />
 	<Dropdown choiceList={okCatsChoices} bind:value={$catPkg.okCats} />

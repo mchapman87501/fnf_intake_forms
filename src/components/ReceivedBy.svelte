@@ -4,10 +4,9 @@
 	import Checkbox from './Checkbox.svelte'
 
 	import { catPkg, recvdFromPkg } from './stores.js'
-	
+
 	let currUser = '(F&F representative)'
 	let donationPattern = '\\d+(\\.\\d{2})?'
-	
 </script>
 
 <p class="rep">
@@ -22,12 +21,14 @@
 	Surrender accepted by
 	<input type="text" placeholder={currUser} bind:value={$catPkg.intakeFnFRepr} />
 </p>
+
 <style>
-	label {
-		font-size: 75%;
-	}
 	p.rep {
 		font-style: italic;
 		font-size: 80%;
+	}
+	.currency {
+		width: 4.5em;
+		text-align: right;
 	}
 </style>
