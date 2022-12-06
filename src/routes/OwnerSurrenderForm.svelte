@@ -154,7 +154,6 @@
 		const tags = ['input', 'select', 'textarea']
 		for (const childTag of tags) {
 			const elements = Array.from(formEl.getElementsByTagName(childTag))
-			console.log('Processing %o elements: %o', childTag, elements)
 			elements.forEach((node: Node) => {
 				const el = node as HTMLInputElement
 				if (el !== null && el !== undefined) {
@@ -195,7 +194,8 @@
 
 		if (rqst.status == 401) {
 			// Unauthorized, or session has expired. -- need to redirect to login.
-			// How to pop state afterwards?
+			// TODO maintain form state in a store, so it can be restored
+			// on return.
 			const reason = encodeURIComponent('Your session has expired.')
 			goto(`/login?reason=${reason}`)
 		} else if (rqst.status == 200) {
