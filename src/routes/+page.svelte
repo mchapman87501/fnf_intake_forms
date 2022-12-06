@@ -23,30 +23,30 @@
 	}
 </script>
 
-{#if $session_token !== undefined}
+{#if $session_username === undefined || $session_username == ''}
+	<p>Welcome! Please <a href="/login">log in</a>.</p>
+{:else}
 	<p>Welcome, {$session_username}.</p>
-{:else}
-	<p><a href="/login">Log In</a></p>
-{/if}
 
-<label>
-	Form:
-	<select bind:value={pkg.selected_form}>
-		{#each forms as formType}
-			<option value={formType}>
-				{formType}
-			</option>
-		{/each}
-	</select>
-</label>
+	<label>
+		Form:
+		<select bind:value={pkg.selected_form}>
+			{#each forms as formType}
+				<option value={formType}>
+					{formType}
+				</option>
+			{/each}
+		</select>
+	</label>
 
-<hr />
-{#if pkg.selected_form == FormType.Owner}
-	<OwnerSurrenderForm {...pkg} {FormType} />
-{:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
-	<p>Please select a form.</p>
-{:else}
-	<p>TBD</p>
+	<hr />
+	{#if pkg.selected_form == FormType.Owner}
+		<OwnerSurrenderForm {...pkg} {FormType} />
+	{:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
+		<p>Please select a form.</p>
+	{:else}
+		<p>TBD</p>
+	{/if}
 {/if}
 
 <style>

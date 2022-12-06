@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { session_token } from '$lib/hooks/auth'
+	import { goto } from '$app/navigation'
 	export let selected_form
 	export let FormType
 
@@ -173,7 +174,8 @@
 	async function handleSubmit() {
 		const bearerToken = $session_token
 		if (bearerToken == null) {
-			alert('You must be logged in to submit a form.')
+			const reason = encodeURIComponent('You must be logged in to submit a form.')
+			goto(`/login?reason=${reason}`)
 			return
 		}
 
@@ -192,9 +194,10 @@
 		})
 
 		if (rqst.status == 401) {
-			// Unauthorized -- need to redirect to login.
-			// Would be nice to do this as a dialog...
-			alert('You need to log in.')
+			// Unauthorized, or session has expired. -- need to redirect to login.
+			// How to pop state afterwards?
+			const reason = encodeURIComponent('Your session has expired.')
+			goto(`/login?reason=${reason}`)
 		} else if (rqst.status == 200) {
 			const response = await rqst.json()
 			console.log('Got response: %o', response)

@@ -31,3 +31,8 @@ if (browser && typeof localStorage !== "undefined") {
         }
     })
 }
+
+export function sessionExpired() {
+    session_token.set('')
+    session_username.set('')
+}

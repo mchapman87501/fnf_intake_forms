@@ -1,8 +1,18 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
+	// For help navigating back to the page that sent the
+	// browser to the current (login) page.
+	// https://stackoverflow.com/a/71585077
+	import { goto, afterNavigate } from '$app/navigation'
+	import { base } from '$app/paths'
+
 	import { session_token, session_username } from '$lib/hooks/auth'
-	// I'm not using sapper, but this may be relevant:
-	// https://stackoverflow.com/a/60426501
+
+	let prevPage: string = base
+	afterNavigate(({ from }) => {
+		prevPage = from?.url.pathname || prevPage
+	})
+
+	export let why: string | null = null
 
 	let username = ''
 	let password = ''
@@ -34,14 +44,18 @@
 			const accessToken: string = tokenObj['access_token']
 			session_username.update((curr) => username)
 			session_token.update((curr) => accessToken)
-			// Use goto to preserve the store content.
-			// TODO redirect to whatever page sent us here.
-			goto('/')
+
+			// Back to whence we came:
+			goto(prevPage)
 		}
 	}
 </script>
 
 <h1>Login</h1>
+
+{#if why != null}
+	<p class="why_here">{why}</p>
+{/if}
 
 <form on:submit|preventDefault={login}>
 	{#if error != ''}
@@ -61,6 +75,9 @@
 </form>
 
 <style>
+	.why_here {
+		font-style: italic;
+	}
 	.error {
 		color: red;
 	}
