@@ -16,7 +16,9 @@
 		surrenderChoiceSurrender,
 		surrenderChoiceStray,
 		okKidsChoices,
-		okCatsChoices
+		okCatsChoices,
+		microchippedChoiceChipped,
+		microchippedChoices
 	} from '../components/Definitions.svelte'
 	import { initSession } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
@@ -43,9 +45,6 @@
 
 	//----------------------
 	// Cat info
-	let catMarkings = ''
-
-	let catChipped = 'Unknown'
 
 	enum CatShots {
 		FVRCP = 'FVRCP',
@@ -57,15 +56,9 @@
 	let catCurrentShots: Set<CatShots> = new Set()
 	let catOtherShots = ''
 
-	// let catFelvFivTested = false
-	// let catFFTestedPositive = false
-
-	let vetName = ''
-	let vetPhone = ''
 
 	let catMeds = ''
 
-	let donationAmt = ''
 	let donationPattern = '\\d+(\\.\\d{2})?'
 
 	function toggleShot(shot: CatShots) {
@@ -254,38 +247,38 @@
 
 	<input type="text" placeholder="Breed" bind:value={$catPkg.breed} />
 	<input type="text" placeholder="Color" bind:value={$catPkg.color} />
-	<input type="text" placeholder="Markings" bind:value={catMarkings} /><br />
+	<input type="text" placeholder="Markings" bind:value={$catPkg.markings} /><br />
 
-	<select bind:value={catChipped}>
-		<option value="Unknown">Microchipped Unknown</option>
-		<option value="True">Chipped</option>
-		<option value="False">Not Chipped</option>
-	</select>
-	{#if catChipped == 'True'}
+	<Dropdown choiceList={microchippedChoices} bind:value={$catPkg.microchipped} />
+
+	{#if $catPkg.microchipped == microchippedChoiceChipped}
 		<input type="text" placeholder="Chip number" bind:value={$catPkg.microchipNum} />
 	{/if}
 	<br />
-	
+
 	<div class="shots_and_tests">
-		{#each Object.values(CatShots) as shot}
+		<!-- {#each Object.values(CatShots) as shot}
 			<label>
 				<input type="checkbox" bind:value={shot} on:change={() => toggleShot(shot)} />
 				{shot}
 			</label> &nbsp;
 		{/each}
-		<input class="other_shots" type="text" placeholder="other shot(s)" bind:value={catOtherShots} />
-		<br />
+		<input class="other_shots" type="text" placeholder="other shot(s)" bind:value={catOtherShots} /> -->
+		<label>
+			<input type="checkbox" bind:checked={$catPkg.currentShots} />
+			Current on Shots
+		</label>
 		<label>
 			<input type="checkbox" bind:checked={$catPkg.FELVFIVTested} />
 			FEL/FIV Tested
 		</label>
 
+
 		{#if $catPkg.FELVFIVTested}
 			<label>
 				<input type="checkbox" bind:checked={$catPkg.FELVFIVPositive} /> Positive
 			</label>
-			<label
-				>
+			<label>
 				<input
 					type="text"
 					placeholder="Date Tested for FELV/FIV"
@@ -294,9 +287,9 @@
 			</label>
 		{/if}
 	</div>
-
-	<input type="text" placeholder="Name of Previous Vet" bind:value={vetName} />
-	<input type="tel" placeholder="Vet phone" bind:value={vetPhone} /><br />
+	
+	<input type="text" placeholder="Name of Previous Vet" bind:value={$catPkg.namePrevVet} />
+	<input type="tel" placeholder="Vet phone" bind:value={$catPkg.phonePrevVet} /><br />
 
 	<span>Special needs/habits:</span><br />
 	<textarea bind:value={$catPkg.specialNeeds} /><br />
@@ -306,7 +299,6 @@
 
 	<Dropdown choiceList={okKidsChoices} bind:value={$catPkg.okKinder} />
 	<Dropdown choiceList={okCatsChoices} bind:value={$catPkg.okCats} />
-	
 
 	<span>OK with</span>
 	<label><input type="checkbox" bind:checked={$catPkg.okDogs} /> dogs</label>
@@ -376,6 +368,7 @@
 	div.shots_and_tests {
 		margin: 0.5em 0;
 	}
+
 	.other_shots {
 		width: 90%;
 	}

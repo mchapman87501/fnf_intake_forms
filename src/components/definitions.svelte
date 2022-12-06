@@ -3,7 +3,8 @@
 
     export const genderChoices = ['F/M Unknown', 'Female', 'Male']
 	export const alteredChoices = ['Spay/Neuter Unknown', 'Spayed/Neutered', 'Intact']
-
+	export const microchippedChoiceChipped = 'Chipped'
+	export const microchippedChoices=['Microchipped Unknown', microchippedChoiceChipped, 'Not Microchipped']
 	export const okKidsChoices = ['OK Kids Unknown', 'OK Kids', 'Not OK Kids']
 	export const okCatsChoices = ['OK Cats Unknown', 'OK Cats', 'Not OK Cats']
 	export const okDogsChoices = ['OK Dogs Unknown', 'OK Dogs', 'Not OK Dogs']
