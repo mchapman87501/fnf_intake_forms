@@ -4,8 +4,7 @@
 	import {
 		uynChoices,
 		genderChoices,
-		surrenderChoices,
-		relinquishCourtesyChoices
+		surrenderChoices
 	} from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
@@ -42,9 +41,10 @@
 
 		temp.surrenderType = surrenderChoices[0]
 		temp.locationOfRescue = ''
+		temp.shelterPrevID = ''
 		temp.descriptionOfRescue = ''
 		temp.shelterNum = ''
-		temp.relinquishCourtesyListing = relinquishCourtesyChoices[0]
+		temp.courtesyListingNoRelinquishment = false
 		temp.wantsMomBack = false
 
 		recvdFromPkg.set(temp)
@@ -56,6 +56,7 @@
 		temp.intakeDate = todayStr()
 
 		temp.catName = ''
+		temp.treatableMedical = false
 		temp.DOB = `2000-01-01`
 		temp.gender = genderChoices[0]
 		temp.altered = uynChoices[0]
@@ -86,6 +87,7 @@
 		temp.okDogs = uynChoices[0]
 
 		temp.intakeReason = ''
+		temp.oKToShow = true
 		temp.intakeFnFRepr = '(F & F representative)'
 		catPkg.set(temp)
 	}

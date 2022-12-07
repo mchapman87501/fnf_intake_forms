@@ -22,7 +22,8 @@ let  recvdFrom = {
     locationOfRescue:'',
     descriptionOfRescue:'',
     shelterNum:'',
-    relinquishCourtesyListing:'',
+    shelterPrevID:'',
+    courtesyListingNoRelinquishment: false,
     wantsMomBack:false,   
 }
 export const recvdFromPkg = writable(recvdFrom);
@@ -32,6 +33,7 @@ let cat = {
    
     intakeDate: '',
     catName : '',
+    treatableMedical: false,
     DOB : '',
     gender : '',
     altered :'',
@@ -59,6 +61,7 @@ let cat = {
     okCats: '',
     okDogs: '',
     intakeReason: '',
+    oKToShow: true,
     intakeFnFRepr: ''
 }
 export const catPkg = writable(cat);

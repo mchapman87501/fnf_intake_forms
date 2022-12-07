@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
-	import { recvdFromPkg, catPkg } from '../components/stores'
+	import { recvdFromPkg } from '../components/stores'
 	
-	import { relinquishCourtesyChoices, surrenderChoiceTransfer } from '../components/Definitions.svelte'
+	import { surrenderChoiceTransfer } from '../components/Definitions.svelte'
 
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 
@@ -58,11 +58,17 @@
 	<label>
 		<input
 			type="text"
-			placeholder="Shelter Number:"
+			placeholder="Shelter Number"
 			bind:value={$recvdFromPkg.shelterNum}
 		/>
 	</label>
-	<Dropdown choiceList={relinquishCourtesyChoices} bind:value={$recvdFromPkg.relinquishCourtesyListing}/>
+	<label>
+		<input
+			type="text"
+			placeholder="Shelter Cat ID"
+			bind:value={$recvdFromPkg.shelterPrevID}
+		/>
+	</label>
 	<hr />
 
 	<CatnameDOBGenderAltered /><br />

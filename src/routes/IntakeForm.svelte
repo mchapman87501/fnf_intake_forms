@@ -26,7 +26,7 @@
 			'Intake Reason',
 			'Surrender/Stray/Transfer',
 			'Shelter Num',
-			'Relinq/Courtesy Listing',
+			'Courtesy Listing/No Relinquishment',
 			'Show or Web Only',
 			'Rescue ID',
 			'Cat Name',
@@ -140,6 +140,7 @@
 	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} />
 	{#if $recvdFromPkg.surrenderType == surrenderChoiceTransfer}
 		<input type="text" placeholder={'Shelter ID'} bind:value={$recvdFromPkg.shelterNum} />
+		<input type="text" placeholder={'Shelter Cat ID'} bind:value={$recvdFromPkg.shelterPrevID}/>
 	{/if}
 	<br />
 	<!-- TBD - relinquish/courtesy - from transfer?<br />

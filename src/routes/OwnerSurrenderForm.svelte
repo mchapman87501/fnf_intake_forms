@@ -8,7 +8,7 @@
 
 	import { surrenderChoiceSurrender } from '../components/Definitions.svelte'
 	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
-	import { getInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
+	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
 	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
@@ -17,6 +17,9 @@
 	import OkWith from '../components/OkWith.svelte'
 	import IntakeReason from '../components/IntakeReason.svelte'
 	import Donation from '../components/Donation.svelte'
+	import CourtesyListingNoRelinquishment from '../components/CourtesyListingNoRelinquishment.svelte'
+	import TreatableMedical from '../components/TreatableMedical.svelte'
+	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
 
 	onMount(() => {
 		initSession()
@@ -173,9 +176,10 @@
 	<ShotsFivTestedVetInfo /><br />
 	<OkWith /><br />
 	<IntakeReason /><br />
-
+	<CourtesyListingNoRelinquishment/>
+	<TreatableMedical/>
+	<ShowNotWebOnly/>
 	<hr />
-
 	<Donation />
 	<ReceivedBy />
 

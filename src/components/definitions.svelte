@@ -5,8 +5,6 @@
 	export const genderChoiceFemale = 'Female'
     export const genderChoices = ['F/M Unknown', genderChoiceFemale, 'Male']
 
-	export const relinquishCourtesyChoices = ['Relinquish/Courtesy Unknown','Relinquish','Courtesy Listing']
-
 	export const surrenderChoiceTransfer = 'Transfer'
 	export const surrenderChoiceSurrender = 'Surrender'
 	export const surrenderChoiceStray = 'Stray'

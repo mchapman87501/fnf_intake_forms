@@ -7,7 +7,7 @@
 
 
 <input type="text" placeholder="Shelter Number" bind:value={$recvdFromPkg.shelterNum} />
-TBD id from transferring shelter
+<input type="text" placeholder="ID at previous shelter" bind:value={$recvdFromPkg.shelterPrevID} />
 <style>
 	label {
 		font-size: 75%;
