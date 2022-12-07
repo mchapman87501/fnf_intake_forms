@@ -4,11 +4,7 @@
 	import {
 		uynChoices,
 		genderChoices,
-		alteredChoices,
 		surrenderChoices,
-		okKidsChoices,
-		okCatsChoices,
-		microchippedChoices,
 		relinquishCourtesyChoices
 	} from './Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
@@ -45,7 +41,6 @@
 		temp.donationForm = ''
 
 		temp.surrenderType = surrenderChoices[0]
-		temp.dateOfRescue = ''
 		temp.locationOfRescue = ''
 		temp.descriptionOfRescue = ''
 		temp.shelterNum = ''
@@ -61,13 +56,15 @@
 		temp.intakeDate = todayStr()
 
 		temp.catName = ''
-		temp.age = ''
+		temp.DOB = `2000-01-01`
 		temp.gender = genderChoices[0]
-		temp.altered = alteredChoices[0]
+		temp.spayedneutered = uynChoices[0]
+		temp.spayedneuteredDate =`2000-01-01`
+		temp.spayedneuteredFacility =''
 		temp.breed = ''
 		temp.color = ''
 		temp.markings = ''
-		temp.microchipped = microchippedChoices[0]
+		temp.microchipped = uynChoices[0]
 		temp.microchipNum = ''
 
 		temp.FELVFIVPositive = false
@@ -84,9 +81,9 @@
 		temp.intakeNotes = ''
 
 		temp.specialNeeds = ''
-		temp.okKinder = okKidsChoices[0]
-		temp.okCats = okCatsChoices[0]
-		temp.okDogs = false
+		temp.okKinder = uynChoices[0]
+		temp.okCats = uynChoices[0]
+		temp.okDogs = uynChoices[0]
 
 		temp.intakeReason = ''
 		temp.intakeFnFRepr = '(F & F representative)'

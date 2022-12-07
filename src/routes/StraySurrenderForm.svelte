@@ -11,7 +11,7 @@
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 	import { surrenderChoiceStray } from '../components/Definitions.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
-	import RescueDateLocation from '../components/RescueDateLocation.svelte'
+	import RescueLocation from '../components/RescueLocation.svelte'
 	import Donation from '../components/Donation.svelte'
 
 	onMount(() => {
@@ -47,7 +47,9 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate/><br/>
-	<RescueDateLocation/><br/>
+	<ReceivedFrom /><br/>
+	<hr />
+	<RescueLocation/><br/>
 	<BreedColorMarkings />
 	
 	<input type="text" placeholder="Tame/Feral" bind:value={$catPkg.tameFeral} /> <br />
@@ -58,9 +60,7 @@
 	<textarea bind:value={$catPkg.personalityObs} /><br />
 	<span>Notes</span><br />
 	<textarea bind:value={$catPkg.strayNotes} /><br />
-
-	<hr />
-	<ReceivedFrom /><br/>
+	
 	<Donation />
 	<ReceivedBy />
 	<span>Intake Notes</span><br />

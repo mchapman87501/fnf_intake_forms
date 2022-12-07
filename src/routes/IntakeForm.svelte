@@ -8,7 +8,6 @@
 	import {
 		uynChoices,
 		genderChoices,
-		alteredChoices,
 		surrenderChoices,
 		surrenderChoiceTransfer
 	} from '../components/Definitions.svelte'
@@ -17,7 +16,7 @@
 
 	import OkWith from '../components/OkWith.svelte'
 	import ReceivedFrom from '../components/ReceivedFrom.svelte'
-	import CatnameDobGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
+	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 	import Microchip from '../components/Microchip.svelte'
 	import IntakeReason from '../components/IntakeReason.svelte'
@@ -38,7 +37,7 @@
 			'Cat Name',
 			'Cat Age/DOB',
 			'Gender',
-			'Altered/Intact',
+			'spayedneutered/Intact',
 			'Breed',
 			'Hair length',
 			// readability marker
@@ -81,9 +80,9 @@
 			'TBD',
 			'FigureThis',
 			$catPkg.catName,
-			$catPkg.age,
+			$catPkg.DOB,
 			$catPkg.gender,
-			$catPkg.altered,
+			$catPkg.spayedneutered,
 			$catPkg.breed,
 			'TBD',
 			// readability marker
@@ -150,7 +149,7 @@
 	<!-- TBD - relinquish/courtesy - from transfer?<br />
 	TBD - show or web - from where?<br />
 	TBD - RESCUE ID from where<br /> -->
-	<CatnameDobGenderAltered /><br />
+	<CatnameDOBGenderAltered /><br />
 	<BreedColorMarkings /><br />
 	<!-- TBD - hair length - from where?<br />
 	TBD - current weight - from where?<br />

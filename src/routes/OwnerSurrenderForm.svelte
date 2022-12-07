@@ -13,20 +13,15 @@
 	import {
 		uynChoices,
 		genderChoices,
-		alteredChoices,
 		surrenderChoices,
 		surrenderChoiceTransfer,
 		surrenderChoiceSurrender,
 		surrenderChoiceStray,
-		okKidsChoices,
-		okCatsChoices,
-		microchippedChoiceChipped,
-		microchippedChoices
 	} from '../components/Definitions.svelte'
 	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
-	import CatnameDobGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
+	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 	import Microchip from '../components/Microchip.svelte'
 	import ShotsFivTestedVetInfo from '../components/ShotsFIVTestedVetInfo.svelte'
@@ -71,7 +66,7 @@
 		// 	'Cat Name',
 		// 	'Cat Age/DOB',
 		// 	'Gender',
-		// 	'Altered/Intact',
+		// 	'spayedneutered/Intact',
 		// 	'Breed',
 		// 	'Hair length',
 		// 	// readability marker
@@ -128,9 +123,9 @@
 		// 		'TBD',
 		// 		'FigureThis',
 		// 		$catPkg.catName,
-		// 		$catPkg.age,
+		// 		$catPkg.DOB,
 		// 		$catPkg.gender,
-		// 		$catPkg.altered,
+		// 		$catPkg.spayedneutered,
 		// 		$catPkg.breed,
 		// 		'TBD',
 		// 		// readability marker
@@ -185,7 +180,7 @@
 
 	<hr />
 
-	<CatnameDobGenderAltered/><br/>
+	<CatnameDOBGenderAltered/><br/>
 	<BreedColorMarkings/><br/>
 	<Microchip/><br/>
 	<ShotsFivTestedVetInfo/><br/>

@@ -12,7 +12,7 @@
 
 		return tableInfo.map((row) => rowToStr(row)).join('\n')
 	}
-
+	
 	export function todayStr(): string {
 		function pad(s: string, len: number): string {
 			const overPadded = '00000000' + s

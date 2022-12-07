@@ -10,22 +10,18 @@
 	import ReceivedFrom from '../components/ReceivedFrom.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
-	import CatnameDobGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
+	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
 	import ShotsFIVTestedVetInfo from '../components/ShotsFIVTestedVetInfo.svelte'
 	import OkWith from '../components/OkWith.svelte'
-	import RescueDateLocation from '../components/RescueDateLocation.svelte'
+	import RescueLocation from '../components/RescueLocation.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
 	import Microchip from '../components/Microchip.svelte'
 	import Donation from '../components/Donation.svelte'
-	import { alteredChoiceIntact, genderChoiceFemale, surrenderChoiceSurrender } from '../components/Definitions.svelte'
+	import { uynChoices, genderChoiceFemale, surrenderChoiceSurrender } from '../components/Definitions.svelte'
 
 	onMount(() => {
 		initSession()
 		setSurrenderType(surrenderChoiceSurrender)
-		let temp = get(catPkg)
-		temp.gender = genderChoiceFemale
-		temp.altered = alteredChoiceIntact
-		catPkg.set(temp)
 	})
 
 	// TODO reflect Surrender form
@@ -65,12 +61,12 @@
 
 	<hr />
 
-	<CatnameDobGenderAltered /><br />
+	<CatnameDOBGenderAltered /><br />
 	<BreedColorMarkings /><br />
 	<Microchip/><br/>
 	<ShotsFIVTestedVetInfo /><br />
 	<OkWith /><br />
-	<RescueDateLocation />
+	<RescueLocation />
 
 	<hr />
 	<Donation />
