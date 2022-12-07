@@ -7,30 +7,37 @@ from pydantic import BaseModel
 from .user_in_db import User, UserInDB
 from .oauth_impl import oauth2_scheme
 
+# TODO get SECRET_KEY from environment.  Don't store in revision control.
 SECRET_KEY = "idontbelonginvcs_d244bdb757114d0fa0cc9f893e251d31c2e6b106e7b0b8095f01bec7e205fd4a"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
+# TODO Support JWT refresh tokens.
 class Token(BaseModel):
     access_token: str
     token_type: str
 
     @classmethod
-    def create_access_token(cls, data: dict, expires_delta: datetime.timedelta | None = None) -> str:
+    def create_access_token(
+        cls, data: dict, expires_delta: datetime.timedelta | None = None
+    ) -> str:
         to_encode = data.copy()
         if expires_delta is None:
-            expires_delta = datetime.timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            expires_delta = datetime.timedelta(
+                minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+            )
         expire = datetime.datetime.utcnow() + expires_delta
         to_encode = data | {"exp": expire}
         result = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         return result
 
+
 async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     cred_exc = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"}
+        headers={"WWW-Authenticate": "Bearer"},
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -49,6 +56,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
         raise cred_exc
     return user
 
+
 async def get_current_active_user(
     current_user: User = Depends(get_current_user),
 ) -> User:
@@ -57,5 +65,3 @@ async def get_current_active_user(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive User"
         )
     return current_user
-
-

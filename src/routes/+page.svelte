@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { session_username, session_token } from '$lib/hooks/auth'
+	import { session_token, session_username } from '$lib/hooks/auth'
+	import Dialog from '$lib/components/Dialog.svelte'
+	import LoginForm from '$lib/components/LoginForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
 
 	enum FormType {
@@ -21,10 +23,22 @@
 	let pkg = {
 		selected_form: FormType.Unspecified
 	}
+
+	let loginDialog: HTMLDialogElement
+	function signIn() {
+		console.log('Showing sign-in dialog %o.', loginDialog)
+		loginDialog.showModal()
+	}
+	function closeLoginDialog() {
+		loginDialog.close()
+	}
 </script>
 
-{#if $session_username === undefined || $session_username == ''}
-	<p>Welcome! Please <a href="/login">log in</a>.</p>
+{#if $session_token === undefined || $session_token == ''}
+	<p>Welcome! <button on:click={signIn}>Sign In</button></p>
+	<Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
+		<LoginForm loginReason="" close={closeLoginDialog} />
+	</Dialog>
 {:else}
 	<p>Welcome, {$session_username}.</p>
 

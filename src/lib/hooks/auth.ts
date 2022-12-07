@@ -1,7 +1,7 @@
 // Following along with 
 // https://ashutosh.dev/how-to-do-authentication-in-svelte-using-store/
 
-import { writable } from 'svelte/store'
+import { writable, get } from 'svelte/store'
 import { browser } from '$app/environment'
 
 export const session_token = writable<string>(undefined)
@@ -30,9 +30,18 @@ if (browser && typeof localStorage !== "undefined") {
             localStorage.setItem("session_username", value)
         }
     })
+
+    window.setTimeout(async () => {
+        const headers = jwtSession();
+        let rqst = await fetch("/api/v1/check_in", { headers: jwtSession() })
+        if (!rqst.ok) {
+            // Session is invalid.
+            session_token.set('')
+            session_username.set('')
+        }
+    }, 10)
 }
 
-export function sessionExpired() {
-    session_token.set('')
-    session_username.set('')
+export function jwtSession() {
+    return { "Authorization": "Bearer " + get(session_token) }
 }

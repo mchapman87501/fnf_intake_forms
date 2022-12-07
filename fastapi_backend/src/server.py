@@ -25,20 +25,26 @@ front_end_root = server_root / "build"
 
 api_app = APIRouter(prefix="/api/v1")
 
-#-----------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # OAuth2 authentication endpoint
 @api_app.post("/" + oauth_endpoint)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     auth_fail = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not authenticate",
-        headers={"WWW-Authenticate": "Bearer"}
+        headers={"WWW-Authenticate": "Bearer"},
     )
     user = UserInDB.authenticate(form_data.username, form_data.password)
     if user is None:
         raise auth_fail
     access_token = Token.create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+# Find out whether the access token has expired.
+@api_app.get("/check_in")
+def check_in(current_user: User = Depends(get_current_active_user)):
+    return "OK"
 
 
 # -----------------------------------------------------------------------

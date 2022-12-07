@@ -1,11 +1,23 @@
 <script lang="ts">
-	import { session_token } from '$lib/hooks/auth'
-	import { goto } from '$app/navigation'
+	import { session_token, jwtSession } from '$lib/hooks/auth'
+	import Dialog from '$lib/components/Dialog.svelte'
+	import LoginForm from '$lib/components/LoginForm.svelte'
 	export let selected_form
 	export let FormType
 
 	import Comp_ynu_dropdown from './Comp_ynu_dropdown.svelte'
 	import Comp_ynu_radiobuttons from './Comp_ynu_radiobuttons.svelte'
+
+	// Login form management.
+	let loginDialog: HTMLDialogElement
+	let loginReason = ''
+	function showLogin(reason: string) {
+		loginReason = reason
+		loginDialog.showModal()
+	}
+	function closeLoginDialog() {
+		loginDialog.close()
+	}
 
 	// Cat info
 	// package for passing between components
@@ -173,22 +185,16 @@
 	async function handleSubmit() {
 		const bearerToken = $session_token
 		if (bearerToken == null) {
-			const reason = encodeURIComponent('You must be logged in to submit a form.')
-			goto(`/login?reason=${reason}`)
+			showLogin('You must be logged in to submit a form.')
 			return
 		}
 
-		console.log('Submitting form with auth token %o', bearerToken)
 		const bodyData = dataFromForm()
 		const bodyJSON = JSON.stringify(bodyData)
 		// TODO move backend communications like this to src/lib.
 		const rqst = await fetch('/api/v1/owner_surrender_form/', {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				// Send along our session token, if there is one.
-				Authorization: 'Bearer ' + bearerToken
-			},
+			headers: { ...jwtSession(), 'Content-Type': 'application/json' },
 			body: bodyJSON
 		})
 
@@ -196,8 +202,7 @@
 			// Unauthorized, or session has expired. -- need to redirect to login.
 			// TODO maintain form state in a store, so it can be restored
 			// on return.
-			const reason = encodeURIComponent('Your session has expired.')
-			goto(`/login?reason=${reason}`)
+			showLogin('Your session has expired.')
 		} else if (rqst.status == 200) {
 			const response = await rqst.json()
 			console.log('Got response: %o', response)
@@ -217,6 +222,10 @@
 
 	let alteredChoices = ['Spay/Neuter Unknown', 'Spayed/Neutered', 'Intact']
 </script>
+
+<Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
+	<LoginForm bind:loginReason close={closeLoginDialog} />
+</Dialog>
 
 <form bind:this={formEl} on:submit|preventDefault={handleSubmit}>
 	<input name="owner_name" bind:value={ownerName} placeholder={ownerNamePlaceholder} />

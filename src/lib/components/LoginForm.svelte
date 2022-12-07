@@ -1,18 +1,11 @@
 <script lang="ts">
-	// For help navigating back to the page that sent the
-	// browser to the current (login) page.
-	// https://stackoverflow.com/a/71585077
-	import { goto, afterNavigate } from '$app/navigation'
-	import { base } from '$app/paths'
+	// This follows
+	// https://dev.to/myleftshoe/svelte-dialogs-the-easy-way-e0f
 
 	import { session_token, session_username } from '$lib/hooks/auth'
 
-	let prevPage: string = base
-	afterNavigate(({ from }) => {
-		prevPage = from?.url.pathname || prevPage
-	})
-
-	export let why: string | null = null
+	export let loginReason = ''
+	export let close: () => void = () => {}
 
 	let username = ''
 	let password = ''
@@ -44,17 +37,18 @@
 			const accessToken: string = tokenObj['access_token']
 			session_username.update((curr) => username)
 			session_token.update((curr) => accessToken)
-
-			// Back to whence we came:
-			goto(prevPage)
+			close()
 		}
 	}
 </script>
 
-<h1>Login</h1>
+<div class="header">
+	<img src="/fnf_logo_gray.jpg" alt="Felines & Friends Logo" />
+	<div>Sign In</div>
+</div>
 
-{#if why != null}
-	<p class="why_here">{why}</p>
+{#if loginReason != null && loginReason != ''}
+	<p class="why_here">{loginReason}</p>
 {/if}
 
 <form on:submit|preventDefault={login}>
@@ -63,22 +57,39 @@
 			{error}
 		</p>
 	{/if}
-	<label>
-		Username:
-		<input type="text" name="username" placeholder="Username" bind:value={username} />
-	</label>
-	<label>
-		Password:
-		<input type="password" name="password" placeholder="Password" bind:value={password} />
-	</label>
-	<button type="submit">Login</button>
+	<input type="text" name="username" placeholder="Username" bind:value={username} />
+	<br />
+	<input type="password" name="password" placeholder="Password" bind:value={password} />
+	<div class="button_box">
+		<button type="submit">Sign in</button>
+		<button type="cancel" on:click|preventDefault={close}>Cancel</button>
+	</div>
 </form>
 
 <style>
+	.header {
+		display: flex;
+		align-items: center;
+	}
+	.header > img {
+		opacity: 0.75;
+		height: 5em;
+		flex: 1 1 auto;
+	}
+	.header > div {
+		flex: 1 1 auto;
+		width: max-content;
+	}
 	.why_here {
 		font-style: italic;
+		font-size: 75%;
 	}
 	.error {
 		color: red;
+	}
+
+	.button_box {
+		margin-top: 1em;
+		text-align: right;
 	}
 </style>
