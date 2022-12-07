@@ -21,6 +21,8 @@
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 	import Microchip from '../components/Microchip.svelte'
 	import IntakeReason from '../components/IntakeReason.svelte'
+	import IntakeDate from '../components/IntakeDate.svelte'
+	import ReceivedBy from '../components/ReceivedBy.svelte'
 
 	function catPkgHeadersIntake() {
 		return [
@@ -55,8 +57,8 @@
 			'FELV/FIV Pos/Neg',
 			'Microchip Num',
 			'Ok with Kids',
-			'Ok with Dogs',
 			'Ok with Cats',
+			'Ok with Dogs',
 			'Bite History',
 			'Declawed',
 			'Special Needs',
@@ -136,21 +138,43 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<ReceivedFrom /><br />
+	<IntakeDate/><br />
+	<ReceivedBy/><br/>
+	<ReceivedFrom/><br/>
 	<IntakeReason /><br />
 	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} /> 
 	{#if $recvdFromPkg.surrenderType == surrenderChoiceTransfer}
 		<input type="text" placeholder={'Shelter ID'} bind:value={$recvdFromPkg.shelterNum} />
 	{/if}
 	<br />
+	TBD - relinquish/courtesy - from transfer?<br />
+	TBD - show or web - from where?<br />
+	TBD - RESCUE ID from where<br />
 	<CatnameDobGenderAltered /><br />
 	<BreedColorMarkings /><br />
+	TBD - hair length - from where?<br />
+	TBD - current weight - from where?<br />
+	TBD - estimated weight at maturity - from where?<br />
+	TBD - distinctive features - from where?<br />
+	TBD - spay/neuter date - from where?<br />
+	TBD - spay/neuter facility - from where?<br />
+	TBD - FVRCP #1 - from where?<br />
+	TBD - FVRCP #2 - from where?<br />
+	TBD - FVRCP #3 - from where?<br />
+	TBD - rabies expires - from where?<br />
 	<Microchip /><br />
-
+	TBD - FELV/FIV test date and result - what if not tested?<br />
 	<OkWith /><br />
-
+	TBD - bite history - from where?<br />
+	TBD - declawed - from where?<br />
+	
 	<span>Special needs/habits:</span><br />
 	<textarea bind:value={$catPkg.specialNeeds} /><br />
+	TBD - temperament - from where?<br />
+	TBD - mother/littermates - from where?<br />
+	TBD - known history - from where?<br />
+	TBD - other notes (internal use only) - from where?<br />
+	TBD - foster home upon intake - from where?<br />
 
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>

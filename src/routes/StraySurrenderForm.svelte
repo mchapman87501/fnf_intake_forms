@@ -10,6 +10,9 @@
 	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 	import { surrenderChoiceStray } from '../components/Definitions.svelte'
+	import IntakeDate from '../components/IntakeDate.svelte'
+	import RescueDateLocation from '../components/RescueDateLocation.svelte'
+	import Donation from '../components/Donation.svelte'
 
 	onMount(() => {
 		initSession()
@@ -43,16 +46,8 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<input
-		class="rescueDate"
-		type="text"
-		placeholder="Date cat was found"
-		bind:value={$recvdFromPkg.dateOfRescue}
-	/>
-	<br />
-	<span>Location where cat was found:</span><br />
-	<textarea bind:value={$recvdFromPkg.locationOfRescue} /><br />
-
+	<IntakeDate/><br/>
+	<RescueDateLocation/><br/>
 	<BreedColorMarkings />
 	
 	<input type="text" placeholder="Tame/Feral" bind:value={$catPkg.tameFeral} /> <br />
@@ -65,7 +60,8 @@
 	<textarea bind:value={$catPkg.strayNotes} /><br />
 
 	<hr />
-	<ReceivedFrom />
+	<ReceivedFrom /><br/>
+	<Donation />
 	<ReceivedBy />
 	<span>Intake Notes</span><br />
 	<textarea bind:value={$catPkg.intakeNotes} /><br />

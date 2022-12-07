@@ -15,6 +15,8 @@
 	import ShotsFIVTestedVetInfo from '../components/ShotsFIVTestedVetInfo.svelte'
 	import OkWith from '../components/OkWith.svelte'
 	import RescueDateLocation from '../components/RescueDateLocation.svelte'
+	import Donation from '../components/Donation.svelte'
+	import IntakeDate from '../components/IntakeDate.svelte'
 
 	onMount(() => {
 		initSession()
@@ -48,6 +50,7 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
+	<IntakeDate/><br/>
 	<ReceivedFrom />
 	
 	<hr/>
@@ -69,7 +72,8 @@
 	<RescueDateLocation />
 
 	<hr />
-
+	
+	<Donation />
 	<ReceivedBy />
 
 	<hr />

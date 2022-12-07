@@ -8,11 +8,7 @@
 	let zipCodePattern = '\\d{5}'
 </script>
 
-<input bind:value={$recvdFromPkg.fromName} placeholder={'Owner/Guardian/Rescuer Name'} />
-<input type="date" bind:value={$catPkg.intakeDate} />
-
-<br />
-
+<input bind:value={$recvdFromPkg.fromName} placeholder={'Owner/Rescuer Name'} />
 <input class="lic_no" bind:value={$recvdFromPkg.driversLic} placeholder="Driver's License #" /><br
 />
 

@@ -25,10 +25,10 @@
 		}
 	}
 	export function setSurrenderType(val: string) {
-	let temp = get(recvdFromPkg)
-	temp.surrenderType = val
-	recvdFromPkg.set(temp)
-}
+		let temp = get(recvdFromPkg)
+		temp.surrenderType = val
+		recvdFromPkg.set(temp)
+	}
 	export function initializeRecvdFromPkg() {
 		let temp = get(recvdFromPkg)
 		temp.fromName = ''
