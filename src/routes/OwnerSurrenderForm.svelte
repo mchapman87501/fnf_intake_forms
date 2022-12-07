@@ -1,23 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
-	import Dropdown from '../components/Dropdown.svelte'
-	import Radiobuttons from '../components/Radiobuttons.svelte'
-	import Checkbox from '../components/Checkbox.svelte'
-
 	import { catPkg, recvdFromPkg } from '../components/stores.js'
-	
+
 	import ReceivedFrom from '../components/ReceivedFrom.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 
-	import {
-		uynChoices,
-		genderChoices,
-		surrenderChoices,
-		surrenderChoiceTransfer,
-		surrenderChoiceSurrender,
-		surrenderChoiceStray,
-	} from '../components/Definitions.svelte'
+	import { surrenderChoiceSurrender } from '../components/Definitions.svelte'
 	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV, todayStr } from '../components/UtilFns.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
@@ -33,7 +22,6 @@
 		initSession()
 		setSurrenderType(surrenderChoiceSurrender)
 	})
-
 
 	// TODO reflect Surrender form
 	function surrenderHeaders() {
@@ -66,7 +54,7 @@
 		// 	'Cat Name',
 		// 	'Cat Age/DOB',
 		// 	'Gender',
-		// 	'spayedneutered/Intact',
+		// 	'altered/Intact',
 		// 	'Breed',
 		// 	'Hair length',
 		// 	// readability marker
@@ -104,7 +92,6 @@
 			$recvdFromPkg.fromName,
 			$recvdFromPkg.driversLic,
 			$recvdFromPkg.address,
-			$recvdFromPkg.homePhone,
 			$recvdFromPkg.city,
 			$recvdFromPkg.state,
 			$recvdFromPkg.zip,
@@ -125,7 +112,7 @@
 		// 		$catPkg.catName,
 		// 		$catPkg.DOB,
 		// 		$catPkg.gender,
-		// 		$catPkg.spayedneutered,
+		// 		$catPkg.altered,
 		// 		$catPkg.breed,
 		// 		'TBD',
 		// 		// readability marker
@@ -175,20 +162,21 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate/><br/>
+	<IntakeDate /><br />
 	<ReceivedFrom />
 
 	<hr />
 
-	<CatnameDOBGenderAltered/><br/>
-	<BreedColorMarkings/><br/>
-	<Microchip/><br/>
-	<ShotsFivTestedVetInfo/><br/>
-	<OkWith/><br/>
-	<IntakeReason/><br/>
-	
+	<CatnameDOBGenderAltered /><br />
+	<BreedColorMarkings /><br />
+	<Microchip /><br />
+	<ShotsFivTestedVetInfo /><br />
+	<OkWith /><br />
+	<IntakeReason /><br />
+
 	<hr />
-	<Donation/>
+
+	<Donation />
 	<ReceivedBy />
 
 	<hr />
@@ -200,64 +188,3 @@
 		>
 	</div>
 </form>
-
-<style>
-	input:invalid,
-	textarea:invalid {
-		color: red;
-	}
-
-	.lic_no {
-		width: 9em;
-	}
-
-	label,
-	span {
-		font-size: 75%;
-	}
-
-	textarea {
-		width: 90%;
-	}
-	input[type='tel'] {
-		width: 9em;
-	}
-
-	.zipcode {
-		width: 5em;
-	}
-	.state_abbrev {
-		width: 5em;
-	}
-
-	.name {
-		width: 7em;
-	}
-	.dob_age {
-		width: 5em;
-	}
-
-	div.shots_and_tests {
-		margin: 0.5em 0;
-	}
-
-	.other_shots {
-		width: 90%;
-	}
-
-	.currency {
-		width: 4.5em;
-		text-align: right;
-	}
-
-	p.rep {
-		font-style: italic;
-		font-size: 80%;
-	}
-	.btns {
-		text-align: center;
-	}
-	.fieldset-auto-width {
-		display: inline-block;
-	}
-</style>

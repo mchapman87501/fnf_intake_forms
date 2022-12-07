@@ -1,9 +1,5 @@
 <script lang="ts">
-	import Dropdown from '../components/Dropdown.svelte'
-	import Radiobuttons from '../components/Radiobuttons.svelte'
-	import Checkbox from '../components/Checkbox.svelte'
-
-	import { catPkg, recvdFromPkg } from '../components/stores.js'
+	import { recvdFromPkg } from '../components/stores.js'
 
 	let zipCodePattern = '\\d{5}'
 </script>
@@ -13,8 +9,6 @@
 />
 
 <input type="text" placeholder="Street Address" bind:value={$recvdFromPkg.address} />
-<!-- TODO should Intake.svelte use Home, Cell or logic of two  -->
-<input type="tel" placeholder="Home phone" bind:value={$recvdFromPkg.homePhone} /><br />
 
 <input type="text" placeholder="City" bind:value={$recvdFromPkg.city} />
 
@@ -27,7 +21,12 @@
 	pattern={zipCodePattern}
 	bind:value={$recvdFromPkg.zip}
 />
-<input type="tel" placeholder="Work/Cell phone" bind:value={$recvdFromPkg.workCellPhone} /><br />
+<input type="tel" placeholder="Phone" bind:value={$recvdFromPkg.phone} />
+<label
+	>Text ok?
+	<input type="checkbox" bind:checked={$recvdFromPkg.textOK} />
+</label>
+<br />
 <input type="email" placeholder="Email Address" bind:value={$recvdFromPkg.email} />
 
 <style>
@@ -42,5 +41,8 @@
 	}
 	.state_abbrev {
 		width: 5em;
+	}
+	label {
+		font-size: 75%;
 	}
 </style>

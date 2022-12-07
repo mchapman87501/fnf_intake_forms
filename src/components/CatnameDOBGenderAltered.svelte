@@ -10,14 +10,14 @@
 </label>
 
 <Dropdown choiceList={genderChoices} bind:value={$catPkg.gender} />
-<Dropdown title="Spayed/Neutered" choiceList={uynChoices} bind:value={$catPkg.spayedneutered} />
-{#if $catPkg.spayedneutered == uynChoicesYes}
+<Dropdown title="Spayed/Neutered" choiceList={uynChoices} bind:value={$catPkg.altered} />
+{#if $catPkg.altered == uynChoicesYes}
 	<label>
 		Where done?
-		<input type="text" bind:value={$catPkg.spayedneuteredFacility} />
+		<input type="text" bind:value={$catPkg.alteredFacility} />
 	</label>
 	<label>
-		Date done? <input type="date" bind:value={$catPkg.spayedneuteredDate} />
+		Date done? <input type="date" bind:value={$catPkg.alteredDate} />
 	</label>
 {/if}
 

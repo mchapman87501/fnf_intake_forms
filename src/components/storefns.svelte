@@ -30,11 +30,11 @@
 		temp.fromName = ''
 		temp.driversLic = ''
 		temp.address = ''
-		temp.homePhone = ''
 		temp.city = ''
 		temp.state = ''
 		temp.zip = ''
-		temp.workCellPhone = ''
+		temp.phone = ''
+		temp.textOK = false
 		temp.email = ''
 
 		temp.donationAmount = ''
@@ -58,9 +58,9 @@
 		temp.catName = ''
 		temp.DOB = `2000-01-01`
 		temp.gender = genderChoices[0]
-		temp.spayedneutered = uynChoices[0]
-		temp.spayedneuteredDate =`2000-01-01`
-		temp.spayedneuteredFacility =''
+		temp.altered = uynChoices[0]
+		temp.alteredDate =`2000-01-01`
+		temp.alteredFacility =''
 		temp.breed = ''
 		temp.color = ''
 		temp.markings = ''
@@ -69,7 +69,7 @@
 
 		temp.FELVFIVPositive = false
 		temp.FELVFIVTested = false
-		temp.FELVFIVTestedDate = ''
+		temp.FELVFIVTestedDate = `2000-01-01`
 		temp.currentShots = false
 		temp.namePrevVet = ''
 		temp.phonePrevVet = ''

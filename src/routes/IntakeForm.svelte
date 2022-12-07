@@ -5,12 +5,7 @@
 
 	import Dropdown from '../components/Dropdown.svelte'
 	import Radiobuttons from '../components/Radiobuttons.svelte'
-	import {
-		uynChoices,
-		genderChoices,
-		surrenderChoices,
-		surrenderChoiceTransfer
-	} from '../components/Definitions.svelte'
+	import { surrenderChoices, surrenderChoiceTransfer } from '../components/Definitions.svelte'
 	import { initSession } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 
@@ -37,7 +32,7 @@
 			'Cat Name',
 			'Cat Age/DOB',
 			'Gender',
-			'spayedneutered/Intact',
+			'altered/Intact',
 			'Breed',
 			'Hair length',
 			// readability marker
@@ -71,7 +66,6 @@
 	function catPkgValuesIntake() {
 		return [
 			$recvdFromPkg.fromName,
-			$recvdFromPkg.homePhone,
 			$recvdFromPkg.email,
 			$catPkg.intakeReason,
 			'TBD',
@@ -82,7 +76,7 @@
 			$catPkg.catName,
 			$catPkg.DOB,
 			$catPkg.gender,
-			$catPkg.spayedneutered,
+			$catPkg.altered,
 			$catPkg.breed,
 			'TBD',
 			// readability marker
@@ -124,7 +118,9 @@
 		console.log('Copying %o', csvStr)
 		navigator.clipboard.writeText(csvStr)
 	}
-
+	onMount(() => {
+		initSession()
+	})
 	function handleSubmit() {
 		return false // prevent reload
 	}
@@ -137,11 +133,11 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate/><br />
-	<ReceivedBy/><br/>
-	<ReceivedFrom/><br/>
+	<IntakeDate /><br />
+	<ReceivedBy /><br />
+	<ReceivedFrom /><br />
 	<IntakeReason /><br />
-	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} /> 
+	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} />
 	{#if $recvdFromPkg.surrenderType == surrenderChoiceTransfer}
 		<input type="text" placeholder={'Shelter ID'} bind:value={$recvdFromPkg.shelterNum} />
 	{/if}
@@ -166,7 +162,7 @@
 	<OkWith /><br />
 	<!-- TBD - bite history - from where?<br />
 	TBD - declawed - from where?<br /> -->
-	
+
 	<span>Special needs/habits:</span><br />
 	<textarea bind:value={$catPkg.specialNeeds} /><br />
 	<!-- TBD - temperament - from where?<br />
@@ -189,5 +185,11 @@
 	}
 	label {
 		font-size: 75%;
+	}
+	span {
+		font-size: 75%;
+	}
+	textarea {
+		width: 90%;
 	}
 </style>
