@@ -18,5 +18,6 @@
 <style>
 	label {
 		font-size: 75%;
+		
 	}
 </style>

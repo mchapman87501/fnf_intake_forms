@@ -23,7 +23,7 @@
 />
 <input type="tel" placeholder="Phone" bind:value={$recvdFromPkg.phone} />
 <label
-	>Text ok?
+	>Text messages ok?
 	<input type="checkbox" bind:checked={$recvdFromPkg.textOK} />
 </label>
 <br />

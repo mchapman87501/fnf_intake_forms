@@ -17,6 +17,10 @@
 	import RescueLocation from '../components/RescueLocation.svelte'
 	import Donation from '../components/Donation.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
+	import PrevShelterInfo from '../components/PrevShelterInfo.svelte'
+	import CourtesyListingNoRelinquishment from '../components/CourtesyListingNoRelinquishment.svelte'
+	import TreatableMedical from '../components/TreatableMedical.svelte'
+	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
 
 	onMount(() => {
 		initSession()
@@ -55,20 +59,8 @@
 	
 	<hr/>
 	
-	<label>
-		<input
-			type="text"
-			placeholder="Shelter Number"
-			bind:value={$recvdFromPkg.shelterNum}
-		/>
-	</label>
-	<label>
-		<input
-			type="text"
-			placeholder="Shelter Cat ID"
-			bind:value={$recvdFromPkg.shelterPrevID}
-		/>
-	</label>
+	<PrevShelterInfo/>
+
 	<hr />
 
 	<CatnameDOBGenderAltered /><br />
@@ -76,7 +68,9 @@
 	<ShotsFIVTestedVetInfo /><br />
 	<OkWith /><br />
 	<RescueLocation />
-
+	<CourtesyListingNoRelinquishment/>
+	<TreatableMedical/>
+	<ShowNotWebOnly/>
 	<hr />
 	
 	<Donation />

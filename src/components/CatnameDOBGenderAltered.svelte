@@ -20,6 +20,10 @@
 		Date done? <input type="date" bind:value={$catPkg.alteredDate} />
 	</label>
 {/if}
+<label>
+	Declawed
+<input type="checkbox" bind:checked={$catPkg.declawed} />
+</label>
 
 <style>
 	.name {

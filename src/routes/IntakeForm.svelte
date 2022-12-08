@@ -17,6 +17,7 @@
 	import IntakeReason from '../components/IntakeReason.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
+	import PrevShelterInfo from '../components/PrevShelterInfo.svelte'
 
 	function catPkgHeadersIntake() {
 		return [
@@ -139,8 +140,7 @@
 	<IntakeReason /><br />
 	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} />
 	{#if $recvdFromPkg.surrenderType == surrenderChoiceTransfer}
-		<input type="text" placeholder={'Shelter ID'} bind:value={$recvdFromPkg.shelterNum} />
-		<input type="text" placeholder={'Shelter Cat ID'} bind:value={$recvdFromPkg.shelterPrevID}/>
+		<PrevShelterInfo />
 	{/if}
 	<br />
 	<!-- TBD - relinquish/courtesy - from transfer?<br />

@@ -76,6 +76,8 @@
 		temp.phonePrevVet = ''
 		temp.dietMedications = ''
 		temp.tameFeral = ''
+		temp.biteHistory = false
+		temp.declawed = false
 		temp.illnessInjuryObs = ''
 		temp.personalityObs = ''
 		temp.strayNotes = ''

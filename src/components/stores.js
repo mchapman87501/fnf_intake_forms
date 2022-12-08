@@ -52,6 +52,8 @@ let cat = {
     phonePrevVet:'',
     dietMedications:'',
     tameFeral:'',
+    biteHistory: false,
+    declawed: false,
     illnessInjuryObs:'',
     personalityObs:'',
     strayNotes:'',
