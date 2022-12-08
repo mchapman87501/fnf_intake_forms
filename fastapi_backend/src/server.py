@@ -25,6 +25,7 @@ front_end_root = server_root / "build"
 
 api_app = APIRouter(prefix="/api/v1")
 
+
 # -----------------------------------------------------------------------
 # OAuth2 authentication endpoint
 @api_app.post("/" + oauth_endpoint)
@@ -37,7 +38,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = UserInDB.authenticate(form_data.username, form_data.password)
     if user is None:
         raise auth_fail
-    access_token = Token.create_access_token(data={"sub": user.username})
+    access_token = Token.create_access_token(user.username)
     return {"access_token": access_token, "token_type": "bearer"}
 
 
@@ -53,7 +54,6 @@ def check_in(current_user: User = Depends(get_current_active_user)):
 
 
 def save_intake_form(csv_text: str):
-    print("Pretend to save intake form:")
     print(repr(csv_text))
     # Look, a 'database'.
     outdir = backend_root / "data" / "out" / "intake_forms"

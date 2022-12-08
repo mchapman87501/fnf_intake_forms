@@ -1,51 +1,109 @@
+from contextlib import AbstractAsyncContextManager
+import sqlite3
 import typing as tp
 
+from pydantic import Field, BaseSettings
 from passlib.context import CryptContext
 
 from .user import User
 
-# Uh, this is only a prototype.
+# This is only a prototype.
 
-_by_username = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "no.reply@fnfsfe.org",
-        "hpass": "$2b$12$hMxtpdXYEGMCZmis5WnhHOYrf8eoP89uZIM4ppOi8fxrSJXIwWiFW",
-        "disabled": False,
-    }
-}
+_pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+class _Settings(BaseSettings):
+    db_pathname: str = Field(env="user.db.path")
+    admin_username: str = Field(env="admin.username")
+    admin_default_pass: str = Field(env="admin.password")
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+
+_db_schema = """
+CREATE TABLE IF NOT EXISTS Users(
+    username TEXT NOT NULL PRIMARY KEY,
+    full_name TEXT NOT NULL,
+    email TEXT,
+    hpass TEXT NOT NULL,
+    disabled BOOLEAN DEFAULT 0
+)
+"""
 
 
-UserInDB = tp.TypeVar("UserInDB")  # type: ignore
+class _UserDB:
+    def __init__(self, db_url: tp.Optional[str] = None):
+        if db_url is None:
+            db_url = f"file://{_Settings().db_pathname}"
+        self._connection = sqlite3.connect(db_url, uri=True)
+        self._connection.row_factory = sqlite3.Row
+
+        cursor = self._connection.cursor()
+        self._init_schema(cursor)
+        self._add_default_user(cursor)
+
+    def __del__(self):
+        self._connection.close()
+
+    def __enter__(self) -> "_UserDB":
+        return self
+
+    def __exit__(self, *args, **kw) -> bool:
+        self._connection.close()
+        return False
+
+    def _cursor(self) -> sqlite3.Cursor:
+        return self._connection.cursor()
+
+    def _init_schema(self, cursor: sqlite3.Cursor) -> None:
+        cursor.executescript(_db_schema)
+
+    def _add_default_user(self, cursor: sqlite3.Cursor) -> None:
+        settings = _Settings()
+        username = settings.admin_username
+        hpass = _pwd_context.hash(settings.admin_default_pass)
+        self.add_user(
+            username=username,
+            full_name="Admin",
+            email=None,
+            hpass=_pwd_context.hash(settings.admin_default_pass),
+        )
+
+    def add_user(
+        self,
+        *,
+        username: str,
+        full_name: str,
+        email: str | None,
+        hpass: str,
+        disabled: bool = False
+    ) -> bool:
+        query = """INSERT INTO Users (username, full_name, email, hpass, disabled) VALUES (?, ?, ?, ?, ?)"""
+        self._cursor().execute(query, [username, full_name, email, hpass, disabled])
+        return True
+
+    def get_user(self, username: str) -> tp.Optional[dict]:
+        cursor = self._cursor()
+        cursor.execute("SELECT * FROM Users WHERE username = ?", [username])
+        for row in cursor:
+            return row
+
 
 
 class UserInDB(User):
     hpass: str
 
-    @staticmethod
-    def _pwd_context():
-        return CryptContext(schemes=["bcrypt"], deprecated="auto")
+    @classmethod
+    def retrieve(cls, username: str) -> tp.Optional["UserInDB"]:
+        with _UserDB() as db:
+            record = db.get_user(username)
+            if record is not None:
+                return cls(**record)
+        return None
 
     @classmethod
-    def _hashita(cls, password: str) -> str:
-        return cls._pwd_context().hash(password)
-
-    @classmethod
-    def _verify_password(
-        cls, plain_password: str, hashed_password: str
-    ) -> bool:
-        return cls._pwd_context().verify(plain_password, hashed_password)
-
-    @classmethod
-    def retrieve(cls, username: str) -> UserInDB | None:
-        record = _by_username.get(username)
-        if record is not None:
-            return cls(**record)
-
-    @classmethod
-    def authenticate(cls, username: str, password: str) -> UserInDB | None:
+    def authenticate(cls, username: str, password: str) -> tp.Optional["UserInDB"]:
         user = cls.retrieve(username)
-        if (user is not None) and cls._verify_password(password, user.hpass):
+        if (user is not None) and _pwd_context.verify(password, user.hpass):
             return user
         return None

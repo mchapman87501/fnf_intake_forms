@@ -1,0 +1,16 @@
+# The username for the admin user:
+admin.username='admin'
+
+# The plaintext(!) password for the admin user:
+admin.password="YOUR PASSWORD HERE"
+
+# The secret key used JSON Web Token (JWT) generation. 
+# On *nix systems you can generate this using `openssl rand -hex 32`
+jwt.access.token.secret='shhh'
+
+# The lifetime of each JWT, in minutes.
+jwt.access.token.duration='240'
+
+# The pathname of the database containing users and credentials --
+# it's probably good to use an absolute path:
+user.db.path='/path/to/users.db'
