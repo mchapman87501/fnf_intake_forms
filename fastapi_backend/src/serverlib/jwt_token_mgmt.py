@@ -9,13 +9,18 @@ from .oauth_impl import oauth2_scheme
 
 # TODO Support JWT refresh tokens.
 
+
 class _Settings(BaseSettings):
     secret_key: str = Field(env="jwt.access.token.secret")
     access_expire_minutes: int = Field(env="jwt.access.token.duration", default=60 * 4)
 
     class Config:
+        # For use in docker:
+        secrets_dir = "/run/secrets"
+
         env_file = ".env"
         env_file_encoding = "utf-8"
+
 
 ALGORITHM = "HS256"
 

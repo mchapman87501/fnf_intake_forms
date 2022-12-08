@@ -1,4 +1,5 @@
-from contextlib import AbstractAsyncContextManager
+import os
+from pathlib import Path
 import sqlite3
 import typing as tp
 
@@ -11,14 +12,20 @@ from .user import User
 
 _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+
 class _Settings(BaseSettings):
-    db_pathname: str = Field(env="user.db.path")
+    db_pathname: str = Field(env="user.db.path", default=os.fspath(Path.cwd() / "user.db"))
     admin_username: str = Field(env="admin.username")
     admin_default_pass: str = Field(env="admin.password")
 
     class Config:
+        # For use in docker:
+        secrets_dir = "/run/secrets"
+
+        # In case docker doesn't provide a value:
         env_file = ".env"
         env_file_encoding = "utf-8"
+
 
 _db_schema = """
 CREATE TABLE IF NOT EXISTS Users(
@@ -61,7 +68,6 @@ class _UserDB:
     def _add_default_user(self, cursor: sqlite3.Cursor) -> None:
         settings = _Settings()
         username = settings.admin_username
-        hpass = _pwd_context.hash(settings.admin_default_pass)
         self.add_user(
             username=username,
             full_name="Admin",
@@ -76,9 +82,13 @@ class _UserDB:
         full_name: str,
         email: str | None,
         hpass: str,
-        disabled: bool = False
+        disabled: bool = False,
     ) -> bool:
-        query = """INSERT INTO Users (username, full_name, email, hpass, disabled) VALUES (?, ?, ?, ?, ?)"""
+        query = """
+        INSERT INTO Users
+        (username, full_name, email, hpass, disabled)
+        VALUES (?, ?, ?, ?, ?)
+        """
         self._cursor().execute(query, [username, full_name, email, hpass, disabled])
         return True
 
@@ -87,7 +97,6 @@ class _UserDB:
         cursor.execute("SELECT * FROM Users WHERE username = ?", [username])
         for row in cursor:
             return row
-
 
 
 class UserInDB(User):

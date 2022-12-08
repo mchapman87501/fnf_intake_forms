@@ -54,6 +54,7 @@ def check_in(current_user: User = Depends(get_current_active_user)):
 
 
 def save_intake_form(csv_text: str):
+    print("Saving:")
     print(repr(csv_text))
     # Look, a 'database'.
     outdir = backend_root / "data" / "out" / "intake_forms"
@@ -63,6 +64,9 @@ def save_intake_form(csv_text: str):
     # Don't use sequential IDs, etc.
     # Avoid duplicate content:
     # identical csv_text's map to identical filenames.
+
+    # NB: hashlib.file_digest() is new in Python 3.11.
+
     buff = BytesIO(csv_text.encode("utf8"))
     digest = hashlib.file_digest(buff, "sha256")
     hex = digest.hexdigest()
