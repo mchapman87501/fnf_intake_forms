@@ -4,13 +4,13 @@
 	import { catPkg, recvdFromPkg } from '../components/stores.js'
 
 	import Dropdown from '../components/Dropdown.svelte'
-	import Radiobuttons from '../components/Radiobuttons.svelte'
 	import { surrenderChoices, surrenderChoiceTransfer } from '../components/Definitions.svelte'
 	import { initSession } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 
 	import OkWith from '../components/OkWith.svelte'
-	import ReceivedFrom from '../components/ReceivedFrom.svelte'
+	import ReceivedFromName from '../components/ReceivedFromName.svelte'
+	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
 	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 	import Microchip from '../components/Microchip.svelte'
@@ -19,101 +19,72 @@
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import PrevShelterInfo from '../components/PrevShelterInfo.svelte'
 
-	function catPkgHeadersIntake() {
-		return [
-			'Recvd From Name',
-			'Recvd From Phone',
-			'Recvd From Email',
-			'Intake Reason',
-			'Surrender/Stray/Transfer',
-			'Shelter Num',
-			'Courtesy Listing/No Relinquishment',
-			'Show or Web Only',
-			'Rescue ID',
-			'Cat Name',
-			'Cat Age/DOB',
-			'Gender',
-			'altered/Intact',
-			'Breed',
-			'Hair length',
-			// readability marker
-			'Color',
-			'Current Weight',
-			'Est Size at Maturity',
-			'Distinctive Features',
-			'Spay/Neuter Date',
-			'Spay/Neuter Facility',
-			'RVRCP#1',
-			'RVRCP#2',
-			'RVRCP#3',
-			// readability marker
-			'Rabies Expires',
-			'FELV/FIV Test Date',
-			'FELV/FIV Pos/Neg',
-			'Microchip Num',
-			'Ok with Kids',
-			'Ok with Cats',
-			'Ok with Dogs',
-			'Bite History',
-			'Declawed',
-			'Special Needs',
-			'Temperament',
-			'Mother/Littermates',
-			'Known History',
-			'Internal-other Comments',
-			'Foster Home upon Intake'
-		]
+	function getPrintMap() {
+		var map = new Map()
+		map.set('Intake date',$catPkg.intakeDate)
+		map.set('Intake by', $catPkg.intakeFnFRepr)
+		map.set('Received from',$recvdFromPkg.fromName)
+		map.set('Phone',$recvdFromPkg.phone)
+		map.set('Email',$recvdFromPkg.email)
+		map.set('Intake reason',$catPkg.intakeReason)
+		map.set('Intake type',$recvdFromPkg.surrenderType)
+		map.set('Shelter Number',$recvdFromPkg.shelterNum)
+		map.set('Courtesy listing (no relinquishment)) ',$recvdFromPkg.courtesyListingNoRelinquishment.toString())
+		map.set('Ok to show (not Web only)',$catPkg.oKToShow.toString())
+		map.set('Rescue ID','To do RESCUE ID')
+		map.set('Name of cat',$catPkg.catName)
+		map.set('DOB',$catPkg.DOB)
+		map.set('Gender',$catPkg.gender)
+		map.set('Breed',$catPkg.breed)
+		map.set('Hair length','To do')
+		map.set('Color',$catPkg.color)
+		map.set('Current weight','To do')
+		map.set('Estimated size at maturity','To do')
+		map.set('Distinctive features','To do')
+		map.set('Spay/Neuter date',$catPkg.alteredDate)
+		map.set('Where done',$catPkg.alteredFacility)
+		map.set('FVRCP#1','To do')
+		map.set('FVRCP#2','To do')
+		map.set('FVRCP#3','To do')
+		map.set('Rabies expires','To do')
+		map.set('FELV/FIV test date',$catPkg.FELVFIVTestedDate)
+		map.set('Pos/Neg?',$catPkg.FELVFIVPositive.toString())
+		map.set('Microchip #',$catPkg.microchipNum)
+		map.set('Likes Dogs?',$catPkg.okDogs.toString())
+		map.set('Likes Cats?',$catPkg.okCats.toString())
+		map.set('Likes Kids?',$catPkg.okKinder.toString())
+		map.set('Bite history?',$catPkg.biteHistory.toString())
+		map.set('Declawed?',$catPkg.declawed.toString())
+		map.set('Special Needs?','To do')
+		map.set('Temperament:','To do')
+		map.set('Mother/Littermates:','To do')
+		map.set('Known History','To do')
+		map.set('Other comments [internal use only]:','To do')
+		map.set('Altered:',$catPkg.altered)
+		map.set('Prevous shelter id',$recvdFromPkg.shelterPrevID)
+	
+		return map
 	}
-	function catPkgValuesIntake() {
-		return [
-			$recvdFromPkg.fromName,
-			$recvdFromPkg.email,
-			$catPkg.intakeReason,
-			'TBD',
-			'TBD',
-			'TBD',
-			'TBD',
-			'FigureThis',
-			$catPkg.catName,
-			$catPkg.DOB,
-			$catPkg.gender,
-			$catPkg.altered,
-			$catPkg.breed,
-			'TBD',
-			// readability marker
-			$catPkg.color,
-			'TBD',
-			'TBD',
-			'TBD',
-			'TBD',
-			'TBD',
-			'TBD',
-			'TBD',
-			'TBD',
-			// readability marker
-			'TBD',
-			'TBD',
-			'TBD',
-			$catPkg.microchipNum,
-			$catPkg.okKinder,
-			$catPkg.okCats,
-			$catPkg.okDogs.toString(),
-			'TBD',
-			'TBD',
-			$catPkg.specialNeeds,
-			'TBD',
-			'TBD',
-			'TBD',
-			'TBD',
-			'TBD foster home'
-		]
+	function horizontalMap(map: Map<string,string>)
+	{
+		return [ Array.from(map.keys()), Array.from(map.values())]
 	}
+	function verticalMap(map: Map<string,string>)
+	{
+		return Array.from(map.entries())
+	}
+
 	function getInfoAsTable(): Array<Array<string>> {
 		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
 		// use intakeDate as-is.
-		return [catPkgHeadersIntake(), catPkgValuesIntake()]
+		var map = getPrintMap()
+		// console.log(verticalMap(map))
+		// console.log(horizontalMap(map))
+		return horizontalMap(map)
 	}
 	function copyFormToClipboard() {
+		var m = getPrintMap()
+		horizontalMap(m)
 		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
 		const csvStr = getInfoAsCSV(getInfoAsTable())
 		console.log('Copying %o', csvStr)
@@ -136,7 +107,8 @@
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate /><br />
 	<ReceivedBy /><br />
-	<ReceivedFrom /><br />
+	<ReceivedFromName />
+	<ReceivedFromContactInfo /><br />
 	<IntakeReason /><br />
 	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} />
 	{#if $recvdFromPkg.surrenderType == surrenderChoiceTransfer}
@@ -183,9 +155,6 @@
 <style>
 	.btns {
 		text-align: center;
-	}
-	label {
-		font-size: 75%;
 	}
 	span {
 		font-size: 75%;

@@ -25,7 +25,7 @@
 	{/if}
 </div>
 
-<input type="text" placeholder="Name of Previous Vet" bind:value={$catPkg.namePrevVet} />
+<input type="text" placeholder= "Previous Vet" bind:value={$catPkg.namePrevVet} />
 <input type="tel" placeholder="Vet phone" bind:value={$catPkg.phonePrevVet} /><br />
 
 <span>Special needs/habits:</span><br />

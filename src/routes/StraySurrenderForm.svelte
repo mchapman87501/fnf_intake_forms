@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
-	import { catPkg, recvdFromPkg } from '../components/stores.js'
+	import { catPkg } from '../components/stores.js'
 
-	import ReceivedFrom from '../components/ReceivedFrom.svelte'
+	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
+	import ReceivedFromName from '../components/ReceivedFromName.svelte'
+	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 
@@ -47,7 +49,9 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate/><br/>
-	<ReceivedFrom /><br/>
+	<ReceivedFromName />
+	<ReceivedFromDriversLic />
+	<ReceivedFromContactInfo />
 	<hr />
 	<RescueLocation/><br/>
 	<BreedColorMarkings />

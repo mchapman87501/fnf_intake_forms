@@ -3,7 +3,9 @@
 
 	import { catPkg, recvdFromPkg } from '../components/stores.js'
 
-	import ReceivedFrom from '../components/ReceivedFrom.svelte'
+	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
+	import ReceivedFromName from '../components/ReceivedFromName.svelte'
+	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 
 	import { surrenderChoiceSurrender } from '../components/Definitions.svelte'
@@ -166,7 +168,9 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate /><br />
-	<ReceivedFrom />
+	<ReceivedFromName />
+	<ReceivedFromDriversLic />
+	<ReceivedFromContactInfo />
 
 	<hr />
 

@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
-	import { recvdFromPkg } from '../components/stores'
 	
 	import { surrenderChoiceTransfer } from '../components/Definitions.svelte'
 
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 
-	import Dropdown from '../components/Dropdown.svelte'
-	import ReceivedFrom from '../components/ReceivedFrom.svelte'
+	import ReceivedFromName from '../components/ReceivedFromName.svelte'
+	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
+	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
@@ -55,7 +55,9 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate/><br/>
-	<ReceivedFrom />
+	<ReceivedFromName />
+	<ReceivedFromDriversLic />
+	<ReceivedFromContactInfo />
 	
 	<hr/>
 	

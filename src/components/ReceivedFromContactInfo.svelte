@@ -1,12 +1,8 @@
 <script lang="ts">
 	import { recvdFromPkg } from '../components/stores.js'
-
 	let zipCodePattern = '\\d{5}'
 </script>
 
-<input bind:value={$recvdFromPkg.fromName} placeholder={'Owner/Rescuer Name'} />
-<input class="lic_no" bind:value={$recvdFromPkg.driversLic} placeholder="Driver's License #" /><br
-/>
 
 <input type="text" placeholder="Street Address" bind:value={$recvdFromPkg.address} />
 
