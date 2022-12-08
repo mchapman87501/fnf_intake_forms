@@ -1,0 +1,24 @@
+version: "3"
+
+# "file" secrets are read from your host-side
+# working directory when you run `docker compose up`.
+secrets:
+  admin.username:
+    file: .docker_compose_secrets/admin.username
+  admin.password:
+    file: .docker_compose_secrets/admin.password
+  jwt.access.token.secret:
+    file: .docker_compose_secrets/jwt.access.token.secret
+  jwt.access.token.duration:
+    file: .docker_compose_secrets/jwt.access.token.duration
+
+services:
+  intake_server:
+    image: fnf_intake:latest
+    ports:
+      - 8000:8000
+    secrets:
+      - admin.username
+      - admin.password
+      - jwt.access.token.secret
+      - jwt.access.token.duration
