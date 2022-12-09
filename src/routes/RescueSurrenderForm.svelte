@@ -11,7 +11,7 @@
 	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
-	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
+	import CatnameDOBGenderAltered from '../components/AlteredWhenWhere.svelte'
 	import ShotsFIVTestedVetInfo from '../components/ShotsFIVTestedVetInfo.svelte'
 	import OkWith from '../components/OkWith.svelte'
 	import RescueLocation from '../components/RescueLocation.svelte'
@@ -56,7 +56,7 @@
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate/><br/>
 	<ReceivedFromName />
-	<ReceivedFromDriversLic />
+	<ReceivedFromDriversLic /> <br/>
 	<ReceivedFromContactInfo />
 	
 	<hr/>
@@ -91,8 +91,5 @@
 <style>
 	.btns {
 		text-align: center;
-	}
-	label {
-		font-size: 75%;
 	}
 </style>

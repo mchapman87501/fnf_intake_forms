@@ -50,7 +50,7 @@
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate/><br/>
 	<ReceivedFromName />
-	<ReceivedFromDriversLic />
+	<ReceivedFromDriversLic /><br/>
 	<ReceivedFromContactInfo />
 	<hr />
 	<RescueLocation/><br/>
@@ -95,5 +95,15 @@
 	.btns {
 		text-align: center;
 	}
-	
+	* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+input {
+  padding: 3px;
+  box-shadow: 3px 3px 5px grey;
+  font-size: 14px;
+  font-weight: 600;
+  width: 300px;
+}
 </style>

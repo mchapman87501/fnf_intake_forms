@@ -12,7 +12,7 @@
 	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
 	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
-	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
+	import CatnameDOBGenderAltered from '../components/AlteredWhenWhere.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 	import Microchip from '../components/Microchip.svelte'
 	import ShotsFivTestedVetInfo from '../components/ShotsFIVTestedVetInfo.svelte'
@@ -169,7 +169,7 @@
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate /><br />
 	<ReceivedFromName />
-	<ReceivedFromDriversLic />
+	<ReceivedFromDriversLic /> <br/>
 	<ReceivedFromContactInfo />
 
 	<hr />
