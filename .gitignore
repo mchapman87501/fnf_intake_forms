@@ -11,3 +11,8 @@ vite.config.ts.timestamp-*
 .direnv/
 __pycache__/
 /.docker_compose_secrets
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

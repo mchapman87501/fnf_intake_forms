@@ -14,7 +14,8 @@ secrets:
 
 services:
   intake_server:
-    image: fnf_intake:latest
+    build: .
+
     ports:
       - 8000:8000
     secrets:
