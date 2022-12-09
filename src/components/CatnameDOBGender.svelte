@@ -11,3 +11,8 @@
 
 <Dropdown choiceList={genderChoices} bind:value={$catPkg.gender} />
 
+<style>
+	label {
+		font-size: 75%;
+	}
+</style>

@@ -64,6 +64,19 @@ let cat = {
     okDogs: '',
     intakeReason: '',
     oKToShow: true,
-    intakeFnFRepr: ''
+    intakeFnFRepr: '',
+    FVRCP1:'',
+    FVRCP2:'',
+    FVRCP3:'',
+    rabiesExpirationDate:'',
+    hairLength:'',
+    currentWeight:'',
+    estMatureSize:'',
+    distinctiveFeatures:'',
+    temperament:'',
+    motherLittermates:'',
+    knownHistory:'',
+    otherCommentsInternalUseOnly:'',
+    fosterHomeOnIntake:''
 }
 export const catPkg = writable(cat);

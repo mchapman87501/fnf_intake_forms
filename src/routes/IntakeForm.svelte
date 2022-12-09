@@ -23,6 +23,17 @@
 	import AlteredWhenWhere from '../components/AlteredWhenWhere.svelte'
 	import Declawed from '../components/Declawed.svelte'
 	import PrevShelterBiteHistory from '../components/PrevShelterBiteHistory.svelte'
+	import FVRCPDates from '../components/FVRCPDates.svelte'
+	import RabiesExpirationDate from '../components/RabiesExpirationDate.svelte'
+	import Temperament from '../components/Temperament.svelte'
+	import MotherLittermates from '../components/MotherLittermates.svelte'
+	import InternalComments from '../components/InternalComments.svelte'
+	import FosterHomeOnIntake from '../components/FosterHomeOnIntake.svelte'
+	import HairLength from '../components/HairLength.svelte'
+	import CurrentWeight from '../components/CurrentWeight.svelte'
+	import EstSizeMaturity from '../components/EstSizeMaturity.svelte'
+	import DistinctiveFeatures from '../components/DistinctiveFeatures.svelte'
+	import SpecialNeeds from '../components/SpecialNeeds.svelte'
 
 	function getPrintMap() {
 		var map = new Map()
@@ -44,17 +55,17 @@
 		map.set('DOB', $catPkg.DOB)
 		map.set('Gender', $catPkg.gender)
 		map.set('Breed', $catPkg.breed)
-		map.set('Hair length', 'To do')
+		map.set('Hair length',  $catPkg.hairLength)
 		map.set('Color', $catPkg.color)
-		map.set('Current weight', 'To do')
-		map.set('Estimated size at maturity', 'To do')
-		map.set('Distinctive features', 'To do')
+		map.set('Current weight', $catPkg.currentWeight)
+		map.set('Estimated size at maturity', $catPkg.estMatureSize)
+		map.set('Distinctive features', $catPkg.distinctiveFeatures)
 		map.set('Spay/Neuter date', $catPkg.alteredDate)
 		map.set('Where done', $catPkg.alteredFacility)
-		map.set('FVRCP#1', 'To do')
-		map.set('FVRCP#2', 'To do')
-		map.set('FVRCP#3', 'To do')
-		map.set('Rabies expires', 'To do')
+		map.set('FVRCP#1', $catPkg.FVRCP1)
+		map.set('FVRCP#2', $catPkg.FVRCP2)
+		map.set('FVRCP#3', $catPkg.FVRCP3)
+		map.set('Rabies expires', $catPkg.rabiesExpirationDate)
 		map.set('FELV/FIV test date', $catPkg.FELVFIVTestedDate)
 		map.set('Pos/Neg?', $catPkg.FELVFIVPositive.toString())
 		map.set('Microchip #', $catPkg.microchipNum)
@@ -63,11 +74,12 @@
 		map.set('Likes Kids?', $catPkg.okKinder.toString())
 		map.set('Bite history?', $catPkg.biteHistory.toString())
 		map.set('Declawed?', $catPkg.declawed.toString())
-		map.set('Special Needs?', 'To do')
-		map.set('Temperament:', 'To do')
-		map.set('Mother/Littermates:', 'To do')
-		map.set('Known History', 'To do')
-		map.set('Other comments [internal use only]:', 'To do')
+		map.set('Special Needs?', $catPkg.specialNeeds)
+		map.set('Temperament:', $catPkg.temperament)
+		map.set('Mother/Littermates:', $catPkg.motherLittermates)
+		map.set('Known History', $catPkg.knownHistory)
+		map.set('Other comments [internal use only]:', $catPkg.otherCommentsInternalUseOnly)
+		map.set('Foster home on intake', $catPkg.fosterHomeOnIntake)
 		map.set('Altered:', $catPkg.altered)
 		map.set('Prevous shelter id', $recvdFromPkg.shelterPrevID)
 
@@ -84,8 +96,8 @@
 		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
 		// use intakeDate as-is.
 		var map = getPrintMap()
-		// console.log(verticalMap(map))
-		// console.log(horizontalMap(map))
+		// can use verticalMap(map) or horizontalMap(map) 
+		// how does user want to see/use it?
 		return horizontalMap(map)
 	}
 	function copyFormToClipboard() {
@@ -125,27 +137,23 @@
 
 	<CatnameDOBGender /><br />
 	<BreedColorMarkings /><br />
-	TBD - hair length - from where?<br />
-	TBD - current weight - from where?<br />
-	TBD - estimated weight at maturity - from where?<br />
-	TBD - distinctive features - from where?<br />
+	<HairLength /><br />
+	<CurrentWeight /><br />
+	<EstSizeMaturity /><br />
+	<DistinctiveFeatures /><br />
 	<AlteredWhenWhere /><br />
-	TBD - FVRCP #1 - from where?<br />
-	TBD - FVRCP #2 - from where?<br />
-	TBD - FVRCP #3 - from where?<br />
-	TBD - rabies expires - from where?<br />
+	<FVRCPDates /><br />
+	<RabiesExpirationDate /><br />
 	<Microchip /><br />
 	<!-- TBD - FELV/FIV test date and result - what if not tested?<br /> -->
 	<OkWith /><br />
 	<PrevShelterBiteHistory />
 	<Declawed /><br />
-	<span>Special needs/habits:</span><br />
-	<textarea bind:value={$catPkg.specialNeeds} /><br />
-	TBD - temperament - from where?<br />
-	TBD - mother/littermates - from where?<br />
-	TBD - known history - from where?<br />
-	TBD - other notes (internal use only) - from where?<br />
-	TBD - foster home upon intake - from where?<br />
+	<SpecialNeeds /><br />
+	<Temperament /><br />
+	<MotherLittermates /><br />
+	<InternalComments /><br />
+	<FosterHomeOnIntake /><br />
 
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>
@@ -161,8 +169,5 @@
 	}
 	span {
 		font-size: 75%;
-	}
-	textarea {
-		width: 90%;
 	}
 </style>

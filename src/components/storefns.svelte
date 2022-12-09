@@ -90,7 +90,21 @@
 
 		temp.intakeReason = ''
 		temp.oKToShow = true
-		temp.intakeFnFRepr = '(F & F representative)'
+		temp.intakeFnFRepr = '(F & F representative)',
+
+		temp.FVRCP1 = `2000-01-01`
+		temp.FVRCP2 = `2000-01-01`
+		temp.FVRCP3 = `2000-01-01`
+		temp.rabiesExpirationDate = `2000-01-01`
+		temp.hairLength= ''
+		temp.currentWeight= ''
+		temp.estMatureSize= ''
+		temp.distinctiveFeatures= ''
+		temp.temperament= ''
+		temp.motherLittermates= ''
+		temp.knownHistory= ''
+		temp.otherCommentsInternalUseOnly= ''
+		temp.fosterHomeOnIntake= ''
 		catPkg.set(temp)
 	}
 </script>
