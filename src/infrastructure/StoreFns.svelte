@@ -5,7 +5,7 @@
 		uynChoices,
 		genderChoices,
 		surrenderChoices
-	} from './Definitions.svelte'
+	} from'../infrastructure/Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
 	export function initForms() {

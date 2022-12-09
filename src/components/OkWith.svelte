@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { catPkg } from './stores.js'
-	import Dropdown from './Dropdown.svelte'
-	import { uynChoices } from './Definitions.svelte'
+	import { catPkg } from '../infrastructure/stores.js'
+	import Dropdown from '../infrastructure/Dropdown.svelte'
+	import { uynChoices } from '../infrastructure/Definitions.svelte'
 </script>
 
 <Dropdown title='Ok with Kids?' choiceList={uynChoices} bind:value={$catPkg.okKinder} />

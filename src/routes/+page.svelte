@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { initForms } from '../components/StoreFns.svelte'
+	import { initForms } from '../infrastructure/StoreFns.svelte'
 
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'

@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { catPkg } from './stores.js'
-	import { uynChoices, uynChoicesYes } from './Definitions.svelte';
-	import Dropdown from './Dropdown.svelte';
+	import { catPkg } from '../infrastructure/stores.js'
+	import { uynChoices, uynChoicesYes } from '../infrastructure/Definitions.svelte'
+	import Dropdown from '../infrastructure/Dropdown.svelte'
+
 </script>
 <Dropdown title='Microchipped?' choiceList={uynChoices} bind:value={$catPkg.microchipped} />
 

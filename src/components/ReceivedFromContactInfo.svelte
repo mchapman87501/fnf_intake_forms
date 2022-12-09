@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { recvdFromPkg } from '../components/stores.js'
+	import { recvdFromPkg } from '../infrastructure/stores.js'
 	let zipCodePattern = '\\d{5}'
 </script>
 
@@ -36,5 +36,7 @@
 	}
 	label {
 		font-size: 75%;
+		width: 130px;
 	}
+
 </style>

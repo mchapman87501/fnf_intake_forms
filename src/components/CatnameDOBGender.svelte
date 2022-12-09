@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { catPkg } from './stores.js'
-	import Dropdown from './Dropdown.svelte'
-	import { genderChoices } from './Definitions.svelte'
+	import { catPkg } from '../infrastructure/stores.js'
+	import Dropdown from '../infrastructure/Dropdown.svelte'
+	import { genderChoices } from '../infrastructure/Definitions.svelte'
+	
 </script>
 
 <input class="name" type="text" placeholder="Cat's name" bind:value={$catPkg.catName} />

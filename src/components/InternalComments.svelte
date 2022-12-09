@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {catPkg } from './stores.js'
+	import {catPkg } from '../infrastructure/stores.js'
 </script>
 <span>Other Comments [internal use only]:</span><br />
 <textarea bind:value={$catPkg.otherCommentsInternalUseOnly} /><br />

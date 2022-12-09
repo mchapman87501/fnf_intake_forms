@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
-	import { recvdFromPkg } from '../components/stores'
-	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
-
-	import { getInfoAsCSV } from '../components/UtilFns.svelte'
-
-	import { surrenderChoiceSurrender } from '../components/Definitions.svelte'
+	import { recvdFromPkg } from '../infrastructure/stores.js'
+	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
+	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
+	import { surrenderChoiceSurrender } from '../infrastructure/Definitions.svelte'
 
 	onMount(() => {
 		initSession()

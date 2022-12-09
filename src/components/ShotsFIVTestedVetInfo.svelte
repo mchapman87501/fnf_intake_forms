@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { catPkg } from './stores.js'
+	import { catPkg } from '../infrastructure/stores.js'
 	import SpecialNeeds from './SpecialNeeds.svelte';
 </script>
 

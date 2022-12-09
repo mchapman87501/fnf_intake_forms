@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { catPkg } from './stores.js'
-	import Dropdown from './Dropdown.svelte'
-	import { genderChoices, uynChoices, uynChoicesYes } from './Definitions.svelte'
+	import { catPkg } from '../infrastructure/stores.js'
 </script>
 
 <label>

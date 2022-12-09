@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
-	
-	import { surrenderChoiceTransfer } from '../components/Definitions.svelte'
 
-	import { getInfoAsCSV } from '../components/UtilFns.svelte'
+	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
+	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
+	import { surrenderChoiceTransfer } from '../infrastructure/Definitions.svelte'
 
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'

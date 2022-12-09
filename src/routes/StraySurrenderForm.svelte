@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
-	import { catPkg } from '../components/stores.js'
+	import { catPkg } from '../infrastructure/stores.js'
+	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
+	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
+	import { surrenderChoiceStray } from '../infrastructure/Definitions.svelte'
+
 
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
 	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
-
-	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
-	import { getInfoAsCSV } from '../components/UtilFns.svelte'
-	import { surrenderChoiceStray } from '../components/Definitions.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
 	import RescueLocation from '../components/RescueLocation.svelte'
 	import Donation from '../components/Donation.svelte'

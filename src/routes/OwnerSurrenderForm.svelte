@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
-	import { catPkg, recvdFromPkg } from '../components/stores.js'
+	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
+	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
+	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
+	import { surrenderChoiceSurrender } from '../infrastructure/Definitions.svelte'
 
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
 	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
-
-	import { surrenderChoiceSurrender } from '../components/Definitions.svelte'
-	import { initSession, setSurrenderType } from '../components/StoreFns.svelte'
-	import { getInfoAsCSV } from '../components/UtilFns.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
 	import CatnameDOBGenderAltered from '../components/AlteredWhenWhere.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'

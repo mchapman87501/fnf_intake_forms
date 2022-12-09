@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ReceivedByName from './ReceivedByName.svelte'
-	import { catPkg } from './stores.js'
+	import { catPkg } from '../infrastructure/stores.js'
 </script>
 
 <p class="rep">

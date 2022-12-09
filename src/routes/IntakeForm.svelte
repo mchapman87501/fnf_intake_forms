@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
-	import { catPkg, recvdFromPkg } from '../components/stores.js'
-
-	import Dropdown from '../components/Dropdown.svelte'
-	import { surrenderChoices, surrenderChoiceTransfer } from '../components/Definitions.svelte'
-	import { initSession } from '../components/StoreFns.svelte'
-	import { getInfoAsCSV } from '../components/UtilFns.svelte'
+	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
+	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
+	import { initSession } from '../infrastructure/StoreFns.svelte'
+	import { surrenderChoices } from '../infrastructure/Definitions.svelte' //TODO
+	import Dropdown from '../infrastructure/Dropdown.svelte'
 
 	import OkWith from '../components/OkWith.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
@@ -55,7 +54,7 @@
 		map.set('DOB', $catPkg.DOB)
 		map.set('Gender', $catPkg.gender)
 		map.set('Breed', $catPkg.breed)
-		map.set('Hair length',  $catPkg.hairLength)
+		map.set('Hair length', $catPkg.hairLength)
 		map.set('Color', $catPkg.color)
 		map.set('Current weight', $catPkg.currentWeight)
 		map.set('Estimated size at maturity', $catPkg.estMatureSize)
@@ -96,7 +95,7 @@
 		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
 		// use intakeDate as-is.
 		var map = getPrintMap()
-		// can use verticalMap(map) or horizontalMap(map) 
+		// can use verticalMap(map) or horizontalMap(map)
 		// how does user want to see/use it?
 		return horizontalMap(map)
 	}
@@ -124,8 +123,8 @@
 
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate /><br />
-	<span>Received By   <ReceivedByName /> </span><br />
-	<span>Received From	<ReceivedFromName /> </span><br />
+	<span>Received By <ReceivedByName /> </span><br />
+	<span>Received From <ReceivedFromName /> </span><br />
 	<ReceivedFromContactInfo /><br />
 	<IntakeReason /><br />
 	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} />
