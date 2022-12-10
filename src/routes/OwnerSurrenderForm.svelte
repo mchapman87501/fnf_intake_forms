@@ -176,30 +176,6 @@
 		navigator.clipboard.writeText(csvStr)
 	}
 
-	let formEl: HTMLFormElement
-
-	function dataFromForm(): any {
-		// Without this arcane definition, 'result[name] = value' generates TS error 7503.
-		let result: { [index: string]: string } = {}
-
-		// This is fragile...
-		const tags = ['input', 'select', 'textarea']
-		for (const childTag of tags) {
-			const elements = Array.from(formEl.getElementsByTagName(childTag))
-			elements.forEach((node: Node) => {
-				const el = node as HTMLInputElement
-				if (el !== null && el !== undefined) {
-					let name = el.name
-					let value = el.value
-					if (name != '' && name !== undefined && value !== undefined) {
-						result[name] = value
-					}
-				}
-			})
-		}
-		return result
-	}
-
 	const backendBaseURL = '/api/v1'
 
 	async function handleSubmit() {
@@ -209,9 +185,13 @@
 			return
 		}
 
-		const bodyData = dataFromForm()
+		const bodyData = {
+			cat_info: $catPkg,
+			received_from: $recvdFromPkg
+		}
 		const bodyJSON = JSON.stringify(bodyData)
-		console.log
+		console.log('Posting owner surrender form with data: %o', bodyData)
+		console.log('Formatted as JSON: %o', bodyJSON)
 		// TODO move backend communications like this to src/lib.
 		const rqst = await fetch('/api/v1/owner_surrender_form', {
 			method: 'POST',
@@ -241,7 +221,7 @@
 	<LoginForm bind:loginReason close={closeLoginDialog} />
 </Dialog>
 
-<form bind:this={formEl} on:submit|preventDefault={handleSubmit}>
+<form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate /><br />
 	<ReceivedFromName />
 	<ReceivedFromDriversLic /> <br />

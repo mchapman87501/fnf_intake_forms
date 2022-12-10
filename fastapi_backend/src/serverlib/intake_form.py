@@ -7,7 +7,8 @@ from pydantic import BaseModel, Field
 
 # Should these fields be some custom class with a "comments" metadata attr?
 class IntakeForm(BaseModel):
-    intake_date: datetime.date = Field(datetime.date.today(), title="Intake Date")
+    # Dates are represented as strings.  TODO standardize format and parsing.
+    intake_date: str = Field(datetime.date.today().strftime("%Y-%m-%d"), title="Intake Date")
     intake_by: str = Field("Unknown", title="Intake By")
     received_from: str = Field("Unknown", title="Received From")
     phone_num: str = Field("Unknown", title="Phone #")
