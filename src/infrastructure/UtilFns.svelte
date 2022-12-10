@@ -2,6 +2,9 @@
 	
 	export function getInfoAsCSV(tableInfo: string[][]): string {
 		function valueToCSV(v: string): string {
+			if (v == null) {
+				v = ''
+			}
 			const quoted = v.replaceAll('"', '""')
 			return `"${quoted}"`
 		}
