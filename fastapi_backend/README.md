@@ -48,15 +48,19 @@ not added to any source control repo.
 `env_template.in` can be used as a template for `./.env`.  It has entries for
 all of the environment variables that are known to be needed as of time of writing.
 
-|Name|Meaning|
-|-|-|
-|user.db.path|Pathname of the user database - absolute path is probably best|
-|admin.username|The username for the admin (okay, the default) user|
-|admin.password|The cleartext (!) password for the admin user.|
-|jwt.access.token.secret|Salt for JSON Web Token (JWT) generation.  On *nix systems you can generate this using `openssl rand -hex 32`|
-|jwt.access.token.duration|The duration of JWT access tokens, in minutes|
+### Elastic Beanstalk
 
-See `env_template.in` for an empty example.
+What a mess that is...
+
+To deploy to eb: `eb create` and answer a bunch of questions.
+Supposedly if you have a `.env` file at the root of your repository, that can contain
+environment variable definition ("secrets") to use during deployment.
+
+As an alternative, if you have a saved, working beanstalk environment that has been
+saved via `eb config get`, then you can create/deploy using `eb create --cfg saved-config-name`.
+
+As another alternative, you can specify environment variables:
+`eb create --envvars ENVVARS` where `ENVVARS` is "a comma-separated list of environment variables as key=value pairs".
 
 ### Start Coding
 
