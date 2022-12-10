@@ -74,7 +74,7 @@ def save_intake_form(csv_text: str):
     outpath.write_text(csv_text)
 
 
-@api_app.post("/owner_surrender_form/")
+@api_app.post("/owner_surrender_form")
 async def get_intake_form(
     form_data: OwnerSurrenderForm,
     current_user: User = Depends(get_current_active_user),
