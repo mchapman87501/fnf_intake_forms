@@ -5,7 +5,8 @@ from pydantic import BaseModel
 # Python's preferred snakecase, where needed:
 # https://medium.com/analytics-vidhya/camel-case-models-with-fast-api-and-pydantic-5a8acb6c0eee
 class BaseSurrenderForm(BaseModel):
-    surrender_date: str = "Unknown"
+    intake_date: str = "Unknown"
+    received_from_name: str = "Unknown"
     drivers_license_no: str = "Unknown"
     street_address: str = "Unknown"
     home_phone: str = "Unknown"
