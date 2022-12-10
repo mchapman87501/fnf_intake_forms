@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { initForms } from '../infrastructure/StoreFns.svelte'
+	import { showTests } from '../testing/teststores.js'
+	import { populateWithTestData } from '../testing/TestStoreFns.svelte'
 
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
@@ -40,6 +42,13 @@
 		{/each}
 	</select>
 </label>
+
+{#if $showTests == true}
+<label>
+	<button type="button" on:click={populateWithTestData}>Test only: set fields to test values</button>
+</label>
+{/if}
+
 <label>
 	<button type="button" on:click={initForms}>&#9888; Reset all Forms to Defaults</button>
 </label>
