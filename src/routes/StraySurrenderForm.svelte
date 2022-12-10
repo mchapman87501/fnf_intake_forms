@@ -3,7 +3,7 @@
 
 	import { catPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
+	import { setSurrenderType } from '../infrastructure/StoreFns.svelte'
 	import { surrenderChoiceStray } from '../infrastructure/Definitions.svelte'
 
 
@@ -17,7 +17,6 @@
 	import Donation from '../components/Donation.svelte'
 
 	onMount(() => {
-		initSession()
 		setSurrenderType(surrenderChoiceStray)
 	})
 

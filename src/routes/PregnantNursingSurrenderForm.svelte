@@ -3,11 +3,10 @@
 
 	import { recvdFromPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
+	import { setSurrenderType } from '../infrastructure/StoreFns.svelte'
 	import { surrenderChoiceSurrender } from '../infrastructure/Definitions.svelte'
 
 	onMount(() => {
-		initSession()
 		setSurrenderType(surrenderChoiceSurrender)
 	})
 

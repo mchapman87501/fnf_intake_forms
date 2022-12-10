@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte'
 
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
+	import { setSurrenderType } from '../infrastructure/StoreFns.svelte'
 	import { surrenderChoiceTransfer } from '../infrastructure/Definitions.svelte'
 
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
@@ -22,7 +22,6 @@
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
 
 	onMount(() => {
-		initSession()
 		setSurrenderType(surrenderChoiceTransfer)
 	})
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { initForms } from '../infrastructure/StoreFns.svelte'
+	import { initForms, initSession } from '../infrastructure/StoreFns.svelte'
 	import { showTests } from '../testing/teststores.js'
 	import { populateWithTestData } from '../testing/TestStoreFns.svelte'
 
@@ -8,6 +8,7 @@
 	import PregnantNursingSurrenderForm from './PregnantNursingSurrenderForm.svelte'
 	import RescueSurrenderForm from './RescueSurrenderForm.svelte'
 	import StraySurrenderForm from './StraySurrenderForm.svelte'
+	import { onMount } from 'svelte'
 
 	enum FormType {
 		Unspecified = '-- Select --',
@@ -30,6 +31,9 @@
 	let pkg = {
 		selected_form: FormType.Unspecified
 	}
+	onMount(() => {
+		initSession()
+	})
 </script>
 
 <label class="right-margin"

@@ -3,7 +3,7 @@
 
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
+	import { setSurrenderType } from '../infrastructure/StoreFns.svelte'
 	import { surrenderChoiceSurrender } from '../infrastructure/Definitions.svelte'
 
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
@@ -23,7 +23,6 @@
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
 
 	onMount(() => {
-		initSession()
 		setSurrenderType(surrenderChoiceSurrender)
 	})
 

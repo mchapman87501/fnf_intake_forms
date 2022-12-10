@@ -3,7 +3,6 @@
 
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession } from '../infrastructure/StoreFns.svelte'
 	import { surrenderChoices } from '../infrastructure/Definitions.svelte' //TODO
 	import Dropdown from '../infrastructure/Dropdown.svelte'
 
@@ -107,9 +106,7 @@
 		console.log('Copying %o', csvStr)
 		navigator.clipboard.writeText(csvStr)
 	}
-	onMount(() => {
-		initSession()
-	})
+
 	function handleSubmit() {
 		return false // prevent reload
 	}
