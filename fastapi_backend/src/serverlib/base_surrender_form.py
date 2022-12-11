@@ -16,7 +16,7 @@ class BaseSurrenderForm(BaseModel):
     def to_intake_form(self) -> IntakeForm:
         return IntakeForm(
             intake_date=self.cat_info.intake_date,
-            received_by="TBD",
+            received_by=self.cat_info.intake_fnf_repr,
             received_from=self.received_from.received_from_name,
             street_address=self.received_from.street_address,
             state=self.received_from.state,

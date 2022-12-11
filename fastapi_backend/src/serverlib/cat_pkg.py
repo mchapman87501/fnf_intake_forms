@@ -12,4 +12,6 @@ class CatPkg(BaseModel):
     gender: str = ""
     altered: str = ""
     altered_date: str = Field(alias="alteredDate")
+    # ...
+    intake_fnf_repr: str = Field(alias="intakeFnFRepr")
     # etc.
