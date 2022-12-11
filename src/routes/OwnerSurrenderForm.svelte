@@ -190,8 +190,6 @@
 			received_from: $recvdFromPkg
 		}
 		const bodyJSON = JSON.stringify(bodyData)
-		console.log('Posting owner surrender form with data: %o', bodyData)
-		console.log('Formatted as JSON: %o', bodyJSON)
 		// TODO move backend communications like this to src/lib.
 		const rqst = await fetch('/api/v1/owner_surrender_form', {
 			method: 'POST',

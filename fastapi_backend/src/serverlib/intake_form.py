@@ -9,15 +9,24 @@ from pydantic import BaseModel, Field
 class IntakeForm(BaseModel):
     # Dates are represented as strings.  TODO standardize format and parsing.
     intake_date: str = Field(datetime.date.today().strftime("%Y-%m-%d"), title="Intake Date")
-    intake_by: str = Field("Unknown", title="Intake By")
+    received_by: str = Field("Unknown", title="Received By")
     received_from: str = Field("Unknown", title="Received From")
-    phone_num: str = Field("Unknown", title="Phone #")
-    email: str = Field("Unknown", title="e-mail")
-    reason: str = Field("Unknown", title="Reason")
-    surrender_transfer_stray: str = Field("Unknown", title="Surrender/Transfer/Stray")
+
+    street_address: str = Field("Unknown", title="Street Address")
+    city: str = Field("Unknown", title="City")
+    state: str = Field("Unknown", title="State")
+    zipcode: str = Field("Unknown", title="Zip code")
+    phone: str = Field("Unknown", title="Cell/Home phone")
+    email: str = Field("Unknown", title="Email Address")
+
+    reason: str = Field("Unknown", title="Reason for surrender")
+    # Not sure what to do with the front-end surrender-types.
+
+    shelter_number: str = Field("Unknown", title="Shelter Number")
+
     # ...
-    name_of_cat: str = Field("Unknown", title="Name of Cat")
-    date_of_birth: str = Field("Unknown", title="Date of Birth / Cat Age")
+    name_of_cat: str = Field("Unknown", title="Cat's name")
+    date_of_birth: str = Field("Unknown", title="DOB")
     gender: str = Field("Unknown", title="Gender")
     # Etc.
 

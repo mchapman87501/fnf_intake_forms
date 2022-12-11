@@ -16,12 +16,15 @@ class BaseSurrenderForm(BaseModel):
     def to_intake_form(self) -> IntakeForm:
         return IntakeForm(
             intake_date=self.cat_info.intake_date,
-            intake_by="TBD",
+            received_by="TBD",
             received_from=self.received_from.received_from_name,
-            phone_num=self.received_from.home_phone,
+            street_address=self.received_from.street_address,
+            state=self.received_from.state,
+            zipcode=self.received_from.zipcode,
+            phone=self.received_from.phone,
             email=self.received_from.email_addr,
-            reason="TBD",
-            surrender_transfer_stray="TBD",
+            reason=self.received_from.surrender_type,
+            shelter_number=self.received_from.shelter_num,
             # ...
             name_of_cat=self.cat_info.cat_name,
             date_of_birth=self.cat_info.dob,

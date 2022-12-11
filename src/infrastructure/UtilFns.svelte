@@ -1,5 +1,4 @@
 <script lang="ts" context="module">
-	
 	export function getInfoAsCSV(tableInfo: string[][]): string {
 		function valueToCSV(v: string): string {
 			const quoted = v.replaceAll('"', '""')
@@ -12,7 +11,7 @@
 
 		return tableInfo.map((row) => rowToStr(row)).join('\n')
 	}
-	
+
 	export function todayStr(): string {
 		function pad(s: string, len: number): string {
 			const overPadded = '00000000' + s
@@ -29,7 +28,6 @@
 		const mStr = pad(month.toFixed(0), 2)
 		const dStr = pad(day.toFixed(0), 2)
 		const result = `${yStr}-${mStr}-${dStr}`
-		console.log('todayStr = %o', result)
 		return result
 	}
 </script>
