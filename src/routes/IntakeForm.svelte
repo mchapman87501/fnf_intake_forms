@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-
-	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
+	import { get } from 'svelte/store'
+	import { showTests } from '../testing/teststores.js'
+	import { cat,catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
 	import { surrenderChoices } from '../infrastructure/Definitions.svelte' //TODO
 	import Dropdown from '../infrastructure/Dropdown.svelte'
+	import { makeCatTestData } from '../testing/TestStoreFns.svelte'
+	import { compareMaps } from '../testing/TestUtilFns.svelte'
 
 	import OkWith from '../components/OkWith.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
@@ -33,14 +35,16 @@
 	import DistinctiveFeatures from '../components/DistinctiveFeatures.svelte'
 	import SpecialNeeds from '../components/SpecialNeeds.svelte'
 
-	function getPrintMap() {
+	function getPrintMap(
+		catVal: cat) {
 		var map = new Map()
-		map.set('Intake date', $catPkg.intakeDate)
-		map.set('Intake by', $catPkg.intakeFnFRepr)
+		//There are red lines under catVal but the code works TODO
+		map.set('Intake date', catVal.intakeDate)
+		map.set('Intake by', catVal.intakeFnFRepr)
 		map.set('Received from', $recvdFromPkg.fromName)
 		map.set('Phone', $recvdFromPkg.phone)
 		map.set('Email', $recvdFromPkg.email)
-		map.set('Intake reason', $catPkg.intakeReason)
+		map.set('Intake reason', catVal.intakeReason)
 		map.set('Intake type', $recvdFromPkg.surrenderType)
 		map.set('Shelter Number', $recvdFromPkg.shelterNum)
 		map.set(
@@ -49,12 +53,12 @@
 		)
 		map.set('Ok to show (not Web only)', $catPkg.oKToShow.toString())
 		map.set('Rescue ID', 'To do RESCUE ID')
-		map.set('Name of cat', $catPkg.catName)
-		map.set('DOB', $catPkg.DOB)
-		map.set('Gender', $catPkg.gender)
-		map.set('Breed', $catPkg.breed)
-		map.set('Hair length', $catPkg.hairLength)
-		map.set('Color', $catPkg.color)
+		map.set('Name of cat', catVal.catName)
+		map.set('DOB', catVal.DOB)
+		map.set('Gender', catVal.gender)
+		map.set('Breed', catVal.breed)
+		map.set('Hair length', catVal.hairLength)
+		map.set('Color', catVal.color)
 		map.set('Current weight', $catPkg.currentWeight)
 		map.set('Estimated size at maturity', $catPkg.estMatureSize)
 		map.set('Distinctive features', $catPkg.distinctiveFeatures)
@@ -93,13 +97,27 @@
 	function getInfoAsTable(): Array<Array<string>> {
 		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,
 		// use intakeDate as-is.
-		var map = getPrintMap()
+		var map = getPrintMap($catPkg)
 		// can use verticalMap(map) or horizontalMap(map)
 		// how does user want to see/use it?
 		return horizontalMap(map)
 	}
 	function copyFormToClipboard() {
-		var m = getPrintMap()
+		var m = getPrintMap(get(catPkg))
+		if ($showTests == true) {
+			let temp = makeCatTestData()
+			console.log('Temp name %o', temp.catName)
+			console.log('Cat name ', $catPkg.catName)
+
+			var m1 = getPrintMap(temp)
+			console.log('temp %o', m1)
+			if (compareMaps(m, m1)) {
+				console.log('maps are equal!')
+			} else {
+				console.log('maps are not equal')
+			}
+		}
+
 		horizontalMap(m)
 		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
 		const csvStr = getInfoAsCSV(getInfoAsTable())
