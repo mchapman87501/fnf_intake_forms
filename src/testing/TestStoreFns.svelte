@@ -1,54 +1,25 @@
 <script lang="ts" context="module">
-	import {  catPkg, recvdFromPkg } from '../infrastructure/stores'
+	import {  cat, catPkg, recvdFromPkg } from '../infrastructure/stores'
 	import { get } from 'svelte/store'
 	import {
 		uynChoices,
 		genderChoices,
 		surrenderChoices
 	} from'../infrastructure/Definitions.svelte'
-
 	export function populateWithTestData() {
 		initializeCatPkgTest()
 		initializeRecvdFromPkgTest()
 	}
-
-	export function initializeRecvdFromPkgTest() {
-		let temp = get(recvdFromPkg)
-		temp.fromName = 'A concerned person'
-		temp.driversLic = 'dl1'
-		temp.address = ''
-		temp.city = ''
-		temp.state = ''
-		temp.zip = ''
-		temp.phone = ''
-		temp.textOK = false
-		temp.email = ''
-
-		temp.donationAmount = ''
-		temp.donationForm = ''
-
-		temp.surrenderType = surrenderChoices[0]
-		temp.locationOfRescue = ''
-		temp.shelterPrevID = ''
-		temp.descriptionOfRescue = ''
-		temp.shelterNum = ''
-		temp.courtesyListingNoRelinquishment = false
-		temp.wantsMomBack = false
-
-		recvdFromPkg.set(temp)
-	}
-
-	export function initializeCatPkgTest() {
-		let temp = get(catPkg)
-
+	export function makeCatTestData() {
+		let temp = Object.assign({}, cat);
+		temp.intakeDate = `2022-11-12`
+		temp.catName = 'Still Frank'
 		temp.intakeDate = `2022-01-01`
-
-		temp.catName = ''
 		temp.treatableMedical = false
 		temp.DOB = `2000-01-01`
-		temp.gender = genderChoices[0]
-		temp.altered = uynChoices[0]
-		temp.alteredDate =`2000-01-01`
+		temp.gender = genderChoices[2]
+		temp.altered = uynChoices[1]
+		temp.alteredDate =`2019-01-01`
 		temp.alteredFacility =''
 		temp.breed = ''
 		temp.color = ''
@@ -93,6 +64,38 @@
 		temp.knownHistory= ''
 		temp.otherCommentsInternalUseOnly= ''
 		temp.fosterHomeOnIntake= ''
+		return temp
+	}
+
+	export function initializeRecvdFromPkgTest() {
+		
+		let temp = get(recvdFromPkg)
+		temp.fromName = 'A concerned person'
+		temp.driversLic = 'dl1'
+		temp.address = ''
+		temp.city = ''
+		temp.state = ''
+		temp.zip = ''
+		temp.phone = ''
+		temp.textOK = false
+		temp.email = ''
+
+		temp.donationAmount = ''
+		temp.donationForm = ''
+
+		temp.surrenderType = surrenderChoices[0]
+		temp.locationOfRescue = ''
+		temp.shelterPrevID = ''
+		temp.descriptionOfRescue = ''
+		temp.shelterNum = ''
+		temp.courtesyListingNoRelinquishment = false
+		temp.wantsMomBack = false
+
+		recvdFromPkg.set(temp)
+	}
+
+	export function initializeCatPkgTest() {
+		let temp = makeCatTestData()
 		catPkg.set(temp)
 	}
 </script>

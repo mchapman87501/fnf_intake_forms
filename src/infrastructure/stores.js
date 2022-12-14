@@ -29,7 +29,7 @@ let  recvdFrom = {
 export const recvdFromPkg = writable(recvdFrom);
 
 // Information about the cat
-let cat = {
+export let cat = {
    
     intakeDate: '',
     catName : '',
