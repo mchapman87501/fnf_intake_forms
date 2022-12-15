@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { initForms } from '../infrastructure/StoreFns.svelte'
+	import { onMount } from 'svelte'
+	import { initForms, initSession } from '../infrastructure/StoreFns.svelte'
 
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
-	import PregnantNursingSurrenderForm from './PregnantNursingSurrenderForm.svelte'
+	import WantsMomBack from '../components/WantsMomBack.svelte'
 	import RescueSurrenderForm from './RescueSurrenderForm.svelte'
 	import StraySurrenderForm from './StraySurrenderForm.svelte'
 
@@ -28,6 +29,10 @@
 	let pkg = {
 		selected_form: FormType.Unspecified
 	}
+	//initialize defaults
+	onMount(() => {
+		initSession()
+	})
 </script>
 
 <label class="right-margin"
@@ -54,7 +59,9 @@
 {:else if pkg.selected_form == FormType.Rescue}
 	<RescueSurrenderForm />
 {:else if pkg.selected_form == FormType.PregnantNursing}
-	<PregnantNursingSurrenderForm />
+	<OwnerSurrenderForm>
+		<span slot="mom-slot"> <WantsMomBack /> </span>
+	</OwnerSurrenderForm>
 {:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
 	<p>Please select a form.</p>
 {:else}

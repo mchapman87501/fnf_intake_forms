@@ -1,10 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
-	import { surrenderChoiceSurrender } from '../infrastructure/Definitions.svelte'
 
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
@@ -21,11 +17,7 @@
 	import CourtesyListingNoRelinquishment from '../components/CourtesyListingNoRelinquishment.svelte'
 	import TreatableMedical from '../components/TreatableMedical.svelte'
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
-
-	onMount(() => {
-		initSession()
-		setSurrenderType(surrenderChoiceSurrender)
-	})
+	import SurrenderType from '../components/SurrenderType.svelte'
 
 	// TODO reflect Surrender form
 	function surrenderHeaders() {
@@ -166,11 +158,11 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate /><br />
+	<IntakeDate /> <SurrenderType/><br />
 	<ReceivedFromName />
 	<ReceivedFromDriversLic /> <br/>
 	<ReceivedFromContactInfo />
-
+	<template id="mom-paragraph"><p><slot name="mom-slot"></slot></p></template>
 	<hr />
 
 	<CatnameDOBGenderAltered /><br />
