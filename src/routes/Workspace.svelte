@@ -29,6 +29,7 @@
 	import DistinctiveFeatures from '../components/DistinctiveFeatures.svelte'
 	import SpecialNeeds from '../components/SpecialNeeds.svelte'
 	import SurrenderType from '../components/SurrenderType.svelte'
+	import { query_selector_all } from 'svelte/internal'
 
 	function getPrintMap() {
 		var map = new Map()
@@ -95,7 +96,6 @@
 		// how does user want to see/use it?
 		return horizontalMap(map)
 	}
-
 	function copyFormToClipboard() {
 		var m = getPrintMap()
 		horizontalMap(m)
@@ -104,22 +104,6 @@
 		console.log('Copying %o', csvStr)
 		navigator.clipboard.writeText(csvStr)
 	}
-
-	function imageChange() {
-		const imgInp = <HTMLInputElement>document.getElementById('imgInp')
-		if (imgInp != null) {
-			const files = imgInp.files
-			if (files != null) {
-				// console.log(files[0])
-				console.log($catPkg.profilePic)
-				Array.prototype.forEach.call(files, function (file) {
-						(<HTMLInputElement>document.getElementById('blah')).src = URL.createObjectURL(file)
-							$catPkg.profilePic = URL.createObjectURL(file)
-				})
-			}
-		}
-	}
-
 	function handleSubmit() {
 		return false // prevent reload
 	}
@@ -129,6 +113,44 @@
 		return true
 	}
 	$: formValid = getFormValid()
+	const uploadInput = <HTMLInputElement> document.getElementById('uploadInput')
+	if (uploadInput != null) {
+	uploadInput.addEventListener(
+		'change',
+		() => {
+			console.log('change')
+			// Calculate total size
+			let numberOfBytes = 0
+			if (uploadInput.files != null) {
+			for (const file of uploadInput.files) {
+				numberOfBytes += file.size
+			}
+
+			// Approximate to the closest prefixed unit
+			const units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+			const exponent = Math.min(
+				Math.floor(Math.log(numberOfBytes) / Math.log(1024)),
+				units.length - 1
+			)
+			const approx = numberOfBytes / 1024 ** exponent
+			const output =
+				exponent === 0
+					? `${numberOfBytes} bytes`
+					: `${approx.toFixed(3)} ${units[exponent]} (${numberOfBytes} bytes)`
+
+			let fileNumElm = (<HTMLInputElement>document.getElementById('fileNum'))
+			if (fileNumElm != null) {
+				fileNumElm.textContent = uploadInput.files.length.toString()
+			}
+			let filesizeElm = (<HTMLInputElement>document.getElementById('fileSize'))
+				if (filesizeElm != null) {
+					filesizeElm.textContent = output
+			}
+			}
+		},
+		false
+	)
+	}
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
@@ -137,7 +159,7 @@
 	<span>Received From <ReceivedFromName /> </span><br />
 	<ReceivedFromContactInfo /><br />
 	<IntakeReason /><br />
-	<SurrenderType/>
+	<SurrenderType />
 	<PrevShelterNum />
 	<br />
 	<CourtesyListingNoRelinquishment /><br />
@@ -163,14 +185,24 @@
 	<MotherLittermates /><br />
 	<InternalComments /><br />
 	<FosterHomeOnIntake /><br />
-	<input accept="image/*" type="file" id="imgInp" bind:value={$catPkg.profilePic} on:change={imageChange} />
-	<img id="blah" src={$catPkg.profilePic} alt="the cat" width="300" height="300"/>
+	<h1>Vanilla JS Drag & Drop upload zone for input file element</h1>
+
+	<div>
+		<label for="uploadInput">Choose file to upload</label>
+		<input type="file" id="fileinput" name="fileinput" bind:value={$catPkg.profilePic} multiple />
+		<label for="fileNum">Selected files:</label>
+		<output id="fileNum">0</output>;
+		<label for="fileSize">Total size:</label>
+		<output id="fileSize">0</output>
+	</div>
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>
 		<button type="button" on:click={copyFormToClipboard}
 			>Copy Intake Form to Clipboard (Excel)</button
 		>
 	</div>
+	<p>{$catPkg.profilePic}</p>
+	<img src={$catPkg.profilePic} alt="A Cat" />
 </form>
 
 <style>

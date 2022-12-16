@@ -109,6 +109,7 @@
 		temp.knownHistory= ''
 		temp.otherCommentsInternalUseOnly= ''
 		temp.fosterHomeOnIntake= ''
+		temp.profilePic = ''
 		catPkg.set(temp)
 	}
 </script>
