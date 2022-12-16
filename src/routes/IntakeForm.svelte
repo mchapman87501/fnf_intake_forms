@@ -34,6 +34,7 @@
 	import EstSizeMaturity from '../components/EstSizeMaturity.svelte'
 	import DistinctiveFeatures from '../components/DistinctiveFeatures.svelte'
 	import SpecialNeeds from '../components/SpecialNeeds.svelte'
+	import SurrenderType from '../components/SurrenderType.svelte'
 
 	function getPrintMap(
 		catVal: cat) {
@@ -125,6 +126,21 @@
 		navigator.clipboard.writeText(csvStr)
 	}
 
+	function imageChange() {
+		const imgInp = <HTMLInputElement>document.getElementById('imgInp')
+		if (imgInp != null) {
+			const files = imgInp.files
+			if (files != null) {
+				// console.log(files[0])
+				console.log($catPkg.profilePic)
+				Array.prototype.forEach.call(files, function (file) {
+						(<HTMLInputElement>document.getElementById('blah')).src = URL.createObjectURL(file)
+							$catPkg.profilePic = URL.createObjectURL(file)
+				})
+			}
+		}
+	}
+
 	function handleSubmit() {
 		return false // prevent reload
 	}
@@ -142,7 +158,7 @@
 	<span>Received From <ReceivedFromName /> </span><br />
 	<ReceivedFromContactInfo /><br />
 	<IntakeReason /><br />
-	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} />
+	<SurrenderType/>
 	<PrevShelterNum />
 	<br />
 	<CourtesyListingNoRelinquishment /><br />
@@ -168,7 +184,8 @@
 	<MotherLittermates /><br />
 	<InternalComments /><br />
 	<FosterHomeOnIntake /><br />
-
+	<input accept="image/*" type="file" id="imgInp" bind:value={$catPkg.profilePic} on:change={imageChange} />
+	<img id="blah" src={$catPkg.profilePic} alt="the cat" width="300" height="300"/>
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>
 		<button type="button" on:click={copyFormToClipboard}

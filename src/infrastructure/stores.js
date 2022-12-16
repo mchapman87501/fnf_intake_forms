@@ -77,6 +77,7 @@ export let cat = {
     motherLittermates:'',
     knownHistory:'',
     otherCommentsInternalUseOnly:'',
-    fosterHomeOnIntake:''
+    fosterHomeOnIntake:'',
+    profilePic:''
 }
 export const catPkg = writable(cat);

@@ -13,6 +13,10 @@
 		initializeRecvdFromPkg()
 	}
 
+	export function cloneForm() {
+		initializeCatPkg()
+	}
+
 	export function initSession() {
 		if (get(firstRun)) {
 			initForms()
@@ -105,6 +109,7 @@
 		temp.knownHistory= ''
 		temp.otherCommentsInternalUseOnly= ''
 		temp.fosterHomeOnIntake= ''
+		temp.profilePic = ''
 		catPkg.set(temp)
 	}
 </script>

@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { initForms, initSession } from '../infrastructure/StoreFns.svelte'
+	import { onMount } from 'svelte'
+	import { initForms, cloneForm, initSession } from '../infrastructure/StoreFns.svelte'
 	import { showTests } from '../testing/teststores.js'
 	import { populateWithTestData } from '../testing/TestStoreFns.svelte'
-
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
-	import PregnantNursingSurrenderForm from './PregnantNursingSurrenderForm.svelte'
+	import WantsMomBack from '../components/WantsMomBack.svelte'
 	import RescueSurrenderForm from './RescueSurrenderForm.svelte'
 	import StraySurrenderForm from './StraySurrenderForm.svelte'
-	import { onMount } from 'svelte'
 
 	enum FormType {
 		Unspecified = '-- Select --',
@@ -31,6 +30,7 @@
 	let pkg = {
 		selected_form: FormType.Unspecified
 	}
+	//initialize defaults
 	onMount(() => {
 		initSession()
 	})
@@ -52,7 +52,9 @@
 	<button type="button" on:click={populateWithTestData}>Test only: set fields to test values</button>
 </label>
 {/if}
-
+<label>
+	<button type="button" on:click={cloneForm}>Clone received from fields, clear cat fields</button>
+</label>
 <label>
 	<button type="button" on:click={initForms}>&#9888; Reset all Forms to Defaults</button>
 </label>
@@ -67,7 +69,9 @@
 {:else if pkg.selected_form == FormType.Rescue}
 	<RescueSurrenderForm />
 {:else if pkg.selected_form == FormType.PregnantNursing}
-	<PregnantNursingSurrenderForm />
+	<OwnerSurrenderForm>
+		<span slot="mom-slot"> <WantsMomBack /> </span>
+	</OwnerSurrenderForm>
 {:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
 	<p>Please select a form.</p>
 {:else}
@@ -83,6 +87,6 @@
 		background-position: 50% 0%;
 	}
 	.right-margin {
-		margin-right: 50%;
+		margin-right: 5%;
 	}
 </style>

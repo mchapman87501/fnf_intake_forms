@@ -7,7 +7,9 @@
 
 	export const surrenderChoiceTransfer = 'Transfer'
 	export const surrenderChoiceSurrender = 'Surrender'
+	export const surrenderChoicePregnant = 'Pregnant'
 	export const surrenderChoiceStray = 'Stray'
-	export const surrenderChoices = [surrenderChoiceSurrender,surrenderChoiceTransfer, surrenderChoiceStray]
+	export const surrenderChoiceUnspecified = 'Unspecified'
+	export const surrenderChoices = [surrenderChoiceUnspecified,surrenderChoiceSurrender,surrenderChoiceTransfer, surrenderChoiceStray, surrenderChoicePregnant]
 	
 </script>
