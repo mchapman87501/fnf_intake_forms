@@ -135,7 +135,7 @@
 				console.log($catPkg.profilePic)
 				Array.prototype.forEach.call(files, function (file) {
 						(<HTMLInputElement>document.getElementById('blah')).src = URL.createObjectURL(file)
-							$catPkg.profilePic = URL.createObjectURL(file)
+						$catPkg.profilePic = URL.createObjectURL(file)
 				})
 			}
 		}
