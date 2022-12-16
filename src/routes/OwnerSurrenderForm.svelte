@@ -7,7 +7,7 @@
 	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
-	import CatnameDOBGenderAltered from '../components/AlteredWhenWhere.svelte'
+	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 	import Microchip from '../components/Microchip.svelte'
 	import ShotsFivTestedVetInfo from '../components/ShotsFIVTestedVetInfo.svelte'

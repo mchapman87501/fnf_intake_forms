@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { initForms, initSession } from '../infrastructure/StoreFns.svelte'
+	import { initForms, cloneForm, initSession } from '../infrastructure/StoreFns.svelte'
 
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
@@ -46,6 +46,9 @@
 	</select>
 </label>
 <label>
+	<button type="button" on:click={cloneForm}>Clone received from fields, clear cat fields</button>
+</label>
+<label>
 	<button type="button" on:click={initForms}>&#9888; Reset all Forms to Defaults</button>
 </label>
 
@@ -77,6 +80,6 @@
 		background-position: 50% 0%;
 	}
 	.right-margin {
-		margin-right: 50%;
+		margin-right: 5%;
 	}
 </style>

@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession } from '../infrastructure/StoreFns.svelte'
-	import { surrenderChoices } from '../infrastructure/Definitions.svelte' //TODO
-	import Dropdown from '../infrastructure/Dropdown.svelte'
 
 	import OkWith from '../components/OkWith.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
