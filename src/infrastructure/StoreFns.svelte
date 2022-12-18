@@ -109,7 +109,10 @@
 		temp.knownHistory= ''
 		temp.otherCommentsInternalUseOnly= ''
 		temp.fosterHomeOnIntake= ''
+		temp.profilePicFilename = ''
+		URL.revokeObjectURL(temp.profilePic)
 		temp.profilePic = ''
+	
 		catPkg.set(temp)
 	}
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { get } from 'svelte/store'
 	import { showTests } from '../testing/teststores.js'
-	import { cat,catPkg, recvdFromPkg } from '../infrastructure/stores.js'
+	import { cat, catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
 	import { surrenderChoices } from '../infrastructure/Definitions.svelte' //TODO
 	import Dropdown from '../infrastructure/Dropdown.svelte'
@@ -36,8 +36,7 @@
 	import SpecialNeeds from '../components/SpecialNeeds.svelte'
 	import SurrenderType from '../components/SurrenderType.svelte'
 
-	function getPrintMap(
-		catVal: cat) {
+	function getPrintMap(catVal: cat) {
 		var map = new Map()
 		//There are red lines under catVal but the code works TODO
 		map.set('Intake date', catVal.intakeDate)
@@ -126,21 +125,23 @@
 		navigator.clipboard.writeText(csvStr)
 	}
 
-	function imageChange() {
-		const imgInp = <HTMLInputElement>document.getElementById('imgInp')
-		if (imgInp != null) {
-			const files = imgInp.files
-			if (files != null) {
-				// console.log(files[0])
-				console.log($catPkg.profilePic)
-				Array.prototype.forEach.call(files, function (file) {
-						(<HTMLInputElement>document.getElementById('blah')).src = URL.createObjectURL(file)
-						$catPkg.profilePic = URL.createObjectURL(file)
-				})
+	function imageChange() {}
+	let fileinput: any
+
+	const onFileSelected = (e: any) => {
+		let image = <Blob>e.target.files[0]
+		$catPkg.profilePicFilename = image ? image.name : ''
+
+		console.log($catPkg.profilePicFilename)
+		console.log(image)
+		let reader = new FileReader()
+		reader.readAsDataURL(image)
+		reader.onload = (e) => {
+			if (e.target != null) {
+				$catPkg.profilePic = <string>e.target.result
 			}
 		}
 	}
-
 	function handleSubmit() {
 		return false // prevent reload
 	}
@@ -158,7 +159,7 @@
 	<span>Received From <ReceivedFromName /> </span><br />
 	<ReceivedFromContactInfo /><br />
 	<IntakeReason /><br />
-	<SurrenderType/>
+	<SurrenderType />
 	<PrevShelterNum />
 	<br />
 	<CourtesyListingNoRelinquishment /><br />
@@ -184,13 +185,36 @@
 	<MotherLittermates /><br />
 	<InternalComments /><br />
 	<FosterHomeOnIntake /><br />
-	<input accept="image/*" type="file" id="imgInp" bind:value={$catPkg.profilePic} on:change={imageChange} />
-	<img id="blah" src={$catPkg.profilePic} alt="the cat" width="300" height="300"/>
-	<div class="btns">
-		<button type="submit" disabled={!formValid}>Submit</button>
-		<button type="button" on:click={copyFormToClipboard}
-			>Copy Intake Form to Clipboard (Excel)</button
+
+	<div id="app">
+		{#if $catPkg.profilePic}
+			<img src={$catPkg.profilePic} alt="d" width="300" height="300" />
+		{:else}
+			<img
+				src="/fnf_logo.png"
+				alt=""
+				width="300"
+				height="300"
+			/>
+		{/if}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<div
+			on:click={() => {
+				fileinput.click()
+			}}
 		>
+			Click to upload profile picture
+			{#if $catPkg.profilePicFilename}
+				{$catPkg.profilePicFilename}
+			{/if}
+		</div>
+		<input
+			style="display:none"
+			type="file"
+			accept=".jpg, .jpeg, .png"
+			on:change={(e) => onFileSelected(e)}
+			bind:this={fileinput}
+		/>
 	</div>
 </form>
 

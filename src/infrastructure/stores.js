@@ -78,6 +78,7 @@ export let cat = {
     knownHistory:'',
     otherCommentsInternalUseOnly:'',
     fosterHomeOnIntake:'',
-    profilePic:''
+    profilePicFilename:'',
+    profilePic: '' // do not export to CSV
 }
 export const catPkg = writable(cat);
