@@ -8,26 +8,43 @@ export const prerender = false
 
 const dataDir = path.join(process.cwd(), "data", "out")
 
+
+type CatPkg = any
+type ReceivedFromPkg = any
+
+function getRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
+    return [
+        { "name": "Intake Date", "value": catInfo.intakeDate, "comments": "" },
+        { "name": "Received By", "value": catInfo.intakeFnFRepr, "comments": "" },
+        { "name": "Received From", "value": recvdFrom.fromName, "comments": "" },
+        { "name": "Street Address", "value": recvdFrom.address, "comments": "" },
+        { "name": "City", "value": recvdFrom.city, "comments": "" },
+        { "name": "State", "value": recvdFrom.state, "comments": "" },
+        { "name": "Zip code", "value": recvdFrom.zip, "comments": "" },
+        { "name": "Cell/Home phone", "value": recvdFrom.phone, "comments": "" },
+        { "name": "Email Address", "value": recvdFrom.email, "comments": "" },
+        { "name": "Reason for surrender", "value": catInfo.intakeReason, "comments": "" },
+        { "name": "Shelter Number", "value": recvdFrom.shelterNum, "comments": "" },
+        { "name": "Cat's name", "value": catInfo.catName, "comments": "" },
+        { "name": "DOB", "value": catInfo.DOB, "comments": "" },
+        { "name": "Gender", "value": catInfo.gender, "comments": "" }
+    ]
+}
+
 export async function POST(event: RequestEvent): Promise<Response> {
 
     let formParams: { [index: string]: any } = await event.request.json()
 
-    // Wow, this is really verbose...
     const headers = [
-        { id: "intake_date", title: "Intake Date" },
-        { id: "received_by", title: "Received By" },
+        { id: "name", title: "" },
+        { id: "value", title: "INFO" },
+        { id: "comments", title: "COMMENTS" }
     ]
     const catInfo = formParams["cat_info"]
     const receivedFrom = formParams["received_from"]
-    const records = [
-        {
-            "intake_date": catInfo.intakeDate,
-            "received_by": catInfo.intakeFnFRepr
-        }
-    ]
-    console.log("Received form data: %o", formParams)
+    const records = getRows(catInfo, receivedFrom)
 
-
+    // Generate a filename:
     const catName: string = catInfo.catName
     const intakeDate: string = catInfo.intakeDate // TODO verify MMDDYY
     const humanName: string = receivedFrom.fromName
@@ -42,7 +59,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
             return ""
         }
     })
-    const csvFilename = validStemChars.join("")
+    const csvFilename = validStemChars.join("").replaceAll(/[_-][_-]+/g, "_") + ".csv"
 
     const csvPathname = path.join(dataDir, csvFilename + ".csv")
     try {
