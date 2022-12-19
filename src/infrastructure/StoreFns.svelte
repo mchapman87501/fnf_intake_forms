@@ -9,6 +9,10 @@
 		initializeRecvdFromPkg()
 	}
 
+	export function cloneForm() {
+		initializeCatPkg()
+	}
+
 	export function initSession() {
 		if (get(firstRun)) {
 			initForms()

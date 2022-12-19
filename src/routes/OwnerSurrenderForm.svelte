@@ -7,14 +7,13 @@
 
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
-	import { surrenderChoiceSurrender } from '../infrastructure/Definitions.svelte'
+
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
 	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
 	import ReceivedBy from '../components/ReceivedBy.svelte'
 	import IntakeDate from '../components/IntakeDate.svelte'
-	import CatnameDOBGenderAltered from '../components/AlteredWhenWhere.svelte'
+	import CatnameDOBGenderAltered from '../components/CatnameDOBGenderAltered.svelte'
 	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
 	import Microchip from '../components/Microchip.svelte'
 	import ShotsFivTestedVetInfo from '../components/ShotsFIVTestedVetInfo.svelte'
@@ -24,6 +23,7 @@
 	import CourtesyListingNoRelinquishment from '../components/CourtesyListingNoRelinquishment.svelte'
 	import TreatableMedical from '../components/TreatableMedical.svelte'
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
+	import SurrenderType from '../components/SurrenderType.svelte'
 
 	// Login form management.
 	let loginDialog: HTMLDialogElement
@@ -35,18 +35,6 @@
 	function closeLoginDialog() {
 		loginDialog.close()
 	}
-
-	// Cat info
-	// package for passing between components
-	let cat = {
-		okKinder: 'Unknown',
-		okCats: 'Unknown'
-	}
-
-	onMount(() => {
-		initSession()
-		setSurrenderType(surrenderChoiceSurrender)
-	})
 
 	// TODO reflect Surrender form
 	function surrenderHeaders() {
@@ -220,11 +208,12 @@
 </Dialog>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate /><br />
+	<IntakeDate />
+	<SurrenderType /><br />
 	<ReceivedFromName />
 	<ReceivedFromDriversLic /> <br />
 	<ReceivedFromContactInfo />
-
+	<template id="mom-paragraph"><p><slot name="mom-slot" /></p></template>
 	<hr />
 
 	<CatnameDOBGenderAltered /><br />

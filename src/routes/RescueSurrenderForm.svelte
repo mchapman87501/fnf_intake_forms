@@ -1,9 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
 
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession, setSurrenderType } from '../infrastructure/StoreFns.svelte'
-	import { surrenderChoiceTransfer } from '../infrastructure/Definitions.svelte'
 
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
@@ -20,11 +17,7 @@
 	import CourtesyListingNoRelinquishment from '../components/CourtesyListingNoRelinquishment.svelte'
 	import TreatableMedical from '../components/TreatableMedical.svelte'
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
-
-	onMount(() => {
-		initSession()
-		setSurrenderType(surrenderChoiceTransfer)
-	})
+	import SurrenderType from '../components/SurrenderType.svelte'
 
 	// TODO reflect Surrender form
 	function headers() {
@@ -53,7 +46,7 @@
 </script>
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate/><br/>
+	<IntakeDate/> <SurrenderType/><br/>
 	<ReceivedFromName />
 	<ReceivedFromDriversLic /> <br/>
 	<ReceivedFromContactInfo />

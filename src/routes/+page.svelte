@@ -2,11 +2,12 @@
 	import { session_token, session_username } from '$lib/hooks/auth'
 	import Dialog from '$lib/components/Dialog.svelte'
 	import LoginForm from '$lib/components/LoginForm.svelte'
+	import { onMount } from 'svelte'
+	import { initForms, cloneForm, initSession } from '../infrastructure/StoreFns.svelte'
 
-	import { initForms } from '../infrastructure/StoreFns.svelte'
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
-	import PregnantNursingSurrenderForm from './PregnantNursingSurrenderForm.svelte'
+	import WantsMomBack from '../components/WantsMomBack.svelte'
 	import RescueSurrenderForm from './RescueSurrenderForm.svelte'
 	import StraySurrenderForm from './StraySurrenderForm.svelte'
 
@@ -40,6 +41,11 @@
 	function closeLoginDialog() {
 		loginDialog.close()
 	}
+
+	//initialize defaults
+	onMount(() => {
+		initSession()
+	})
 </script>
 
 {#if $session_token === undefined || $session_token == ''}
@@ -61,6 +67,9 @@
 		</select>
 	</label>
 	<label>
+		<button type="button" on:click={cloneForm}>Clone received from fields, clear cat fields</button>
+	</label>
+	<label>
 		<button type="button" on:click={initForms}>&#9888; Reset all Forms to Defaults</button>
 	</label>
 
@@ -74,11 +83,11 @@
 	{:else if pkg.selected_form == FormType.Rescue}
 		<RescueSurrenderForm />
 	{:else if pkg.selected_form == FormType.PregnantNursing}
-		<PregnantNursingSurrenderForm />
+		<OwnerSurrenderForm>
+			<span slot="mom-slot"> <WantsMomBack /> </span>
+		</OwnerSurrenderForm>
 	{:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
 		<p>Please select a form.</p>
-	{:else}
-		<p>TBD</p>
 	{/if}
 {/if}
 
@@ -91,6 +100,6 @@
 		background-position: 50% 0%;
 	}
 	.right-margin {
-		margin-right: 50%;
+		margin-right: 5%;
 	}
 </style>

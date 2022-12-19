@@ -1,11 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-	import { initSession } from '../infrastructure/StoreFns.svelte'
-	import { surrenderChoices } from '../infrastructure/Definitions.svelte' //TODO
-	import Dropdown from '../infrastructure/Dropdown.svelte'
 
 	import OkWith from '../components/OkWith.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
@@ -33,6 +28,7 @@
 	import EstSizeMaturity from '../components/EstSizeMaturity.svelte'
 	import DistinctiveFeatures from '../components/DistinctiveFeatures.svelte'
 	import SpecialNeeds from '../components/SpecialNeeds.svelte'
+	import SurrenderType from '../components/SurrenderType.svelte'
 
 	function getPrintMap() {
 		var map = new Map()
@@ -107,9 +103,6 @@
 		console.log('Copying %o', csvStr)
 		navigator.clipboard.writeText(csvStr)
 	}
-	onMount(() => {
-		initSession()
-	})
 	function handleSubmit() {
 		return false // prevent reload
 	}
@@ -127,7 +120,7 @@
 	<span>Received From <ReceivedFromName /> </span><br />
 	<ReceivedFromContactInfo /><br />
 	<IntakeReason /><br />
-	<Dropdown choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} />
+	<SurrenderType/>
 	<PrevShelterNum />
 	<br />
 	<CourtesyListingNoRelinquishment /><br />
