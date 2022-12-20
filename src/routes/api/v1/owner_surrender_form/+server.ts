@@ -4,9 +4,7 @@ import { createObjectCsvWriter } from "csv-writer"
 import path from 'path';
 import fsPromises from 'fs/promises'
 
-import jwt from 'jsonwebtoken'
-import cookie from 'cookie'
-import { JWT_ACCESS_TOKEN_SECRET } from "$env/static/private"
+import { validAccessToken, invalidTokenResponse } from "$lib/hooks/tokens.server"
 
 export const prerender = false
 
@@ -33,31 +31,6 @@ function getRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
         { "name": "DOB", "value": catInfo.DOB, "comments": "" },
         { "name": "Gender", "value": catInfo.gender, "comments": "" }
     ]
-}
-
-// TODO refactor -- see code to generate refreshToken in yalnets/+server.ts.
-function validAccessToken(event: RequestEvent): boolean {
-    const rawCookies = event.request.headers.get('cookie') || ''
-    const cookies = cookie.parse(rawCookies)
-    console.log("validRefreshToken - cookies: %o", cookies)
-    const token = cookies["token"]
-    try {
-        const result = jwt.verify(token, JWT_ACCESS_TOKEN_SECRET)
-        console.log("Valid access token for %o", result)
-        return true
-    } catch (e) {
-        // Missing, invalid or expired token
-        console.log("Could not validate refresh token: %o", e)
-        return false
-    }
-}
-
-function invalidTokenResponse() {
-    const secure = '';
-    const headers = new Headers([
-        ["set-cookie", `refresh_token=; Max-Age=0; Path=/;${secure} HttpOnly`]
-    ])
-    return new Response(null, { status: 401, headers: headers})
 }
 
 export async function POST(event: RequestEvent): Promise<Response> {
