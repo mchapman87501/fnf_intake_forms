@@ -91,13 +91,6 @@
 {/if}
 
 <style>
-	:global(body) {
-		background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
-			url('/fnf_logo.png');
-		background-repeat: no-repeat;
-		background-size: contain;
-		background-position: 50% 0%;
-	}
 	.right-margin {
 		margin-right: 5%;
 	}

@@ -68,6 +68,9 @@
 </form>
 
 <style>
+    input {
+        margin: 0.25em 1em;
+    }
 	.header {
 		display: flex;
 		align-items: center;
@@ -76,6 +79,7 @@
 		opacity: 0.75;
 		height: 5em;
 		flex: 1 1 auto;
+        object-fit: contain;
 	}
 	.header > div {
 		flex: 1 1 auto;
