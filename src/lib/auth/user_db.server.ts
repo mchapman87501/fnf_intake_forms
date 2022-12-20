@@ -71,6 +71,38 @@ async function hash(plaintext: string): Promise<string> {
 	return await bcrypt.hash(plaintext, 10)
 }
 
+function userKey(username: string): string {
+	return `Username: ${username}`
+}
+
+function refreshTokenKey(token: string): string {
+	return `Refresh token: ${token}`
+}
+
+function getByUsername(username: string): UserRecord | null {
+	return UserRecord.fromDBObj(db.get(userKey(username)))
+}
+
+function getByRefreshToken(token: string): UserRecord | null {
+	return UserRecord.fromDBObj(db.get(refreshTokenKey(token)))
+}
+
+async function insertOrUpdateUser(record: UserRecord) {
+	const currRec = getByUsername(record.username)
+	const currRefresh = currRec?.refreshToken || ''
+
+	// Save the user record, keyed on username.
+	db.set(userKey(record.username), record)
+
+	// Save the user record, keyed on refresh token.
+	// OR, if the refresh token is empty, clear any stored refresh token.
+	if (record.refreshToken) {
+		db.set(refreshTokenKey(record.refreshToken), record)
+	} else if (currRefresh) {
+		db.delete(refreshTokenKey(currRefresh))
+	}
+}
+
 // Add a new user account.
 // Fail if an account with the given name already exists.
 // Return whether or not the account was added.
@@ -80,7 +112,7 @@ export async function addUser(username: string, password: string): Promise<boole
 	}
 
 	try {
-		const existing = UserRecord.fromDBObj(db.get(username))
+		const existing = UserRecord.fromDBObj(db.get(userKey(username)))
 		if (existing) {
 			return Promise.reject('User already exists')
 		}
@@ -90,8 +122,7 @@ export async function addUser(username: string, password: string): Promise<boole
 			return Promise.reject('Could not hash password')
 		}
 		const record = new UserRecord(username, password)
-		db.set(username, record.toDBObj())
-		console.debug('addUser: %o = %o', username, record.toDBObj())
+		insertOrUpdateUser(record)
 		return true
 	} catch (e) {
 		return Promise.reject(e)
@@ -100,7 +131,7 @@ export async function addUser(username: string, password: string): Promise<boole
 
 // Remove a user account.
 export async function removeUser(username: string): Promise<boolean> {
-	const existing = UserRecord.fromDBObj(db.get(username))
+	const existing = UserRecord.fromDBObj(db.get(userKey(username)))
 	if (!existing) {
 		return Promise.reject('Record not found')
 	}
@@ -113,21 +144,17 @@ export async function removeUser(username: string): Promise<boolean> {
 // Authenticate a user.
 // If successful, update and return the user's refresh token.
 export async function authenticate(username: string, password: string): Promise<string> {
-	const json = db.get(username)
-	console.debug('authenticate: json for "%o" = %o', username, json)
+	const json = db.get(userKey(username))
 	const record = UserRecord.fromDBObj(json)
-	console.debug('authenticate: record=%o', record)
 	if (record) {
 		const passwordIsCorrect = await bcrypt.compare(password, record.password)
-		console.debug('authenticate: password is correct: %o', passwordIsCorrect)
 		if (passwordIsCorrect) {
 			let result = record.refreshToken
 			if (!result) {
 				result = crypto.randomUUID()
 				record.refreshToken = result
-				db.set(record.username, record.toDBObj())
+				insertOrUpdateUser(record)
 			}
-			console.debug('authenticate: refresh token %o', result)
 			return result
 		}
 	}
@@ -135,32 +162,32 @@ export async function authenticate(username: string, password: string): Promise<
 	return Promise.reject('User authentication failed')
 }
 
-// Get a user's current refresh token, if any.
-export async function refreshToken(username: string): Promise<string | null> {
-	const record = UserRecord.fromDBObj(db.get(username))
-	return record?.refreshToken || ''
+// Get the user associated with a refresh token, if any.
+export function usernameForRefreshTokenSync(token: string): string {
+	const record = UserRecord.fromDBObj(getByRefreshToken(token))
+	return record?.username || ''
 }
 
 // Remove a user's current refresh token, if any.
 export async function removeRefreshToken(username: string) {
-	const record = UserRecord.fromDBObj(db.get(username))
+	const record = UserRecord.fromDBObj(db.get(userKey(username)))
 	if (record) {
 		record.refreshToken = ''
-		db.set(record.username, record.toDBObj())
+		insertOrUpdateUser(record)
 	}
 }
 
 // Persistent store initialization:
 async function addDefaultAdminUser(): Promise<boolean> {
 	const existing = db.get(ADMIN_USERNAME)
-	if (!existing) {
-		const hashedPass = await hash(ADMIN_PASSWORD)
-		if (hashedPass) {
-			const record = new UserRecord(ADMIN_USERNAME, hashedPass, ['admin'])
-			console.debug('addDefaultAdminUser: %o = %o', record.username, record.toDBObj())
-			db.set(record.username, record.toDBObj())
-			return true
-		}
+	if (existing) {
+		return true
+	}
+	const hashedPass = await hash(ADMIN_PASSWORD)
+	if (hashedPass) {
+		const record = new UserRecord(ADMIN_USERNAME, hashedPass, ['admin'])
+		insertOrUpdateUser(record)
+		return true
 	}
 	return false
 }
@@ -170,7 +197,6 @@ export async function initUserDB() {
 	await fsPromises.mkdir(dataDir, { recursive: true })
 
 	const success = await addDefaultAdminUser()
-	console.debug('Initializing user database.')
 	if (!success) {
 		console.error('Failed to initialize user DB.')
 	}

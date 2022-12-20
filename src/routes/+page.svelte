@@ -35,7 +35,6 @@
 
 	let loginDialog: HTMLDialogElement
 	function signIn() {
-		console.log('Showing sign-in dialog %o.', loginDialog)
 		loginDialog.showModal()
 	}
 	function closeLoginDialog() {

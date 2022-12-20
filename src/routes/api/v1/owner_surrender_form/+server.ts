@@ -4,7 +4,14 @@ import { createObjectCsvWriter } from 'csv-writer'
 import path from 'path'
 import fsPromises from 'fs/promises'
 
-import { validAccessToken, invalidTokenResponse } from '$lib/auth/tokens.server'
+import {
+	invalidTokenResponse,
+	renewedAccessToken,
+	addAccessToken,
+	addRefreshToken,
+	extractedRefreshToken,
+	validAccessToken
+} from '$lib/auth/tokens.server'
 
 export const prerender = false
 
@@ -33,12 +40,15 @@ function getRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
 }
 
 export async function POST(event: RequestEvent): Promise<Response> {
-	if (!validAccessToken(event)) {
+	const accessToken = renewedAccessToken(event)
+	if (!accessToken) {
 		return invalidTokenResponse()
 	}
+	const refreshToken = extractedRefreshToken(event)
+
 	const formParams: { [index: string]: any } = await event.request.json()
 
-	const headers = [
+	const csvHeaders = [
 		{ id: 'name', title: '' },
 		{ id: 'value', title: 'INFO' },
 		{ id: 'comments', title: 'COMMENTS' }
@@ -70,15 +80,19 @@ export async function POST(event: RequestEvent): Promise<Response> {
 
 		const fileWriter = createObjectCsvWriter({
 			path: csvPathname,
-			header: headers
+			header: csvHeaders
 		})
 		await fileWriter.writeRecords(records)
 
 		const result = await fsPromises.readFile(csvPathname, { encoding: 'utf-8' })
-		const response = json(result)
-		console.log('Wrote to %o', csvPathname)
-		console.log('String result: %o', result)
-		return response
+		const body = JSON.stringify(result)
+
+		// TODO Refactor as middleware, 'cuz this is nuts.
+		let headers = new Headers()
+		addAccessToken(headers, accessToken)
+		addRefreshToken(headers, refreshToken)
+
+		return new Response(body, { status: 200, headers: headers })
 	} catch (e: any) {
 		console.error(e.message)
 		return json('Failed to save intake record')

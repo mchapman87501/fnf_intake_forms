@@ -1,10 +1,11 @@
 import type { RequestEvent } from '@sveltejs/kit'
-import jwt from 'jsonwebtoken'
+import jwt, { verify } from 'jsonwebtoken'
 import { randomUUID } from 'crypto'
 import cookie from 'cookie'
 
 // See https://www.okupter.com/blog/environment-variables-in-sveltekit
 import { JWT_ACCESS_TOKEN_SECRET, JWT_ACCESS_TOKEN_DURATION } from '$env/static/private'
+import { usernameForRefreshTokenSync } from './user_db.server'
 
 export function newAccessToken(username: string) {
 	const payload = {
@@ -12,8 +13,8 @@ export function newAccessToken(username: string) {
 	}
 
 	const durationMinutes = parseInt(JWT_ACCESS_TOKEN_DURATION)
-	const durationMsecs = durationMinutes * 60 * 1000
-	return jwt.sign(payload, JWT_ACCESS_TOKEN_SECRET, { expiresIn: `${durationMsecs}` })
+	const durationSecs = durationMinutes * 60
+	return jwt.sign(payload, JWT_ACCESS_TOKEN_SECRET, { expiresIn: `${durationSecs}s` })
 }
 
 export function newRefreshToken() {
@@ -39,20 +40,44 @@ export function addRefreshToken(headers: Headers, refreshToken: string) {
 	headers.set('set-cookie', refreshCookie)
 }
 
-export function validAccessToken(event: RequestEvent): boolean {
-	try {
-		const fullAuthValue = event.request.headers.get('Authorization') || ''
-		const token = fullAuthValue.replace(/^Bearer /, '')
+export function extractedAccessToken(event: RequestEvent): string {
+	const fullAuthValue = event.request.headers.get('Authorization') || ''
+	const result = fullAuthValue.replace(/^Bearer /, '')
+	return result
+}
 
-		// const rawCookies = event.request.headers.get('cookie') || ''
-		// const cookies = cookie.parse(rawCookies)
-		const result = jwt.verify(token, JWT_ACCESS_TOKEN_SECRET)
-		return true
+export function extractedRefreshToken(event: RequestEvent): string {
+	const rawCookies = event.request.headers.get('cookie') || ''
+	const cookies = cookie.parse(rawCookies)
+	return cookies['refresh_token'] || ''
+}
+
+function verifyAccessToken(token: string): any | null {
+	try {
+		return jwt.verify(token, JWT_ACCESS_TOKEN_SECRET)
 	} catch (e) {
 		// Missing, invalid or expired token
-		console.log('Could not validate access token: %o', e)
-		return false
+		console.error('Could not verify access token: %o', e)
 	}
+	return null
+}
+
+export function validAccessToken(event: RequestEvent): boolean {
+	return verifyAccessToken(extractedAccessToken(event)) != null
+}
+
+// Get a new access token, if a valid refresh token is supplied.
+export function renewedAccessToken(event: RequestEvent): string {
+	const currAccessToken = extractedAccessToken(event)
+	if (verifyAccessToken(currAccessToken)) {
+		return currAccessToken
+	}
+	const currRefreshToken = extractedRefreshToken(event)
+	const username = usernameForRefreshTokenSync(currRefreshToken)
+	if (username) {
+		return newAccessToken(username)
+	}
+	return ''
 }
 
 export function invalidTokenResponse() {

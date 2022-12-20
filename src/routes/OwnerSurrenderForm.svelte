@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-
-	import { session_token, jwtSession } from '$lib/auth/auth'
+	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
 	import Dialog from '$lib/components/Dialog.svelte'
 	import LoginForm from '$lib/components/LoginForm.svelte'
 
@@ -179,20 +177,21 @@
 		}
 		const bodyJSON = JSON.stringify(bodyData)
 		// TODO move backend communications like this to src/lib.
-		const rqst = await fetch('/api/v1/owner_surrender_form', {
+		const response = await fetch('/api/v1/owner_surrender_form', {
 			method: 'POST',
 			headers: { ...jwtSession(), 'Content-Type': 'application/json' },
 			body: bodyJSON
 		})
 
-		if (rqst.status == 401) {
+		if (response.status == 401) {
 			// Unauthorized, or session has expired. -- need to redirect to login.
 			// TODO maintain form state in a store, so it can be restored
 			// on return.
 			showLogin('Your session has expired.')
-		} else if (rqst.status == 200) {
-			const response = await rqst.json()
-			console.log('Got response: %o', response)
+		} else if (response.status == 200) {
+			const body = await response.json()
+			console.log('Got response: %o', body)
+            updateSessionToken(response)
 		}
 	}
 
