@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
-	import { session_token, jwtSession } from '$lib/hooks/auth'
+	import { session_token, jwtSession } from '$lib/auth/auth'
 	import Dialog from '$lib/components/Dialog.svelte'
 	import LoginForm from '$lib/components/LoginForm.svelte'
 

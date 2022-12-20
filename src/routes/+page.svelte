@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { session_token, session_username } from '$lib/hooks/auth'
+	import { session_token, session_username } from '$lib/auth/auth'
 	import Dialog from '$lib/components/Dialog.svelte'
 	import LoginForm from '$lib/components/LoginForm.svelte'
 	import { onMount } from 'svelte'

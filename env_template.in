@@ -1,0 +1,17 @@
+# One can use `openssl rand -hex 32` to generate ...SECRETs and ...KEYs
+
+# For creating/signing JWT access tokens:
+JWT_ACCESS_TOKEN_SECRET='SEKRIT'
+# Duration of an access token, in minutes:
+JWT_ACCESS_TOKEN_DURATION='1'
+
+# Administrative account's unencrypted credentials:
+ADMIN_USERNAME='admin'
+ADMIN_PASSWORD='shhh!'
+
+# Secret used to hash account passwords:
+ACCOUNT_KEY='NUTHER SEKRIT'
+
+# Where to find the user account database.
+# I suppose absolute pathnames are best.
+USER_DB_PATH='./data/internal/users.db'

@@ -4,7 +4,7 @@ import { createObjectCsvWriter } from 'csv-writer'
 import path from 'path'
 import fsPromises from 'fs/promises'
 
-import { validAccessToken, invalidTokenResponse } from '$lib/hooks/tokens.server'
+import { validAccessToken, invalidTokenResponse } from '$lib/auth/tokens.server'
 
 export const prerender = false
 

@@ -2,7 +2,7 @@
 	// This follows
 	// https://dev.to/myleftshoe/svelte-dialogs-the-easy-way-e0f
 
-	import { session_token, session_username } from '$lib/hooks/auth'
+	import { session_token, session_username } from '$lib/auth/auth'
 
 	export let loginReason = ''
 	export let close: () => void = () => {}

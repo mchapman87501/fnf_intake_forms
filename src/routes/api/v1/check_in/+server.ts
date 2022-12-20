@@ -1,5 +1,5 @@
 import type { RequestEvent } from '@sveltejs/kit'
-import { invalidTokenResponse, validAccessToken } from '$lib/hooks/tokens.server'
+import { invalidTokenResponse, validAccessToken } from '$lib/auth/tokens.server'
 export const prerender = true
 
 export function GET(event: RequestEvent): Response {
