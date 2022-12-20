@@ -1,9 +1,10 @@
-import type { RequestEvent } from "@sveltejs/kit";
-
-export const prerender = true;
+import type { RequestEvent } from '@sveltejs/kit'
+import { invalidTokenResponse, validAccessToken } from '$lib/hooks/tokens.server'
+export const prerender = true
 
 export function GET(event: RequestEvent): Response {
-    // TODO pretend to check whether the requester has a valid
-    // access token.
-    return new Response("OK")
+	if (!validAccessToken(event)) {
+		return invalidTokenResponse()
+	}
+	return new Response('OK')
 }
