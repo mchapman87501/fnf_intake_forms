@@ -23,7 +23,7 @@
 			bodyItems.push(`${key}=${value}`)
 		}
 		const body = bodyItems.join('&')
-		let rqst = await fetch('/api/v1/yalnets', {
+		let rqst = await fetch('/api/v1/login', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',

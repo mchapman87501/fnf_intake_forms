@@ -49,11 +49,9 @@ export function jwtSession() {
 export function updateSessionToken(response: Response) {
 	// TODO refactor this.  Client code should not be explicitly concerned
 	// with extracting / updating access tokens.
-	console.debug('Updating session token.')
 	const fullAccessToken = response.headers.get('Authorization')
 	if (fullAccessToken) {
 		const accessToken = fullAccessToken.replace(/^Bearer /, '')
 		session_token.update((curr) => accessToken)
-		console.debug('Saving updated session token.')
 	}
 }
