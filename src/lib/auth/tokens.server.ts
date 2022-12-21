@@ -40,14 +40,14 @@ export function addRefreshToken(headers: Headers, refreshToken: string) {
 	headers.set('set-cookie', refreshCookie)
 }
 
-export function extractedAccessToken(event: RequestEvent): string {
-	const fullAuthValue = event.request.headers.get('Authorization') || ''
+export function extractedAccessToken(request: Request): string {
+	const fullAuthValue = request.headers.get('Authorization') || ''
 	const result = fullAuthValue.replace(/^Bearer /, '')
 	return result
 }
 
-export function extractedRefreshToken(event: RequestEvent): string {
-	const rawCookies = event.request.headers.get('cookie') || ''
+export function extractedRefreshToken(request: Request): string {
+	const rawCookies = request.headers.get('cookie') || ''
 	const cookies = cookie.parse(rawCookies)
 	return cookies['refresh_token'] || ''
 }
@@ -62,17 +62,17 @@ function verifyAccessToken(token: string): any | null {
 	return null
 }
 
-export function validAccessToken(event: RequestEvent): boolean {
-	return verifyAccessToken(extractedAccessToken(event)) != null
+export function validAccessToken(request: Request): boolean {
+	return verifyAccessToken(extractedAccessToken(request)) != null
 }
 
 // Get a new access token, if a valid refresh token is supplied.
-export function renewedAccessToken(event: RequestEvent): string {
-	const currAccessToken = extractedAccessToken(event)
+export function renewedAccessToken(request: Request): string {
+	const currAccessToken = extractedAccessToken(request)
 	if (verifyAccessToken(currAccessToken)) {
 		return currAccessToken
 	}
-	const currRefreshToken = extractedRefreshToken(event)
+	const currRefreshToken = extractedRefreshToken(request)
 	const username = usernameForRefreshTokenSync(currRefreshToken)
 	if (username) {
 		return newAccessToken(username)

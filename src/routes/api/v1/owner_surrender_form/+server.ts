@@ -9,11 +9,8 @@ import {
 	renewedAccessToken,
 	addAccessToken,
 	addRefreshToken,
-	extractedRefreshToken,
-	validAccessToken
+	extractedRefreshToken
 } from '$lib/auth/tokens.server'
-
-export const prerender = false
 
 const dataDir = path.join(process.cwd(), 'data', 'out')
 
@@ -39,25 +36,7 @@ function getRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
 	]
 }
 
-export async function POST(event: RequestEvent): Promise<Response> {
-	const accessToken = renewedAccessToken(event)
-	if (!accessToken) {
-		return invalidTokenResponse()
-	}
-	const refreshToken = extractedRefreshToken(event)
-
-	const formParams: { [index: string]: any } = await event.request.json()
-
-	const csvHeaders = [
-		{ id: 'name', title: '' },
-		{ id: 'value', title: 'INFO' },
-		{ id: 'comments', title: 'COMMENTS' }
-	]
-	const catInfo = formParams['cat_info']
-	const receivedFrom = formParams['received_from']
-	const records = getRows(catInfo, receivedFrom)
-
-	// Generate a filename:
+function getCSVPathname(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string {
 	const catName: string = catInfo.catName
 	const intakeDate: string = catInfo.intakeDate // TODO verify MMDDYY
 	const humanName: string = receivedFrom.fromName
@@ -74,9 +53,21 @@ export async function POST(event: RequestEvent): Promise<Response> {
 	})
 	const csvFilename = validStemChars.join('').replaceAll(/[_-][_-]+/g, '_') + '.csv'
 
-	const csvPathname = path.join(dataDir, csvFilename + '.csv')
+	return path.join(dataDir, csvFilename + '.csv')
+}
+
+async function saveIntakeForm(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): Promise<string> {
+	// Generate a filename:
+	const csvPathname = getCSVPathname(catInfo, receivedFrom)
 	try {
 		await fsPromises.mkdir(dataDir, { recursive: true })
+
+		const csvHeaders = [
+			{ id: 'name', title: '' },
+			{ id: 'value', title: 'INFO' },
+			{ id: 'comments', title: 'COMMENTS' }
+		]
+		const records = getRows(catInfo, receivedFrom)
 
 		const fileWriter = createObjectCsvWriter({
 			path: csvPathname,
@@ -85,7 +76,27 @@ export async function POST(event: RequestEvent): Promise<Response> {
 		await fileWriter.writeRecords(records)
 
 		const result = await fsPromises.readFile(csvPathname, { encoding: 'utf-8' })
-		const body = JSON.stringify(result)
+		return JSON.stringify(result)
+	} catch (e: any) {
+		console.error(e.message)
+		return Promise.reject(e.message)
+	}
+}
+
+export async function POST(event: RequestEvent): Promise<Response> {
+	const refreshToken = extractedRefreshToken(event.request)
+	const accessToken = renewedAccessToken(event.request)
+	if (!accessToken) {
+		return invalidTokenResponse()
+	}
+
+	const formParams: { [index: string]: any } = await event.request.json()
+
+	const catInfo = formParams['cat_info']
+	const receivedFrom = formParams['received_from']
+
+	try {
+		const body = await saveIntakeForm(catInfo, receivedFrom)
 
 		// TODO Refactor as middleware, 'cuz this is nuts.
 		let headers = new Headers()

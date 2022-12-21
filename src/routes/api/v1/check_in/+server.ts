@@ -1,9 +1,8 @@
 import type { RequestEvent } from '@sveltejs/kit'
 import { invalidTokenResponse, validAccessToken } from '$lib/auth/tokens.server'
-export const prerender = true
 
 export function GET(event: RequestEvent): Response {
-	if (!validAccessToken(event)) {
+	if (!validAccessToken(event.request)) {
 		return invalidTokenResponse()
 	}
 	return new Response('OK')

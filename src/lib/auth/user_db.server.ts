@@ -23,7 +23,8 @@ import fsPromises from 'fs/promises'
 
 import { USER_DB_PATH, ADMIN_USERNAME, ADMIN_PASSWORD } from '$env/static/private'
 
-const db = new JSONDB(USER_DB_PATH, { asyncWrite: true })
+// Fragile: must invoke initUserDB before invoking any other exported functions.
+let db: JSONDB
 
 class UserRecord {
 	username: string
@@ -195,6 +196,7 @@ async function addDefaultAdminUser(): Promise<boolean> {
 export async function initUserDB() {
 	const dataDir = path.dirname(path.resolve(USER_DB_PATH))
 	await fsPromises.mkdir(dataDir, { recursive: true })
+	db = new JSONDB(USER_DB_PATH)
 
 	const success = await addDefaultAdminUser()
 	if (!success) {
