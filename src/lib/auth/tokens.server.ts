@@ -1,5 +1,4 @@
-import type { RequestEvent } from '@sveltejs/kit'
-import jwt, { verify } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import { randomUUID } from 'crypto'
 import cookie from 'cookie'
 

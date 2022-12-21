@@ -5,30 +5,22 @@ version: "3"
 # # "file" secrets are read from your host-side
 # # working directory when you run `docker compose up`.
 # secrets:
-#   admin.username:
-#     file: .docker_compose_secrets/admin.username
-#   admin.password:
-#     file: .docker_compose_secrets/admin.password
-#   jwt.access.token.secret:
-#     file: .docker_compose_secrets/jwt.access.token.secret
-#   jwt.access.token.duration:
-#     file: .docker_compose_secrets/jwt.access.token.duration
+#   ADMIN_USERNAME:
+#     file: .docker_compose_secrets/ADMIN_USERNAME
+#   ADMIN_PASSWORD:
+#     file: .docker_compose_secrets/ADMIN_PASSWORD
+#   JWT_ACCESS_TOKEN_SECRET:
+#     file: .docker_compose_secrets/JWT_ACCESS_TOKEN_SECRET
+#   JWT_ACCESS_TOKEN_DURATION:
+#     file: .docker_compose_secrets/JWT_ACCESS_TOKEN_DURATION
+#   USER_DB_PATH:
+#     file: .docker_compose_secrets/USER_DB_PATH
 
 services:
   intake_server:
     build: .
 
     ports:
-      - 80:8000 # outside:inside container
+      - 80:3000 # outside:inside container
 
-    environment:
-      # Expect to find these in, e.g., .env
-      - admin.username
-      - admin.password
-      - jwt.access.token.secret
-      - jwt.access.token.duration
-    # secrets:
-    #   - admin.username
-    #   - admin.password
-    #   - jwt.access.token.secret
-    #   - jwt.access.token.duration
+    env_file: .env.production.docker
