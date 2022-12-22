@@ -1,12 +1,13 @@
 <script lang="ts">
-    import {fade} from 'svelte/transition'
+	import { fade } from 'svelte/transition'
 
 	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
+	import type { DownloadInfo } from '$lib/download_info.js'
 	import Dialog from '$lib/components/Dialog.svelte'
 	import LoginForm from '$lib/components/LoginForm.svelte'
 
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
-	
+
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
 	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
@@ -62,14 +63,16 @@
 			// on return.
 			showLogin('Your session has expired.')
 		} else if (response.status == 200) {
+			updateSessionToken(response)
+
 			const body = await response.json()
+			const downloadInfo = body as DownloadInfo
 
-            statusVisible = true
-            setTimeout(() => {
-                statusVisible = false
-            }, 2000)
-
-            updateSessionToken(response)
+			// Automatically download the generated intake form.
+			const anchor = document.createElement('a')
+			anchor.href = downloadInfo.srcURL
+			anchor.download = downloadInfo.filename
+			anchor.click()
 		}
 	}
 
@@ -78,8 +81,6 @@
 		return true
 	}
 	$: formValid = getFormValid()
-
-    let statusVisible = false;
 </script>
 
 <Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
@@ -111,25 +112,21 @@
 	<hr />
 
 	<div class="btns">
-		<button type="submit" disabled={!formValid}>Save</button>
-        {#if statusVisible}
-        <span transition:fade class="status_msg">Saved</span>
-        {/if}
+		<button
+			type="submit"
+			disabled={!formValid}
+			title="Save this surrender form and download the resulting intake form."
+			>Download Intake Form</button
+		>
 	</div>
 </form>
 
 <style>
-    .status_msg {
-        font-size: 70%;
-        color: #999999;
-        margin: 0 1em;
-    }
-
-    :global(input) {
-        margin: 0.25em 0;
-    }
-    :global(textarea) {
-        border-color: #bbbbbb;
-        border-radius: 2pt;
-    }
+	:global(input) {
+		margin: 0.25em 0;
+	}
+	:global(textarea) {
+		border-color: #bbbbbb;
+		border-radius: 2pt;
+	}
 </style>

@@ -12,6 +12,8 @@ import {
 	extractedRefreshToken
 } from '$lib/auth/tokens.server'
 
+import { DownloadInfo } from '$lib/download_info'
+
 const dataDir = path.join(process.cwd(), 'data', 'out')
 
 type CatPkg = any
@@ -36,7 +38,7 @@ function getRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
 	]
 }
 
-function getCSVPathname(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string {
+function getCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string {
 	const catName: string = catInfo.catName
 	const intakeDate: string = catInfo.intakeDate // TODO verify MMDDYY
 	const humanName: string = receivedFrom.fromName
@@ -51,14 +53,16 @@ function getCSVPathname(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string 
 			return ''
 		}
 	})
-	const csvFilename = validStemChars.join('').replaceAll(/[_-][_-]+/g, '_') + '.csv'
-
-	return path.join(dataDir, csvFilename)
+	return validStemChars.join('').replaceAll(/[_-][_-]+/g, '_') + '.csv'
 }
 
-async function saveIntakeForm(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): Promise<string> {
-	// Generate a filename:
-	const csvPathname = getCSVPathname(catInfo, receivedFrom)
+// Save a new intake form, and return its download link.
+async function saveIntakeForm(
+	catInfo: CatPkg,
+	receivedFrom: ReceivedFromPkg
+): Promise<DownloadInfo> {
+	const csvFilename = getCSVFilename(catInfo, receivedFrom)
+	const csvPathname = path.join(dataDir, csvFilename)
 	try {
 		await fsPromises.mkdir(dataDir, { recursive: true })
 
@@ -75,8 +79,8 @@ async function saveIntakeForm(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): P
 		})
 		await fileWriter.writeRecords(records)
 
-		const result = await fsPromises.readFile(csvPathname, { encoding: 'utf-8' })
-		return JSON.stringify(result)
+		const downloadURL = encodeURI(`/api/v1/download/${csvFilename}`)
+		return new DownloadInfo(downloadURL, csvFilename)
 	} catch (e: any) {
 		console.error(e.message)
 		return Promise.reject(e.message)
@@ -96,16 +100,17 @@ export async function POST(event: RequestEvent): Promise<Response> {
 	const receivedFrom = formParams['received_from']
 
 	try {
-		const body = await saveIntakeForm(catInfo, receivedFrom)
+		const info = await saveIntakeForm(catInfo, receivedFrom)
+		const body = JSON.stringify(info)
 
 		// TODO Refactor as middleware, 'cuz this is nuts.
 		let headers = new Headers()
 		addAccessToken(headers, accessToken)
 		addRefreshToken(headers, refreshToken)
 
-		return new Response(body, { status: 200, headers: headers })
+		return json(info, { headers: headers })
 	} catch (e: any) {
 		console.error(e.message)
-		return json('Failed to save intake record')
+		return json('Failed to save intake record', { status: 500 })
 	}
 }
