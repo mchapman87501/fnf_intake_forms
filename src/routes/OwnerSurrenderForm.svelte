@@ -1,11 +1,12 @@
 <script lang="ts">
+    import {fade} from 'svelte/transition'
+
 	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
 	import Dialog from '$lib/components/Dialog.svelte'
 	import LoginForm from '$lib/components/LoginForm.svelte'
 
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
-	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
-
+	
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
 	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
@@ -32,134 +33,6 @@
 	}
 	function closeLoginDialog() {
 		loginDialog.close()
-	}
-
-	// TODO reflect Surrender form
-	function surrenderHeaders() {
-		return [
-			'Intake Date',
-			'Recvd From Name',
-			'Drivers Lic',
-			'Address',
-			'Home Phone',
-			'City',
-			'State',
-			'Zip',
-			'Work/Cell Phone',
-			'Email',
-			'Intake Reason',
-			'Donation Amount',
-			'Donation Type',
-			'F&F Representative'
-		]
-
-		// 	'Recvd From Phone',
-		// 	'Recvd From Email',
-		// 	'Intake Reason',
-
-		// 	'Surrender/Stray/Transfer',
-		// 	'Shelter Num',
-		// 	'Relinq/Courtesy Listing',
-		// 	'Show or Web Only',
-		// 	'Rescue ID',
-		// 	'Cat Name',
-		// 	'Cat Age/DOB',
-		// 	'Gender',
-		// 	'altered/Intact',
-		// 	'Breed',
-		// 	'Hair length',
-		// 	// readability marker
-		// 	'Color',
-		// 	'Current Weight',
-		// 	'Est Size at Maturity',
-		// 	'Distinctive Features',
-		// 	'Spay/Neuter Date',
-		// 	'Spay/Neuter Facility',
-		// 	'RVRCP#1',
-		// 	'RVRCP#2',
-		// 	'RVRCP#3',
-		// 	// readability marker
-		// 	"Rabies Expires",
-		// 	"FELV/FIV Test Date",
-		// 	"FELV/FIV Pos/Neg",
-		// 	"Microchip Num",
-		// 	"Ok with Kids",
-		// 	"Ok with Dogs",
-		// 	"Ok with Cats",
-		// 	"Bite History",
-		// 	"Declawed",
-		// 	"Special Needs",
-		// 	"Temperament",
-		// 	"Mother/Littermates",
-		// 	"Known History",
-		// 	"Internal-other Comments",
-		// 	"Foster Home upon Intake"
-		// ]
-	}
-
-	function surrenderValues() {
-		return [
-			$catPkg.intakeDate,
-			$recvdFromPkg.fromName,
-			$recvdFromPkg.driversLic,
-			$recvdFromPkg.address,
-			$recvdFromPkg.city,
-			$recvdFromPkg.state,
-			$recvdFromPkg.zip,
-			$recvdFromPkg.email,
-
-			$catPkg.intakeReason,
-			$recvdFromPkg.donationAmount,
-			$recvdFromPkg.donationForm,
-			$catPkg.intakeFnFRepr
-		]
-		// ]
-		// 		$catPkg.intakeReason,
-		// 		'TBD',
-		// 		'TBD',
-		// 		'TBD',
-		// 		'TBD',
-		// 		'FigureThis',
-		// 		$catPkg.catName,
-		// 		$catPkg.DOB,
-		// 		$catPkg.gender,
-		// 		$catPkg.altered,
-		// 		$catPkg.breed,
-		// 		'TBD',
-		// 		// readability marker
-		// 		$catPkg.color,
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		// readability marker
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		$catPkg.microchipNum,
-		// 		$catPkg.okKinder,
-		// 		$catPkg.okCats,
-		// 		$catPkg.okDogs.toString(),
-		// 		"TBD",
-		// 		"TBD",
-		// 		$catPkg.specialNeeds,
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD foster home",
-		// 	]
-	}
-
-	function copyFormToClipboard() {
-		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
-		const csvStr = getInfoAsCSV([surrenderHeaders(), surrenderValues()])
-		console.log('Copying %o', csvStr)
-		navigator.clipboard.writeText(csvStr)
 	}
 
 	const backendBaseURL = '/api/v1'
@@ -190,7 +63,12 @@
 			showLogin('Your session has expired.')
 		} else if (response.status == 200) {
 			const body = await response.json()
-			console.log('Got response: %o', body)
+
+            statusVisible = true
+            setTimeout(() => {
+                statusVisible = false
+            }, 2000)
+
             updateSessionToken(response)
 		}
 	}
@@ -200,6 +78,8 @@
 		return true
 	}
 	$: formValid = getFormValid()
+
+    let statusVisible = false;
 </script>
 
 <Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
@@ -231,9 +111,25 @@
 	<hr />
 
 	<div class="btns">
-		<button type="submit" disabled={!formValid}>Submit</button>
-		<button type="button" on:click={copyFormToClipboard}
-			>Copy Surrender Form to Clipboard (Excel)</button
-		>
+		<button type="submit" disabled={!formValid}>Save</button>
+        {#if statusVisible}
+        <span transition:fade class="status_msg">Saved</span>
+        {/if}
 	</div>
 </form>
+
+<style>
+    .status_msg {
+        font-size: 70%;
+        color: #999999;
+        margin: 0 1em;
+    }
+
+    :global(input) {
+        margin: 0.25em 0;
+    }
+    :global(textarea) {
+        border-color: #bbbbbb;
+        border-radius: 2pt;
+    }
+</style>

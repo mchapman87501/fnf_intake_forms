@@ -72,26 +72,35 @@
 		<button type="button" on:click={initForms}>&#9888; Reset all Forms to Defaults</button>
 	</label>
 
-	<hr />
-	{#if pkg.selected_form == FormType.Surrender}
-		<OwnerSurrenderForm />
-	{:else if pkg.selected_form == FormType.Intake}
-		<IntakeForm />
-	{:else if pkg.selected_form == FormType.Stray}
-		<StraySurrenderForm />
-	{:else if pkg.selected_form == FormType.Rescue}
-		<RescueSurrenderForm />
-	{:else if pkg.selected_form == FormType.PregnantNursing}
-		<OwnerSurrenderForm>
-			<span slot="mom-slot"> <WantsMomBack /> </span>
-		</OwnerSurrenderForm>
-	{:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
-		<p>Please select a form.</p>
-	{/if}
+	<div>
+		{#if pkg.selected_form == FormType.Surrender}
+			<OwnerSurrenderForm />
+		{:else if pkg.selected_form == FormType.Intake}
+			<IntakeForm />
+		{:else if pkg.selected_form == FormType.Stray}
+			<StraySurrenderForm />
+		{:else if pkg.selected_form == FormType.Rescue}
+			<RescueSurrenderForm />
+		{:else if pkg.selected_form == FormType.PregnantNursing}
+			<OwnerSurrenderForm>
+				<span slot="mom-slot"> <WantsMomBack /> </span>
+			</OwnerSurrenderForm>
+		{:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
+			<p>Please select a form.</p>
+		{/if}
+	</div>
 {/if}
 
 <style>
 	.right-margin {
 		margin-right: 5%;
+	}
+
+	div {
+		margin-top: 1em;
+		border: 1px solid #dddddd;
+		border-radius: 5pt;
+		padding: 1em;
+		background-color: #f8f8f8;
 	}
 </style>
