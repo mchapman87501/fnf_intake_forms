@@ -4,14 +4,6 @@ import { createObjectCsvWriter } from 'csv-writer'
 import path from 'path'
 import fsPromises from 'fs/promises'
 
-import {
-	invalidTokenResponse,
-	renewedAccessToken,
-	addAccessToken,
-	addRefreshToken,
-	extractedRefreshToken
-} from '$lib/auth/tokens.server'
-
 import { DownloadInfo } from '$lib/download_info'
 
 const dataDir = path.join(process.cwd(), 'data', 'out')
@@ -88,12 +80,6 @@ async function saveIntakeForm(
 }
 
 export async function POST(event: RequestEvent): Promise<Response> {
-	const refreshToken = extractedRefreshToken(event.request)
-	const accessToken = renewedAccessToken(event.request)
-	if (!accessToken) {
-		return invalidTokenResponse()
-	}
-
 	const formParams: { [index: string]: any } = await event.request.json()
 
 	const catInfo = formParams['cat_info']
@@ -102,13 +88,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
 	try {
 		const info = await saveIntakeForm(catInfo, receivedFrom)
 		const body = JSON.stringify(info)
-
-		// TODO Refactor as middleware, 'cuz this is nuts.
-		let headers = new Headers()
-		addAccessToken(headers, accessToken)
-		addRefreshToken(headers, refreshToken)
-
-		return json(info, { headers: headers })
+		return json(info)
 	} catch (e: any) {
 		console.error(e.message)
 		return json('Failed to save intake record', { status: 500 })
