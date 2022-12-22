@@ -53,7 +53,7 @@ function getCSVPathname(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string 
 	})
 	const csvFilename = validStemChars.join('').replaceAll(/[_-][_-]+/g, '_') + '.csv'
 
-	return path.join(dataDir, csvFilename + '.csv')
+	return path.join(dataDir, csvFilename)
 }
 
 async function saveIntakeForm(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): Promise<string> {
