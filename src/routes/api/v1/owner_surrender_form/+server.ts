@@ -21,9 +21,15 @@ function getRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
 	function row(name: string, value: any): Row {
 		return { name: name, value: value, comments: '' }
 	}
-	function boolStr(value: boolean | null) {
-		return value === null ? 'Unknown' : value ? 'Y' : 'N'
+
+	// TODO Standardize form values for Yes/No/Unknown selects
+	function boolStr(value: boolean | string | null) {
+		if (typeof value == 'string') {
+			return value
+		}
+		return value === null ? 'Unknown' : value ? 'Yes' : 'No'
 	}
+
 	function posNegStr(value: boolean | null) {
 		return value === null ? 'Unknown' : value ? 'Pos' : 'Neg'
 	}
