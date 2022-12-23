@@ -35,8 +35,9 @@
 
 	let loginDialog: HTMLDialogElement
 	function signIn() {
-		loginDialog.showModal()
-		// How to auto-focus the username field?
+		if (loginDialog) {
+			loginDialog.showModal()
+		}
 	}
 	function closeLoginDialog() {
 		loginDialog.close()
@@ -50,20 +51,34 @@
 		session_token.update((curr) => '')
 	}
 
+	let isSignedIn = false
+	$: isSignedIn = !($session_token === undefined || $session_token == '')
+
 	//initialize defaults
 	onMount(() => {
 		initSession()
 	})
 </script>
 
+<div class="banner">
+	<span class="title">Felines & Friends Intake</span>
+	{#if isSignedIn}
+		<span class="spacer">&nbsp;</span>
+		<span class="user_info">
+			{$session_username} <button on:click={signOut}>Sign Out</button>
+		</span>
+	{:else}
+		<span class="user_info">
+			<button on:click={signIn}>Please Sign In</button>
+		</span>
+	{/if}
+</div>
+
 {#if $session_token === undefined || $session_token == ''}
-	<p class="user_info"><button on:click={signIn}>Sign In</button></p>
 	<Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
 		<LoginForm loginReason="" close={closeLoginDialog} />
 	</Dialog>
 {:else}
-	<p class="user_info">{$session_username} <button on:click={signOut}>Sign Out</button></p>
-
 	<label class="right-margin"
 		>Form:
 		<select bind:value={pkg.selected_form}>
@@ -81,7 +96,7 @@
 		<button type="button" on:click={initForms}>&#9888; Reset all Forms to Defaults</button>
 	</label>
 
-	<div>
+	<div class="fnf_form">
 		{#if pkg.selected_form == FormType.Surrender}
 			<OwnerSurrenderForm />
 		{:else if pkg.selected_form == FormType.Intake}
@@ -105,11 +120,30 @@
 		margin-right: 5%;
 	}
 
-	.user_info {
-		text-align: right;
+	.banner {
+		padding: 0.5em 0.25em 0.5em 0;
+		margin-bottom: 1em;
+		border-bottom: 1px solid #dddddd;
+
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
 	}
 
-	div {
+	.banner .title {
+		font-weight: bold;
+		font-size: 120%;
+	}
+
+	.banner .spacer {
+		flex: 2 0 auto;
+	}
+
+	.user_info {
+		margin-left: 1em;
+	}
+
+	.fnf_form {
 		margin-top: 1em;
 		border: 1px solid #dddddd;
 		border-radius: 5pt;
