@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { session_token, session_username } from '$lib/auth/auth'
+	import { jwtSession, session_token, session_username } from '$lib/auth/auth'
 	import Dialog from '$lib/components/Dialog.svelte'
 	import LoginForm from '$lib/components/LoginForm.svelte'
 	import { onMount } from 'svelte'
@@ -36,9 +36,18 @@
 	let loginDialog: HTMLDialogElement
 	function signIn() {
 		loginDialog.showModal()
+		// How to auto-focus the username field?
 	}
 	function closeLoginDialog() {
 		loginDialog.close()
+	}
+	async function signOut() {
+		let rqst = await fetch('/api/v1/logout', {
+			method: 'POST',
+			headers: { ...jwtSession() }
+		})
+		session_username.update((curr) => '')
+		session_token.update((curr) => '')
 	}
 
 	//initialize defaults
@@ -48,12 +57,12 @@
 </script>
 
 {#if $session_token === undefined || $session_token == ''}
-	<p>Welcome! <button on:click={signIn}>Sign In</button></p>
+	<p class="user_info"><button on:click={signIn}>Sign In</button></p>
 	<Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
 		<LoginForm loginReason="" close={closeLoginDialog} />
 	</Dialog>
 {:else}
-	<p>Welcome, {$session_username}.</p>
+	<p class="user_info">{$session_username} <button on:click={signOut}>Sign Out</button></p>
 
 	<label class="right-margin"
 		>Form:
@@ -94,6 +103,10 @@
 <style>
 	.right-margin {
 		margin-right: 5%;
+	}
+
+	.user_info {
+		text-align: right;
 	}
 
 	div {

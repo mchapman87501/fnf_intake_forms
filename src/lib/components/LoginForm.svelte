@@ -58,7 +58,8 @@
 			{error}
 		</p>
 	{/if}
-	<input type="text" name="username" placeholder="Username" bind:value={username} />
+	<!-- svelte-ignore a11y-autofocus -->
+	<input type="text" name="username" placeholder="Username" bind:value={username} autofocus />
 	<br />
 	<input type="password" name="password" placeholder="Password" bind:value={password} />
 	<div class="button_box">
@@ -68,9 +69,9 @@
 </form>
 
 <style>
-    input {
-        margin: 0.25em 1em;
-    }
+	input {
+		margin: 0.25em 1em;
+	}
 	.header {
 		display: flex;
 		align-items: center;
@@ -79,7 +80,7 @@
 		opacity: 0.75;
 		height: 5em;
 		flex: 1 1 auto;
-        object-fit: contain;
+		object-fit: contain;
 	}
 	.header > div {
 		flex: 1 1 auto;

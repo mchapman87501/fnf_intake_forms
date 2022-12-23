@@ -11,19 +11,11 @@ import { authenticate } from '$lib/auth/user_db.server'
 // function POST.
 
 export async function POST(event: RequestEvent): Promise<Response> {
-	let formParams: FormData = await event.request.formData()
-	const username = formParams.get('username')?.toString() || ''
-	const password = formParams.get('password')?.toString() || ''
+	// What prevents a malicious client from continuing to use an invalidated
+	// access token?
+	const refreshToken = '' // Invalid
+	const accessToken = '' // Invalid
 
-	let refreshToken = await authenticate(username, password)
-	if (!refreshToken) {
-		let headers = new Headers()
-		headers.set('WWW-Authenticate', 'Bearer')
-		// TODO what to use for challenge data?
-		return new Response('Could not authenticate', { status: 401, headers: headers })
-	}
-
-	const accessToken = newAccessToken(username)
 	let headers = new Headers()
 	addAccessToken(headers, accessToken)
 	addRefreshToken(headers, refreshToken)

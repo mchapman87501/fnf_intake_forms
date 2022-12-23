@@ -137,8 +137,4 @@
 	:global(input) {
 		margin: 0.25em 0;
 	}
-	:global(textarea) {
-		border-color: #bbbbbb;
-		border-radius: 2pt;
-	}
 </style>
