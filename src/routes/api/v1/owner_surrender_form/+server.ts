@@ -8,25 +8,76 @@ import { DownloadInfo } from '$lib/download_info'
 
 const dataDir = path.join(process.cwd(), 'data', 'out')
 
+// TODO define CatPkg and ReceivedPkg as interfaces, in $lib.
 type CatPkg = any
 type ReceivedFromPkg = any
 
 function getRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
+	interface Row {
+		name: string
+		value: any
+		comments: string
+	}
+	function row(name: string, value: any): Row {
+		return { name: name, value: value, comments: '' }
+	}
+	function boolStr(value: boolean | null) {
+		return value === null ? 'Unknown' : value ? 'Y' : 'N'
+	}
+	function posNegStr(value: boolean | null) {
+		return value === null ? 'Unknown' : value ? 'Pos' : 'Neg'
+	}
+
+	// This is derived from IntakeForm.svelte.
 	return [
-		{ name: 'Intake Date', value: catInfo.intakeDate, comments: '' },
-		{ name: 'Received By', value: catInfo.intakeFnFRepr, comments: '' },
-		{ name: 'Received From', value: recvdFrom.fromName, comments: '' },
-		{ name: 'Street Address', value: recvdFrom.address, comments: '' },
-		{ name: 'City', value: recvdFrom.city, comments: '' },
-		{ name: 'State', value: recvdFrom.state, comments: '' },
-		{ name: 'Zip code', value: recvdFrom.zip, comments: '' },
-		{ name: 'Cell/Home phone', value: recvdFrom.phone, comments: '' },
-		{ name: 'Email Address', value: recvdFrom.email, comments: '' },
-		{ name: 'Reason for surrender', value: catInfo.intakeReason, comments: '' },
-		{ name: 'Shelter Number', value: recvdFrom.shelterNum, comments: '' },
-		{ name: "Cat's name", value: catInfo.catName, comments: '' },
-		{ name: 'DOB', value: catInfo.DOB, comments: '' },
-		{ name: 'Gender', value: catInfo.gender, comments: '' }
+		row('Intake Date', catInfo.intakeDate),
+		row('Intake By', catInfo.intakeFnFRepr),
+		row('Received From', recvdFrom.fromName),
+
+		row('Phone', recvdFrom.phone),
+		row('Email', recvdFrom.email),
+
+		row('Intake Reason', catInfo.intakeReason),
+		row('Intake Type', recvdFrom.surrenderType),
+		row('Shelter Number', recvdFrom.shelterNum),
+
+		row(
+			'Courtesy listing (no relinquishment)) ',
+			boolStr(recvdFrom.courtesyListingNoRelinquishment)
+		),
+		row('Ok to show (not Web only)', boolStr(catInfo.oKToShow)),
+		row('Rescue ID', 'To do RESCUE ID'),
+		row('Name of Cat', catInfo.catName),
+		row('DOB', catInfo.DOB),
+		row('Gender', catInfo.gender),
+		row('Breed', catInfo.breed),
+		row('Hair length', catInfo.hairLength),
+		row('Color', catInfo.color),
+		row('Current Weight', catInfo.currentWeight),
+		row('Estimated Size at Maturity', catInfo.estMatureSize),
+		row('Distinctive Features', catInfo.distinctiveFeatures),
+		row('Spay/Neuter Date', catInfo.alteredDate),
+		row('Where Done', catInfo.alteredFacility),
+		row('FVRCP #1', catInfo.FVRCP1),
+		row('FVRCP #2', catInfo.FVRCP2),
+		row('FVRCP #3', catInfo.FVRCP3),
+		row('Rabies Expires', catInfo.rabiesExpirationDate),
+		row('FELV/FIV Test Date', catInfo.FELVFIVTestedDate),
+		row('Pos/Neg?', posNegStr(catInfo.FELVFIVPositive)),
+		row('Microchip #', catInfo.microchipNum),
+		row('Likes Dogs?', boolStr(catInfo.okDogs)),
+		row('Likes Cats?', boolStr(catInfo.okCats)),
+		row('Likes Kids?', boolStr(catInfo.okKinder)),
+		row('Bite History?', boolStr(catInfo.biteHistory)),
+		row('Declawed?', boolStr(catInfo.declawed)),
+		row('Special Needs?', catInfo.specialNeeds),
+		row('Temperament', catInfo.temperament),
+		row('Mother/Littermates', catInfo.motherLittermates),
+		row('Known History', catInfo.knownHistory),
+		row('Other Comments [internal use only]:', catInfo.otherCommentsInternalUseOnly),
+		row('Foster Home upon Intake', catInfo.fosterHomeOnIntake),
+		row('Altered:', catInfo.altered),
+		row('Prevous Shelter Id', recvdFrom.shelterPrevID)
 	]
 }
 
@@ -47,6 +98,11 @@ function getCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string 
 	})
 	return validStemChars.join('').replaceAll(/[_-][_-]+/g, '_') + '.csv'
 }
+
+// Create a new intake form from the provided surrender info.
+// This follows the sequence of routes/IntakeForm.svelte.
+// TODO define $lib classes, with converters, for CatPkg, ReceivedFromPkg,
+// OwnerSurrender and Intake.
 
 // Save a new intake form, and return its download link.
 async function saveIntakeForm(
