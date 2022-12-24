@@ -5,8 +5,8 @@ import type { Handle } from '@sveltejs/kit'
 import {
 	ADMIN_USERNAME,
 	ADMIN_PASSWORD,
-	JWT_ACCESS_TOKEN_SECRET,
-	JWT_ACCESS_TOKEN_DURATION,
+	JWT_ACCESS_SECRET,
+	JWT_ACCESS_DURATION,
 	USER_DB_PATH
 } from '$env/static/private'
 
@@ -22,13 +22,7 @@ import { initUserDB } from '$lib/auth/user_db.server'
 
 // Verify that all required envs are defined
 if (
-	!(
-		ADMIN_USERNAME &&
-		ADMIN_PASSWORD &&
-		JWT_ACCESS_TOKEN_SECRET &&
-		JWT_ACCESS_TOKEN_DURATION &&
-		USER_DB_PATH
-	)
+	!(ADMIN_USERNAME && ADMIN_PASSWORD && JWT_ACCESS_SECRET && JWT_ACCESS_DURATION && USER_DB_PATH)
 ) {
 	const msg = `
 ------------------------------------------------------------------------

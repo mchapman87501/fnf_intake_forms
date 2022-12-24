@@ -9,10 +9,10 @@ version: "3"
 #     file: .docker_compose_secrets/ADMIN_USERNAME
 #   ADMIN_PASSWORD:
 #     file: .docker_compose_secrets/ADMIN_PASSWORD
-#   JWT_ACCESS_TOKEN_SECRET:
-#     file: .docker_compose_secrets/JWT_ACCESS_TOKEN_SECRET
-#   JWT_ACCESS_TOKEN_DURATION:
-#     file: .docker_compose_secrets/JWT_ACCESS_TOKEN_DURATION
+#   JWT_ACCESS_SECRET:
+#     file: .docker_compose_secrets/JWT_ACCESS_SECRET
+#   JWT_ACCESS_DURATION:
+#     file: .docker_compose_secrets/JWT_ACCESS_DURATION
 #   USER_DB_PATH:
 #     file: .docker_compose_secrets/USER_DB_PATH
 

@@ -22,6 +22,7 @@ import path from 'path'
 import fsPromises from 'fs/promises'
 
 import { USER_DB_PATH, ADMIN_USERNAME, ADMIN_PASSWORD } from '$env/static/private'
+import { newRefreshToken } from './tokens.server'
 
 // Fragile: must invoke initUserDB before invoking any other exported functions.
 let db: JSONDB
@@ -152,7 +153,7 @@ export async function authenticate(username: string, password: string): Promise<
 		if (passwordIsCorrect) {
 			let result = record.refreshToken
 			if (!result) {
-				result = crypto.randomUUID()
+				result = newRefreshToken(username)
 				record.refreshToken = result
 				insertOrUpdateUser(record)
 			}
