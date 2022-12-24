@@ -15,6 +15,36 @@ This prototype uses SvelteKit's `$env/static/private` facility to access secrets
 `env_template.in` can be used as a template for `./.env`. It has entries for
 all of the environment variables that are known to be needed as of time of writing.
 
+If you are running on [replit](https://replit.com) you will need to add each of the variables listed in `env_template.in`, using the "Secrets" tool.
+
+### Running on Replit
+
+The `@sveltejs/adapter-node` specified in `svelte.config.js` protects against cross-origin attacks.
+
+Unfortunately, when running on replit, this causes attempts to log in to this prototype to fail.
+
+The [recommended solution](https://github.com/sveltejs/kit/tree/master/packages/adapter-node#origin-protocol_header-and-host_header) is to define an `ORIGIN` environment variable when running on replit -- again, using the "Secrets" tool.
+
+Also unfortunately, this doesn't seem to work. [Or, more accurately, I don't know what value to use for `ORIGIN` when running on replit. I've tried setting ORIGIN to the URL shown in my replit Webview, without success. -- Mitch]
+
+An insecure workaround is to edit `svelte.config.js` and to add a `csrf` setting to the `kit` configuration:
+
+```js
+const config = {
+	// Consult https://github.com/sveltejs/svelte-preprocess
+	// for more information about preprocessors
+	preprocess: preprocess(),
+
+	kit: {
+		adapter: adapter(),
+		// ADD THIS
+		csrf: {
+			checkOrigin: false
+		}
+	}
+}
+```
+
 ### Elastic Beanstalk
 
 What a mess that is...
