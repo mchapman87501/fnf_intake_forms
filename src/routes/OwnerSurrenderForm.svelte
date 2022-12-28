@@ -111,8 +111,9 @@
 			type="submit"
 			disabled={!formValid}
 			title="Save this surrender form and download the resulting intake form."
-			>Download Intake Form</button
 		>
+			Download Intake Form
+		</button>
 	</div>
 </form>
 

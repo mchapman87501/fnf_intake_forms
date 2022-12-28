@@ -44,10 +44,7 @@ function getIntakeFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
 		row('Intake Type', recvdFrom.surrenderType),
 		row('Shelter Number', recvdFrom.shelterNum),
 
-		row(
-			'Courtesy listing (no relinquishment)) ',
-			boolStr(recvdFrom.courtesyListingNoRelinquishment)
-		),
+		row('Courtesy listing (no relinquishment)', boolStr(recvdFrom.courtesyListingNoRelinquishment)),
 		row('Ok to show (not Web only)', boolStr(catInfo.oKToShow)),
 		row('Rescue ID', 'To do RESCUE ID'),
 		row('Name of Cat', catInfo.catName),
