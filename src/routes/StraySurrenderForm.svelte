@@ -52,6 +52,8 @@
 	$: formValid = getFormValid()
 </script>
 
+<LoginDialog />
+
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate />
 	<SurrenderType /><br />
