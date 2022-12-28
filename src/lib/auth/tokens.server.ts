@@ -72,14 +72,22 @@ export function extractedRefreshToken(request: Request): string {
 	return cookies['refresh_token'] || ''
 }
 
-function verifyAccessToken(token: string): any | null {
+function verifyToken(token: string, secret: string, title: string): any | null {
 	try {
-		return jwt.verify(token, JWT_ACCESS_SECRET)
+		return jwt.verify(token, secret)
 	} catch (e) {
 		// Missing, invalid or expired token
-		console.error('Could not verify access token: %o', e)
+		console.error('Could not verify %o token: %o', title, e)
 	}
 	return null
+}
+
+function verifyRefreshToken(token: string): any | null {
+	return verifyToken(token, JWT_REFRESH_SECRET, 'refresh')
+}
+
+function verifyAccessToken(token: string): any | null {
+	return verifyToken(token, JWT_ACCESS_SECRET, 'access')
 }
 
 export function validAccessToken(request: Request): boolean {
@@ -93,9 +101,11 @@ export function renewedAccessToken(request: Request): string {
 		return currAccessToken
 	}
 	const currRefreshToken = extractedRefreshToken(request)
-	const username = usernameForRefreshTokenSync(currRefreshToken)
-	if (username) {
-		return newAccessToken(username)
+	if (verifyRefreshToken(currRefreshToken)) {
+		const username = usernameForRefreshTokenSync(currRefreshToken)
+		if (username) {
+			return newAccessToken(username)
+		}
 	}
 	return ''
 }
