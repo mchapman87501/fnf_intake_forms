@@ -1,10 +1,7 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition'
-
 	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
 	import type { DownloadInfo } from '$lib/download_info.js'
-	import Dialog from '$lib/components/Dialog.svelte'
-	import LoginForm from '$lib/components/LoginForm.svelte'
+	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 
@@ -25,19 +22,6 @@
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
 	import SurrenderType from '../components/SurrenderType.svelte'
 
-	// Login form management.
-	let loginDialog: HTMLDialogElement
-	let loginReason = ''
-	function showLogin(reason: string) {
-		loginReason = reason
-		loginDialog.showModal()
-	}
-	function closeLoginDialog() {
-		loginDialog.close()
-	}
-
-	const backendBaseURL = '/api/v1'
-
 	async function downloadIntakeForm(downloadInfo: DownloadInfo) {
 		// Automatically download the generated intake form.
 		// https://stackoverflow.com/a/42274086/2826337
@@ -56,6 +40,7 @@
 			console.error('Failed to download %o: %o', downloadInfo.srcURL, downloadResp.statusText)
 		}
 	}
+
 	async function handleSubmit() {
 		const bearerToken = $session_token
 		if (bearerToken == null) {
@@ -95,9 +80,7 @@
 	$: formValid = getFormValid()
 </script>
 
-<Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
-	<LoginForm bind:loginReason close={closeLoginDialog} />
-</Dialog>
+<LoginDialog />
 
 <form on:submit|preventDefault={handleSubmit}>
 	<IntakeDate />
