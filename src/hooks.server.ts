@@ -40,7 +40,12 @@ defined in, e.g., your .env file.
 await initUserDB()
 
 // Some API endpoints can be accessed only by authenticated (and, someday, authorized) clients.
-const authenticatedEndPoints = ['owner_surrender_form', 'download']
+const authenticatedEndPoints = [
+	'owner_surrender_form',
+	'rescue_surrender_form',
+	'stray_surrender_form',
+	'download'
+]
 
 function needsAuthentication(request: Request): boolean {
 	const apiRoute = /\/api\/v1\/([^/]+)/
