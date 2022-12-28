@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
-	import type { DownloadInfo } from '$lib/download_info.js'
+	import { downloadIntakeForm, type DownloadInfo } from '$lib/download_info.js'
 	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
@@ -21,25 +21,6 @@
 	import TreatableMedical from '../components/TreatableMedical.svelte'
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
 	import SurrenderType from '../components/SurrenderType.svelte'
-
-	async function downloadIntakeForm(downloadInfo: DownloadInfo) {
-		// Automatically download the generated intake form.
-		// https://stackoverflow.com/a/42274086/2826337
-		const options = {
-			headers: { ...jwtSession() }
-		}
-		const downloadResp = await fetch(downloadInfo.srcURL, options)
-		if (downloadResp.status == 200) {
-			// Need to do this in order to save to downloadInfo.filename, instead
-			// of saving to a randomly generated UUID.
-			const anchor = document.createElement('a')
-			anchor.href = window.URL.createObjectURL(await downloadResp.blob())
-			anchor.download = downloadInfo.filename
-			anchor.click()
-		} else {
-			console.error('Failed to download %o: %o', downloadInfo.srcURL, downloadResp.statusText)
-		}
-	}
 
 	async function handleSubmit() {
 		const bearerToken = $session_token
@@ -62,8 +43,6 @@
 
 		if (response.status == 401) {
 			// Unauthorized, or session has expired. -- need to redirect to login.
-			// TODO maintain form state in a store, so it can be restored
-			// on return.
 			showLogin('Your session has expired.')
 		} else if (response.status == 200) {
 			updateSessionToken(response)

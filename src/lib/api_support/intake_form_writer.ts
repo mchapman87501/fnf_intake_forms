@@ -81,7 +81,7 @@ function getIntakeFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
 	]
 }
 
-function getCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string {
+function getIntakeCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string {
 	const catName: string = catInfo.catName
 	const intakeDate: string = catInfo.intakeDate // TODO verify MMDDYY
 	const humanName: string = receivedFrom.fromName
@@ -105,11 +105,11 @@ function getCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string 
 // OwnerSurrender and Intake.
 
 // Save a new intake form, and return its download link.
-export async function saveIntakeForm(
+async function saveIntakeFormInternal(
 	catInfo: CatPkg,
 	receivedFrom: ReceivedFromPkg
 ): Promise<DownloadInfo> {
-	const csvFilename = getCSVFilename(catInfo, receivedFrom)
+	const csvFilename = getIntakeCSVFilename(catInfo, receivedFrom)
 	const csvPathname = path.join(dataDir, csvFilename)
 	try {
 		await fsPromises.mkdir(dataDir, { recursive: true })
@@ -133,4 +133,11 @@ export async function saveIntakeForm(
 		console.error(e.message)
 		return Promise.reject(e.message)
 	}
+}
+
+export async function saveIntakeForm(formParams: { [index: string]: any }): Promise<DownloadInfo> {
+	const catInfo = formParams['cat_info']
+	const receivedFrom = formParams['received_from']
+
+	return saveIntakeFormInternal(catInfo, receivedFrom)
 }
