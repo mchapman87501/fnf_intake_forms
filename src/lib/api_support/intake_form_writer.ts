@@ -1,36 +1,12 @@
 import { DownloadInfo } from '$lib/download_info'
-import { createObjectCsvWriter } from 'csv-writer'
-import path from 'path'
-import fsPromises from 'fs/promises'
+import { type CSVRow, writeFnFCSV, getCSVFilename, row, boolStr, posNegStr } from './fnf_csv_writer'
 
 // TODO define CatPkg and ReceivedPkg as interfaces, in $lib.
 export type CatPkg = any
 export type ReceivedFromPkg = any
+export type FormParams = { [index: string]: any }
 
-const dataDir = path.join(process.cwd(), 'data', 'out')
-
-function getIntakeFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg) {
-	interface Row {
-		name: string
-		value: any
-		comments: string
-	}
-	function row(name: string, value: any): Row {
-		return { name: name, value: value, comments: '' }
-	}
-
-	// TODO Standardize form values for Yes/No/Unknown selects
-	function boolStr(value: boolean | string | null) {
-		if (typeof value == 'string') {
-			return value
-		}
-		return value === null ? 'Unknown' : value ? 'Yes' : 'No'
-	}
-
-	function posNegStr(value: boolean | null) {
-		return value === null ? 'Unknown' : value ? 'Pos' : 'Neg'
-	}
-
+function getIntakeFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg): CSVRow[] {
 	// This is derived from IntakeForm.svelte.
 	return [
 		row('Intake Date', catInfo.intakeDate),
@@ -86,46 +62,16 @@ function getIntakeCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): s
 	const intakeDate: string = catInfo.intakeDate // TODO verify MMDDYY
 	const humanName: string = receivedFrom.fromName
 	const rawStem = `${catName}-${humanName}-${intakeDate}`
-	// Needed: filename sanitization rules.
-	const validStemChars = Array.from(rawStem).flatMap((c) => {
-		if (c.match(/(\w|-)/)) {
-			return c
-		} else if (c.match(/\s/)) {
-			return '_'
-		} else {
-			return ''
-		}
-	})
-	return validStemChars.join('').replaceAll(/[_-][_-]+/g, '_') + '.csv'
+	return getCSVFilename(rawStem)
 }
 
-// Create a new intake form from the provided surrender info.
-// This follows the sequence of routes/IntakeForm.svelte.
-// TODO define $lib classes, with converters, for CatPkg, ReceivedFromPkg,
-// OwnerSurrender and Intake.
-
 // Save a new intake form, and return its download link.
-async function saveIntakeFormInternal(
-	catInfo: CatPkg,
-	receivedFrom: ReceivedFromPkg
-): Promise<DownloadInfo> {
+export async function saveIntakeForm(formParams: FormParams): Promise<DownloadInfo> {
+	const catInfo = formParams['catInfo']
+	const receivedFrom = formParams['receivedFrom']
 	const csvFilename = getIntakeCSVFilename(catInfo, receivedFrom)
-	const csvPathname = path.join(dataDir, csvFilename)
 	try {
-		await fsPromises.mkdir(dataDir, { recursive: true })
-
-		const csvHeaders = [
-			{ id: 'name', title: '' },
-			{ id: 'value', title: 'INFO' },
-			{ id: 'comments', title: 'COMMENTS' }
-		]
-		const records = getIntakeFormRows(catInfo, receivedFrom)
-
-		const fileWriter = createObjectCsvWriter({
-			path: csvPathname,
-			header: csvHeaders
-		})
-		await fileWriter.writeRecords(records)
+		await writeFnFCSV(csvFilename, getIntakeFormRows(catInfo, receivedFrom))
 
 		const downloadURL = encodeURI(`/api/v1/download/${csvFilename}`)
 		return new DownloadInfo(downloadURL, csvFilename)
@@ -133,11 +79,4 @@ async function saveIntakeFormInternal(
 		console.error(e.message)
 		return Promise.reject(e.message)
 	}
-}
-
-export async function saveIntakeForm(formParams: { [index: string]: any }): Promise<DownloadInfo> {
-	const catInfo = formParams['cat_info']
-	const receivedFrom = formParams['received_from']
-
-	return saveIntakeFormInternal(catInfo, receivedFrom)
 }

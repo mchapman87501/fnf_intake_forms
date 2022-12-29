@@ -30,8 +30,8 @@
 		}
 
 		const bodyData = {
-			cat_info: $catPkg,
-			received_from: $recvdFromPkg
+			catInfo: $catPkg,
+			receivedFrom: $recvdFromPkg
 		}
 		const bodyJSON = JSON.stringify(bodyData)
 		// TODO move backend communications like this to src/lib.
