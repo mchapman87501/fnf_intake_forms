@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import * as tokens from '$lib/server/auth/tokens.server'
+import * as tokens from '$lib/auth/tokens.server'
 
 describe('Test token basics', async () => {
 	beforeEach(() => {

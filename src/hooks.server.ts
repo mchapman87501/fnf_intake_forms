@@ -1,7 +1,5 @@
 // Hooks to run at app startup.
 
-console.log('RUNNING HOOKS')
-
 import type { Handle } from '@sveltejs/kit'
 import { dev } from '$app/environment'
 
@@ -16,9 +14,9 @@ import {
 	USER_DB_PATH
 } from '$env/static/private'
 
-import * as tokens from '$lib/server/auth/tokens.server'
+import * as tokens from '$lib/auth/tokens.server'
 
-import { initUserDB } from '$lib/server/auth/user_db.server'
+import { initUserDB } from '$lib/auth/user_db.server'
 
 // Verify that all required envs are defined
 if (
@@ -56,12 +54,12 @@ tokens.configure({
 await initUserDB(USER_DB_PATH, ADMIN_USERNAME, ADMIN_PASSWORD)
 
 // Some API endpoints can be accessed only by authenticated (and, someday, authorized) clients.
-const authenticatedEndPoints = [
+const authenticatedEndPoints = new Set([
 	'owner_surrender_form',
 	'rescue_surrender_form',
 	'stray_surrender_form',
 	'download'
-]
+])
 
 function needsAuthentication(request: Request): boolean {
 	const apiRoute = /\/api\/v1\/([^/]+)/
@@ -69,7 +67,7 @@ function needsAuthentication(request: Request): boolean {
 	const match = url.match(apiRoute)
 	if (match !== null) {
 		const tail = match[match.length - 1]
-		return authenticatedEndPoints.findIndex((endpoint) => tail.startsWith(endpoint)) >= 0
+		return authenticatedEndPoints.has(tail)
 	}
 	return false
 }
