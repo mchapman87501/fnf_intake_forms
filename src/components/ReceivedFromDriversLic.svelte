@@ -4,9 +4,12 @@
 	let zipCodePattern = '\\d{5}'
 </script>
 
-<input class="lic_no" bind:value={$recvdFromPkg.driversLic} placeholder="Driver's License #" />
-
-
+<input
+	class="lic_no"
+	name="drivers_license_no"
+	bind:value={$recvdFromPkg.driversLic}
+	placeholder="Driver's License #"
+/>
 
 <style>
 	.lic_no {

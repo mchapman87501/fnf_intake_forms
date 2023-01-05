@@ -1,6 +1,7 @@
 <script lang="ts">
-
-	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
+	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
+	import { downloadIntakeForm, type DownloadInfo } from '$lib/download_info.js'
+	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
@@ -19,23 +20,36 @@
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
 	import SurrenderType from '../components/SurrenderType.svelte'
 
-	// TODO reflect Surrender form
-	function headers() {
-		return []
-	}
-	function values() {
-		return []
-	}
+	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 
-	function copyFormToClipboard() {
-		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
-		const csvStr = getInfoAsCSV([headers(), values()])
-		console.log('Copying %o', csvStr)
-		navigator.clipboard.writeText(csvStr)
-	}
+	async function handleSubmit() {
+		const bearerToken = $session_token
+		if (bearerToken == null) {
+			showLogin('You must be logged in to submit a form.')
+			return
+		}
 
-	function handleSubmit() {
-		return false // prevent reload
+		const bodyData = {
+			catInfo: $catPkg,
+			receivedFrom: $recvdFromPkg
+		}
+		const bodyJSON = JSON.stringify(bodyData)
+		// TODO move backend communications like this to src/lib.
+		const response = await fetch('/api/v1/rescue_surrender_form', {
+			method: 'POST',
+			headers: { ...jwtSession(), 'Content-Type': 'application/json' },
+			body: bodyJSON
+		})
+
+		if (response.status == 401) {
+			// Unauthorized, or session has expired. -- need to redirect to login.
+			showLogin('Your session has expired.')
+		} else if (response.status == 200) {
+			updateSessionToken(response)
+
+			const body = await response.json()
+			await downloadIntakeForm(body as DownloadInfo)
+		}
 	}
 
 	let formValid = false
@@ -45,15 +59,18 @@
 	$: formValid = getFormValid()
 </script>
 
+<LoginDialog />
+
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate/> <SurrenderType/><br/>
+	<IntakeDate />
+	<SurrenderType /><br />
 	<ReceivedFromName />
-	<ReceivedFromDriversLic /> <br/>
+	<ReceivedFromDriversLic /> <br />
 	<ReceivedFromContactInfo />
-	
-	<hr/>
-	
-	<PrevShelterInfo/>
+
+	<hr />
+
+	<PrevShelterInfo />
 
 	<hr />
 
@@ -62,26 +79,29 @@
 	<ShotsFIVTestedVetInfo /><br />
 	<OkWith /><br />
 	<RescueLocation />
-	<CourtesyListingNoRelinquishment/>
-	<TreatableMedical/>
-	<ShowNotWebOnly/>
+	<CourtesyListingNoRelinquishment />
+	<TreatableMedical />
+	<ShowNotWebOnly />
 	<hr />
-	
+
 	<Donation />
 	<ReceivedBy />
 
 	<hr />
 
 	<div class="btns">
-		<button type="submit" disabled={!formValid}>Submit</button>
-		<button type="button" on:click={copyFormToClipboard}
-			>Copy Surrender Form to Clipboard (Excel)</button
+		<button
+			type="submit"
+			disabled={!formValid}
+			title="Save this rescue surrender form and download the resulting intake form."
 		>
+			Download Intake Form
+		</button>
 	</div>
 </form>
 
 <style>
-	.btns {
-		text-align: center;
+	:global(input) {
+		margin: 0.25em 0;
 	}
 </style>

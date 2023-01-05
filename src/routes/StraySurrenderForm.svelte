@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
+	import { downloadIntakeForm, type DownloadInfo } from '$lib/download_info.js'
+	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
-	import { catPkg } from '../infrastructure/stores.js'
-	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
+	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
@@ -13,22 +15,34 @@
 	import Donation from '../components/Donation.svelte'
 	import SurrenderType from '../components/SurrenderType.svelte'
 
-	// TODO reflect Surrender form
-	function headers() {
-		return []
-	}
-	function values() {
-		return []
-	}
+	async function handleSubmit() {
+		const bearerToken = $session_token
+		if (bearerToken == null) {
+			showLogin('You must be logged in to submit a form.')
+			return
+		}
 
-	function copyFormToClipboard() {
-		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
-		const csvStr = getInfoAsCSV([headers(), values()])
-		console.log('Copying %o', csvStr)
-		navigator.clipboard.writeText(csvStr)
-	}
-	function handleSubmit() {
-		return false // prevent reload
+		const bodyData = {
+			catInfo: $catPkg,
+			receivedFrom: $recvdFromPkg
+		}
+		const bodyJSON = JSON.stringify(bodyData)
+		// TODO move backend communications like this to src/lib.
+		const response = await fetch('/api/v1/stray_surrender_form', {
+			method: 'POST',
+			headers: { ...jwtSession(), 'Content-Type': 'application/json' },
+			body: bodyJSON
+		})
+
+		if (response.status == 401) {
+			// Unauthorized, or session has expired. -- need to redirect to login.
+			showLogin('Your session has expired.')
+		} else if (response.status == 200) {
+			updateSessionToken(response)
+
+			const body = await response.json()
+			await downloadIntakeForm(body as DownloadInfo)
+		}
 	}
 
 	let formValid = false
@@ -38,15 +52,18 @@
 	$: formValid = getFormValid()
 </script>
 
+<LoginDialog />
+
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate/> <SurrenderType/><br/>
+	<IntakeDate />
+	<SurrenderType /><br />
 	<ReceivedFromName />
-	<ReceivedFromDriversLic /><br/>
+	<ReceivedFromDriversLic /><br />
 	<ReceivedFromContactInfo />
 	<hr />
-	<RescueLocation/><br/>
+	<RescueLocation /><br />
 	<BreedColorMarkings />
-	
+
 	<input type="text" placeholder="Tame/Feral" bind:value={$catPkg.tameFeral} /> <br />
 
 	<span>Illness or injuries observed</span><br />
@@ -55,7 +72,7 @@
 	<textarea bind:value={$catPkg.personalityObs} /><br />
 	<span>Notes</span><br />
 	<textarea bind:value={$catPkg.strayNotes} /><br />
-	
+
 	<Donation />
 	<ReceivedBy />
 	<span>Intake Notes</span><br />
@@ -64,10 +81,13 @@
 	<hr />
 
 	<div class="btns">
-		<button type="submit" disabled={!formValid}>Submit</button>
-		<button type="button" on:click={copyFormToClipboard}
-			>Copy Surrender Form to Clipboard (Excel)</button
+		<button
+			type="submit"
+			disabled={!formValid}
+			title="Save this stray surrender form and download the resulting intake form."
 		>
+			Download Intake Form
+		</button>
 	</div>
 </form>
 
@@ -79,11 +99,11 @@
 	span {
 		font-size: 75%;
 	}
-
 	textarea {
 		width: 90%;
 	}
-	.btns {
-		text-align: center;
+
+	:global(input) {
+		margin: 0.25em 0;
 	}
 </style>

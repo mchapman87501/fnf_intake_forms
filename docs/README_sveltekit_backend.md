@@ -1,0 +1,76 @@
+# Overview
+
+Here are some notes about the SvelteKit / Vite backend for this web application.
+
+## Setting Up a Runtime Environment
+
+### Define Secrets
+
+Confidential info, such as the secret key used to hash user credentials,
+must be kept out of revision control. But such info is still needed at
+runtime.
+
+This prototype uses SvelteKit's `$env/static/private` facility to access secrets (as environment vars) loaded from `./.env`. It uses a `.gitignore` entry to ensure `.env` is not added to any source control repo.
+
+`env_template.in` can be used as a template for `./.env`. It has entries for
+all of the environment variables that are known to be needed as of time of writing.
+
+If you are running on [replit](https://replit.com) you will need to add each of the variables listed in `env_template.in`, using the "Secrets" tool.
+
+### Running on Replit
+
+The `@sveltejs/adapter-node` specified in `svelte.config.js` protects against cross-origin attacks.
+
+Unfortunately, when running on replit, this causes attempts to log in to this prototype to fail.
+
+The [recommended solution](https://github.com/sveltejs/kit/tree/master/packages/adapter-node#origin-protocol_header-and-host_header) is to define an `ORIGIN` environment variable when running on replit -- again, using the "Secrets" tool.
+
+Also unfortunately, this doesn't seem to work. [Or, more accurately, I don't know what value to use for `ORIGIN` when running on replit. I've tried setting ORIGIN to the URL shown in my replit Webview, without success. -- Mitch]
+
+An insecure workaround is to edit `svelte.config.js` and to add a `csrf` setting to the `kit` configuration:
+
+```js
+const config = {
+	// Consult https://github.com/sveltejs/svelte-preprocess
+	// for more information about preprocessors
+	preprocess: preprocess(),
+
+	kit: {
+		adapter: adapter(),
+		// ADD THIS
+		csrf: {
+			checkOrigin: false
+		}
+	}
+}
+```
+
+### Elastic Beanstalk
+
+What a mess that is...
+
+To deploy to eb: `eb create` and answer a bunch of questions.
+Supposedly if you have a `.env` file at the root of your repository, that can contain
+environment variable definition ("secrets") to use during deployment.
+
+As an alternative, if you have a saved, working beanstalk environment that has been
+saved via `eb config get`, then you can create/deploy using `eb create --cfg saved-config-name`.
+
+As another alternative, you can specify environment variables:
+`eb create --envvars ENVVARS` where `ENVVARS` is "a comma-separated list of environment variables as key=value pairs".
+
+## Session Management
+
+The app maintains a JSON user database in `./data/internal/users.db`. It stores passwords encrypted using bcrypt.
+
+For REST API endpoints that require an authenticated user, such as `/api/v1/owner_surrender_form`, the app uses a JWT access token (sent back and forth using the `Authorization` http header) and a session token (transmitted via a cookie).
+
+This part of the app is very much a prototype. Client and server must both add a bunch of boilerplate to ensure tokens are transmitted, validated and updated when accessing endpoints that require authenticated users.
+
+## Unit Tests
+
+Hahaha. Tests will be added when the requirements are better understood.
+
+## Saving Intake Forms
+
+The app's REST endpoint `/api/v1/owner_surrender_form/` takes a JSON owner surrender form and saves it as a CSV file. The output directory, relative to the directory containing this README, is `./data/out/intake_forms`.

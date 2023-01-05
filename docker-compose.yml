@@ -1,0 +1,26 @@
+version: "3"
+
+# Elastic Beanstalk has wholly inadequate support for
+# secrets.
+# # "file" secrets are read from your host-side
+# # working directory when you run `docker compose up`.
+# secrets:
+#   ADMIN_USERNAME:
+#     file: .docker_compose_secrets/ADMIN_USERNAME
+#   ADMIN_PASSWORD:
+#     file: .docker_compose_secrets/ADMIN_PASSWORD
+#   JWT_ACCESS_SECRET:
+#     file: .docker_compose_secrets/JWT_ACCESS_SECRET
+#   JWT_ACCESS_DURATION:
+#     file: .docker_compose_secrets/JWT_ACCESS_DURATION
+#   USER_DB_PATH:
+#     file: .docker_compose_secrets/USER_DB_PATH
+
+services:
+  intake_server:
+    build: .
+
+    ports:
+      - 80:3000 # outside:inside container
+
+    env_file: .env.production.docker

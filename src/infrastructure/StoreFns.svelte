@@ -64,8 +64,8 @@
 		temp.DOB = `2000-01-01`
 		temp.gender = genderChoices[0]
 		temp.altered = uynChoices[0]
-		temp.alteredDate =`2000-01-01`
-		temp.alteredFacility =''
+		temp.alteredDate = `2000-01-01`
+		temp.alteredFacility = ''
 		temp.breed = ''
 		temp.color = ''
 		temp.markings = ''
@@ -110,6 +110,17 @@
 		temp.otherCommentsInternalUseOnly= ''
 		temp.fosterHomeOnIntake= ''
 		temp.profilePic = ''
+
+		temp.hairLength = ''
+		temp.currentWeight = ''
+		temp.estMatureSize = ''
+		temp.distinctiveFeatures = ''
+		temp.temperament = ''
+		temp.motherLittermates = ''
+		temp.knownHistory = ''
+		temp.otherCommentsInternalUseOnly = ''
+		temp.fosterHomeOnIntake = ''
+
 		catPkg.set(temp)
 	}
 </script>

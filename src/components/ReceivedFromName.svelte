@@ -2,4 +2,8 @@
 	import { recvdFromPkg } from '../infrastructure/stores.js'
 </script>
 
-<input bind:value={$recvdFromPkg.fromName} placeholder={'Owner/Rescuer Name'} />
+<input
+	name="received_from_name"
+	bind:value={$recvdFromPkg.fromName}
+	placeholder={'Owner/Rescuer Name'}
+/>

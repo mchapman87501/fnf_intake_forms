@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
+	import { downloadIntakeForm, type DownloadInfo } from '$lib/download_info.js'
+	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
+
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
-	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
 
 	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
@@ -19,135 +22,34 @@
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
 	import SurrenderType from '../components/SurrenderType.svelte'
 
-	// TODO reflect Surrender form
-	function surrenderHeaders() {
-		return [
-			'Intake Date',
-			'Recvd From Name',
-			'Drivers Lic',
-			'Address',
-			'Home Phone',
-			'City',
-			'State',
-			'Zip',
-			'Work/Cell Phone',
-			'Email',
-			'Intake Reason',
-			'Donation Amount',
-			'Donation Type',
-			'F&F Representative'
-		]
+	async function handleSubmit() {
+		const bearerToken = $session_token
+		if (bearerToken == null) {
+			showLogin('You must be logged in to submit a form.')
+			return
+		}
 
-		// 	'Recvd From Phone',
-		// 	'Recvd From Email',
-		// 	'Intake Reason',
+		const bodyData = {
+			catInfo: $catPkg,
+			receivedFrom: $recvdFromPkg
+		}
+		const bodyJSON = JSON.stringify(bodyData)
+		// TODO move backend communications like this to src/lib.
+		const response = await fetch('/api/v1/owner_surrender_form', {
+			method: 'POST',
+			headers: { ...jwtSession(), 'Content-Type': 'application/json' },
+			body: bodyJSON
+		})
 
-		// 	'Surrender/Stray/Transfer',
-		// 	'Shelter Num',
-		// 	'Relinq/Courtesy Listing',
-		// 	'Show or Web Only',
-		// 	'Rescue ID',
-		// 	'Cat Name',
-		// 	'Cat Age/DOB',
-		// 	'Gender',
-		// 	'altered/Intact',
-		// 	'Breed',
-		// 	'Hair length',
-		// 	// readability marker
-		// 	'Color',
-		// 	'Current Weight',
-		// 	'Est Size at Maturity',
-		// 	'Distinctive Features',
-		// 	'Spay/Neuter Date',
-		// 	'Spay/Neuter Facility',
-		// 	'RVRCP#1',
-		// 	'RVRCP#2',
-		// 	'RVRCP#3',
-		// 	// readability marker
-		// 	"Rabies Expires",
-		// 	"FELV/FIV Test Date",
-		// 	"FELV/FIV Pos/Neg",
-		// 	"Microchip Num",
-		// 	"Ok with Kids",
-		// 	"Ok with Dogs",
-		// 	"Ok with Cats",
-		// 	"Bite History",
-		// 	"Declawed",
-		// 	"Special Needs",
-		// 	"Temperament",
-		// 	"Mother/Littermates",
-		// 	"Known History",
-		// 	"Internal-other Comments",
-		// 	"Foster Home upon Intake"
-		// ]
-	}
+		if (response.status == 401) {
+			// Unauthorized, or session has expired. -- need to redirect to login.
+			showLogin('Your session has expired.')
+		} else if (response.status == 200) {
+			updateSessionToken(response)
 
-	function surrenderValues() {
-		return [
-			$catPkg.intakeDate,
-			$recvdFromPkg.fromName,
-			$recvdFromPkg.driversLic,
-			$recvdFromPkg.address,
-			$recvdFromPkg.city,
-			$recvdFromPkg.state,
-			$recvdFromPkg.zip,
-			$recvdFromPkg.email,
-
-			$catPkg.intakeReason,
-			$recvdFromPkg.donationAmount,
-			$recvdFromPkg.donationForm,
-			$catPkg.intakeFnFRepr
-		]
-		// ]
-		// 		$catPkg.intakeReason,
-		// 		'TBD',
-		// 		'TBD',
-		// 		'TBD',
-		// 		'TBD',
-		// 		'FigureThis',
-		// 		$catPkg.catName,
-		// 		$catPkg.DOB,
-		// 		$catPkg.gender,
-		// 		$catPkg.altered,
-		// 		$catPkg.breed,
-		// 		'TBD',
-		// 		// readability marker
-		// 		$catPkg.color,
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		// readability marker
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		$catPkg.microchipNum,
-		// 		$catPkg.okKinder,
-		// 		$catPkg.okCats,
-		// 		$catPkg.okDogs.toString(),
-		// 		"TBD",
-		// 		"TBD",
-		// 		$catPkg.specialNeeds,
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD",
-		// 		"TBD foster home",
-		// 	]
-	}
-
-	function copyFormToClipboard() {
-		// Copy the CSV table to the clipboard.  From there you can paste into Excel.
-		const csvStr = getInfoAsCSV([surrenderHeaders(), surrenderValues()])
-		console.log('Copying %o', csvStr)
-		navigator.clipboard.writeText(csvStr)
-	}
-	function handleSubmit() {
-		return false // prevent reload
+			const body = await response.json()
+			await downloadIntakeForm(body as DownloadInfo)
+		}
 	}
 
 	let formValid = false
@@ -157,12 +59,15 @@
 	$: formValid = getFormValid()
 </script>
 
+<LoginDialog />
+
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate /> <SurrenderType/><br />
+	<IntakeDate />
+	<SurrenderType /><br />
 	<ReceivedFromName />
-	<ReceivedFromDriversLic /> <br/>
+	<ReceivedFromDriversLic /> <br />
 	<ReceivedFromContactInfo />
-	<template id="mom-paragraph"><p><slot name="mom-slot"></slot></p></template>
+	<template id="mom-paragraph"><p><slot name="mom-slot" /></p></template>
 	<hr />
 
 	<CatnameDOBGenderAltered /><br />
@@ -171,9 +76,9 @@
 	<ShotsFivTestedVetInfo /><br />
 	<OkWith /><br />
 	<IntakeReason /><br />
-	<CourtesyListingNoRelinquishment/>
-	<TreatableMedical/>
-	<ShowNotWebOnly/>
+	<CourtesyListingNoRelinquishment />
+	<TreatableMedical />
+	<ShowNotWebOnly />
 	<hr />
 	<Donation />
 	<ReceivedBy />
@@ -181,9 +86,18 @@
 	<hr />
 
 	<div class="btns">
-		<button type="submit" disabled={!formValid}>Submit</button>
-		<button type="button" on:click={copyFormToClipboard}
-			>Copy Surrender Form to Clipboard (Excel)</button
+		<button
+			type="submit"
+			disabled={!formValid}
+			title="Save this surrender form and download the resulting intake form."
 		>
+			Download Intake Form
+		</button>
 	</div>
 </form>
+
+<style>
+	:global(input) {
+		margin: 0.25em 0;
+	}
+</style>

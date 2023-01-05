@@ -1,0 +1,94 @@
+import type { RequestEvent } from '@sveltejs/kit'
+import { json } from '@sveltejs/kit'
+import {
+	saveIntakeForm,
+	type CatPkg,
+	type ReceivedFromPkg,
+	type FormParams
+} from '$lib/api_support/intake_form_writer'
+import {
+	getCSVFilename,
+	writeFnFCSV,
+	row,
+	boolStr,
+	type CSVRow
+} from '$lib/api_support/fnf_csv_writer'
+
+function getOwnerSurrenderFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg): CSVRow[] {
+	return [
+		row('Intake Date', catInfo.intakeDate),
+		row('Intake Type', recvdFrom.surrenderType),
+		row('Received From', recvdFrom.fromName),
+		row('Drivers License', recvdFrom.driversLic),
+		row('Street Address', recvdFrom.address),
+		row('City', recvdFrom.city),
+		row('State', recvdFrom.state),
+		row('Zip Code', recvdFrom.zip),
+		row('Phone', recvdFrom.phone),
+		row('Email', recvdFrom.email),
+
+		row('Name of Cat', catInfo.catName),
+		row('DOB', catInfo.DOB),
+		row('Gender', catInfo.gender),
+		row('Spayed/Neutered', boolStr(catInfo.altered)),
+		row('Breed', catInfo.breed),
+		row('Color', catInfo.color),
+		row('Markings', catInfo.markings),
+		row('Microchipped', boolStr(catInfo.microchipped)),
+		row('Microchip #', catInfo.microchipNum),
+		row('Current on Shots', boolStr(catInfo.currentShots)),
+		row('FELV/FIV Tested', boolStr(catInfo.FELVFIVTested)),
+		row('FELV/FIV Tested Positive', boolStr(catInfo.FELVFIVPositive)),
+		row('FELV/FIV Date Tested', catInfo.FELFVIFTestedDate),
+		row('Previous Vet', catInfo.namePrevVet),
+		row('Vet Phone', catInfo.phonePrevVet),
+
+		row('Special Needs', catInfo.specialNeeds),
+		row('Current Diet/Medications', catInfo.dietMedications),
+
+		row('Likes Kids?', boolStr(catInfo.okKinder)),
+		row('Likes Cats?', boolStr(catInfo.okCats)),
+		row('Likes Dogs?', boolStr(catInfo.okDogs)),
+
+		row('Reason for Surrender', catInfo.intakeReason),
+		row('Courtesy listing (no relinquishment)', boolStr(recvdFrom.courtesyListingNoRelinquishment)),
+
+		row('Treatable Medical', boolStr(catInfo.treatableMedical)),
+		row('Ok to show (not Web only)', boolStr(catInfo.oKToShow)),
+
+		row('Donation Amount', recvdFrom.donationAmount),
+		row('Form of Payment', recvdFrom.donationForm),
+
+		row('Received By', catInfo.intakeFnFRepr)
+	]
+}
+
+function getOwnerSurrenderCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string {
+	const catName: string = catInfo.catName
+	const intakeDate: string = catInfo.intakeDate // TODO verify MMDDYY
+	const humanName: string = receivedFrom.fromName
+	const rawStem = `${catName}-${humanName}-${intakeDate}-owner-surrender`
+	return getCSVFilename(rawStem)
+}
+
+async function saveOwnerSurrenderForm(formParams: FormParams) {
+	const csvFilename = getOwnerSurrenderCSVFilename(formParams.catInfo, formParams.receivedFrom)
+	const records = getOwnerSurrenderFormRows(formParams.catInfo, formParams.receivedFrom)
+	writeFnFCSV(csvFilename, records)
+}
+
+export async function POST(event: RequestEvent): Promise<Response> {
+	const formParams: FormParams = await event.request.json()
+
+	try {
+		// TODO Also save the owner surrender form.  It has info such as owner address
+		// that may not be captured in the intake form.
+		await saveOwnerSurrenderForm(formParams)
+
+		const info = await saveIntakeForm(formParams)
+		return json(info)
+	} catch (e: any) {
+		console.error(e.message)
+		return json('Failed to save intake record', { status: 500 })
+	}
+}

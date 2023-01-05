@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { catPkg } from '../infrastructure/stores.js'
+	import CatnameDOBGender from '../components/CatnameDOBGender.svelte'
 </script>
 
+<CatnameDOBGender />
 <label>
 	Date spayed/neutered? <input type="date" bind:value={$catPkg.alteredDate} />
 </label>
