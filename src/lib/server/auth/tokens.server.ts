@@ -1,20 +1,30 @@
 import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 
-// See https://kit.svelte.dev/docs/modules#$env-static-private
-import {
-	JWT_ACCESS_SECRET,
-	JWT_ACCESS_DURATION,
-	JWT_REFRESH_SECRET,
-	JWT_REFRESH_DURATION
-} from '$env/static/private'
-import { dev } from '$app/environment'
-
 import { usernameForRefreshTokenSync } from './user_db.server'
 
+export type TokensServerConfig = {
+	isDevEnv: boolean
+	accessSecret: string
+	accessMinutes: number
+	refreshSecret: string
+	refreshMinutes: number
+}
+
+let config: TokensServerConfig = {
+	isDevEnv: true,
+	accessSecret: 'uninitialized',
+	accessMinutes: 1,
+	refreshSecret: 'uninitilialized',
+	refreshMinutes: 240
+}
+
+export function configure(newValue: TokensServerConfig) {
+	config = newValue
+}
+
 // Get a duration, in seconds, from an env value; defaulting to defaultVal
-function duration(envValue: string, defaultVal: number): number {
-	let minutes = parseInt(envValue)
+function duration(minutes: number, defaultVal: number): number {
 	if (isNaN(minutes)) {
 		minutes = defaultVal
 	}
@@ -29,13 +39,13 @@ function newToken(username: string, secret: string, durationSecs: number): strin
 }
 
 export function newAccessToken(username: string): string {
-	return newToken(username, JWT_ACCESS_SECRET, duration(JWT_ACCESS_DURATION, 1))
+	return newToken(username, config.accessSecret, duration(config.accessMinutes, 1))
 }
 
 export function newRefreshToken(username: string): string {
 	// Let refresh tokens live for a half-day shift.
 	const dfltMinutes = 60 * 4
-	return newToken(username, JWT_REFRESH_SECRET, duration(JWT_REFRESH_DURATION, dfltMinutes))
+	return newToken(username, config.refreshSecret, duration(config.refreshMinutes, dfltMinutes))
 	// NB: The refreshToken needs to be stored in a transient "session" database.
 	// See user_db.server.ts
 }
@@ -43,7 +53,7 @@ export function newRefreshToken(username: string): string {
 function secureSetting(): string {
 	// Development vs. production.
 	// See https://kit.svelte.dev/docs/modules#$app-environment-dev
-	return dev ? '' : ' Secure;'
+	return config.isDevEnv ? '' : ' Secure;'
 }
 
 export function addAccessToken(headers: Headers, accessToken: string) {
@@ -82,12 +92,14 @@ function verifyToken(token: string, secret: string, title: string): any | null {
 	return null
 }
 
-function verifyRefreshToken(token: string): any | null {
-	return verifyToken(token, JWT_REFRESH_SECRET, 'refresh')
+// This should not be exported -- but I need to be able to test it.
+export function verifyRefreshToken(token: string): any | null {
+	return verifyToken(token, config.refreshSecret, 'refresh')
 }
 
-function verifyAccessToken(token: string): any | null {
-	return verifyToken(token, JWT_ACCESS_SECRET, 'access')
+// This should not be exported -- but I need to be able to test it.
+export function verifyAccessToken(token: string): any | null {
+	return verifyToken(token, config.accessSecret, 'access')
 }
 
 export function validAccessToken(request: Request): boolean {

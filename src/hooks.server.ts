@@ -1,28 +1,36 @@
 // Hooks to run at app startup.
 
-import type { Handle } from '@sveltejs/kit'
+console.log('RUNNING HOOKS')
 
+import type { Handle } from '@sveltejs/kit'
+import { dev } from '$app/environment'
+
+// See https://kit.svelte.dev/docs/modules#$env-static-private
 import {
 	ADMIN_USERNAME,
 	ADMIN_PASSWORD,
 	JWT_ACCESS_SECRET,
 	JWT_ACCESS_DURATION,
+	JWT_REFRESH_SECRET,
+	JWT_REFRESH_DURATION,
 	USER_DB_PATH
 } from '$env/static/private'
 
-import {
-	invalidTokenResponse,
-	renewedAccessToken,
-	addAccessToken,
-	addRefreshToken,
-	extractedRefreshToken
-} from '$lib/auth/tokens.server'
+import * as tokens from '$lib/server/auth/tokens.server'
 
-import { initUserDB } from '$lib/auth/user_db.server'
+import { initUserDB } from '$lib/server/auth/user_db.server'
 
 // Verify that all required envs are defined
 if (
-	!(ADMIN_USERNAME && ADMIN_PASSWORD && JWT_ACCESS_SECRET && JWT_ACCESS_DURATION && USER_DB_PATH)
+	!(
+		ADMIN_USERNAME &&
+		ADMIN_PASSWORD &&
+		JWT_ACCESS_SECRET &&
+		JWT_ACCESS_DURATION &&
+		JWT_REFRESH_SECRET &&
+		JWT_REFRESH_DURATION &&
+		USER_DB_PATH
+	)
 ) {
 	const msg = `
 ------------------------------------------------------------------------
@@ -36,8 +44,16 @@ defined in, e.g., your .env file.
 	throw new Error(msg)
 }
 
+tokens.configure({
+	isDevEnv: dev,
+	accessSecret: JWT_ACCESS_SECRET,
+	accessMinutes: parseInt(JWT_ACCESS_DURATION),
+	refreshSecret: JWT_REFRESH_SECRET,
+	refreshMinutes: parseInt(JWT_REFRESH_DURATION)
+})
+
 // All required env vars are defined.  It's safe to initialize the user DB.
-await initUserDB()
+await initUserDB(USER_DB_PATH, ADMIN_USERNAME, ADMIN_PASSWORD)
 
 // Some API endpoints can be accessed only by authenticated (and, someday, authorized) clients.
 const authenticatedEndPoints = [
@@ -62,19 +78,19 @@ export const handle: Handle = async function ({ event, resolve }) {
 	let accessToken: string = ''
 	const needsAuth = needsAuthentication(event.request)
 	if (needsAuth) {
-		accessToken = renewedAccessToken(event.request)
+		accessToken = tokens.renewedAccessToken(event.request)
 		if (!accessToken) {
 			console.debug('hooks.server.ts\\handle: Could not renew the access token.')
-			return invalidTokenResponse()
+			return tokens.invalidTokenResponse()
 		}
 	}
 
 	const response = await resolve(event)
 
 	if (needsAuth) {
-		const refreshToken = extractedRefreshToken(event.request)
-		addAccessToken(response.headers, accessToken)
-		addRefreshToken(response.headers, refreshToken)
+		const refreshToken = tokens.extractedRefreshToken(event.request)
+		tokens.addAccessToken(response.headers, accessToken)
+		tokens.addRefreshToken(response.headers, refreshToken)
 	}
 
 	return response

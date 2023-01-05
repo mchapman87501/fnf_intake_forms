@@ -21,7 +21,6 @@ import bcrypt from 'bcrypt'
 import path from 'path'
 import fsPromises from 'fs/promises'
 
-import { USER_DB_PATH, ADMIN_USERNAME, ADMIN_PASSWORD } from '$env/static/private'
 import { newRefreshToken } from './tokens.server'
 
 // Fragile: must invoke initUserDB before invoking any other exported functions.
@@ -180,26 +179,26 @@ export async function removeRefreshToken(username: string) {
 }
 
 // Persistent store initialization:
-async function addDefaultAdminUser(): Promise<boolean> {
-	const existing = db.get(ADMIN_USERNAME)
+async function addDefaultAdminUser(username: string, password: string): Promise<boolean> {
+	const existing = db.get(username)
 	if (existing) {
 		return true
 	}
-	const hashedPass = await hash(ADMIN_PASSWORD)
+	const hashedPass = await hash(password)
 	if (hashedPass) {
-		const record = new UserRecord(ADMIN_USERNAME, hashedPass, ['admin'])
+		const record = new UserRecord(username, hashedPass, ['admin'])
 		insertOrUpdateUser(record)
 		return true
 	}
 	return false
 }
 
-export async function initUserDB() {
-	const dataDir = path.dirname(path.resolve(USER_DB_PATH))
+export async function initUserDB(dbPath: string, adminUsername: string, adminPassword: string) {
+	const dataDir = path.dirname(path.resolve(dbPath))
 	await fsPromises.mkdir(dataDir, { recursive: true })
-	db = new JSONDB(USER_DB_PATH)
+	db = new JSONDB(dbPath)
 
-	const success = await addDefaultAdminUser()
+	const success = await addDefaultAdminUser(adminUsername, adminPassword)
 	if (!success) {
 		console.error('Failed to initialize user DB.')
 	}
