@@ -9,14 +9,16 @@ export type TokensServerConfig = {
 	accessMinutes: number
 	refreshSecret: string
 	refreshMinutes: number
+	usernameForRefreshToken: (token: string) => string
 }
 
 let config: TokensServerConfig = {
 	isDevEnv: true,
 	accessSecret: 'uninitialized',
-	accessMinutes: 1,
-	refreshSecret: 'uninitilialized',
-	refreshMinutes: 240
+	accessMinutes: NaN,
+	refreshSecret: 'uninitialized',
+	refreshMinutes: NaN,
+	usernameForRefreshToken: usernameForRefreshTokenSync
 }
 
 export function configure(newValue: TokensServerConfig) {
@@ -117,11 +119,15 @@ export function renewedAccessToken(request: Request): string {
 		return currAccessToken
 	}
 	const currRefreshToken = extractedRefreshToken(request)
-	if (verifyRefreshToken(currRefreshToken)) {
-		const username = usernameForRefreshTokenSync(currRefreshToken)
-		if (username) {
-			return newAccessToken(username)
+	try {
+		if (verifyRefreshToken(currRefreshToken)) {
+			const username = config.usernameForRefreshToken(currRefreshToken)
+			if (username) {
+				return newAccessToken(username)
+			}
 		}
+	} catch (e) {
+		console.error('renewedAccessToken error: %o', e)
 	}
 	return ''
 }

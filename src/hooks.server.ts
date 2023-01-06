@@ -16,7 +16,7 @@ import {
 
 import * as tokens from '$lib/auth/tokens.server'
 
-import { initUserDB } from '$lib/auth/user_db.server'
+import * as userDB from '$lib/auth/user_db.server'
 
 // Verify that all required envs are defined
 if (
@@ -45,13 +45,14 @@ defined in, e.g., your .env file.
 tokens.configure({
 	isDevEnv: dev,
 	accessSecret: JWT_ACCESS_SECRET,
-	accessMinutes: parseInt(JWT_ACCESS_DURATION),
+	accessMinutes: parseFloat(JWT_ACCESS_DURATION),
 	refreshSecret: JWT_REFRESH_SECRET,
-	refreshMinutes: parseInt(JWT_REFRESH_DURATION)
+	refreshMinutes: parseFloat(JWT_REFRESH_DURATION),
+	usernameForRefreshToken: userDB.usernameForRefreshTokenSync
 })
 
 // All required env vars are defined.  It's safe to initialize the user DB.
-await initUserDB(USER_DB_PATH, ADMIN_USERNAME, ADMIN_PASSWORD)
+await userDB.initUserDB(USER_DB_PATH, ADMIN_USERNAME, ADMIN_PASSWORD)
 
 // Some API endpoints can be accessed only by authenticated (and, someday, authorized) clients.
 const authenticatedEndPoints = new Set([
