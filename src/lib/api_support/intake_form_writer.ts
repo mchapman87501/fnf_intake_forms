@@ -1,10 +1,12 @@
-import { DownloadInfo } from '$lib/download_info'
+import { getCSVDownloadURL, type DownloadInfo } from '$lib/download_info'
 import { type CSVRow, writeFnFCSV, getCSVFilename, row, boolStr, posNegStr } from './fnf_csv_writer'
 
 // TODO define CatPkg and ReceivedPkg as interfaces, in $lib.
 export type CatPkg = any
 export type ReceivedFromPkg = any
 export type FormParams = { [index: string]: any }
+
+export const intakeNameMarker = '-intake-'
 
 function getIntakeFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg): CSVRow[] {
 	// This is derived from IntakeForm.svelte.
@@ -61,7 +63,11 @@ function getIntakeCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): s
 	const catName: string = catInfo.catName
 	const intakeDate: string = catInfo.intakeDate // TODO verify MMDDYY
 	const humanName: string = receivedFrom.fromName
-	const rawStem = `${catName}-${humanName}-${intakeDate}`
+
+	// TODO provide a globally unique index.
+	const now = new Date().getTime()
+	const index: string = `${now}`
+	const rawStem = `${catName}-${humanName}-${intakeDate}${intakeNameMarker}${index}`
 	return getCSVFilename(rawStem)
 }
 
@@ -73,8 +79,9 @@ export async function saveIntakeForm(formParams: FormParams): Promise<DownloadIn
 	try {
 		await writeFnFCSV(csvFilename, getIntakeFormRows(catInfo, receivedFrom))
 
-		const downloadURL = encodeURI(`/api/v1/download/${csvFilename}`)
-		return new DownloadInfo(downloadURL, csvFilename)
+		const downloadURL = getCSVDownloadURL(csvFilename)
+		const result: DownloadInfo = { srcURL: downloadURL, filename: csvFilename }
+		return result
 	} catch (e: any) {
 		console.error(e.message)
 		return Promise.reject(e.message)

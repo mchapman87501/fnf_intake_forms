@@ -1,4 +1,4 @@
-import jwt, { JsonWebTokenError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 
 import { usernameForRefreshTokenSync } from './user_db.server'
@@ -89,7 +89,7 @@ function verifyToken(token: string, secret: string, title: string): any | null {
 		return jwt.verify(token, secret)
 	} catch (e) {
 		let details = `$e`
-		if (e instanceof JsonWebTokenError) {
+		if (e instanceof jwt.JsonWebTokenError) {
 			details = e.message
 		}
 		// Missing, invalid or expired token

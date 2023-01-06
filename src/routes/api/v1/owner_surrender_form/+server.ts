@@ -4,15 +4,12 @@ import {
 	saveIntakeForm,
 	type CatPkg,
 	type ReceivedFromPkg,
-	type FormParams
+	type FormParams,
+	intakeNameMarker
 } from '$lib/api_support/intake_form_writer'
-import {
-	getCSVFilename,
-	writeFnFCSV,
-	row,
-	boolStr,
-	type CSVRow
-} from '$lib/api_support/fnf_csv_writer'
+import { writeFnFCSV, row, boolStr, type CSVRow } from '$lib/api_support/fnf_csv_writer'
+import type { SurrenderIntakeInfo } from '$lib/surrender_and_intake_info'
+import { getCSVDownloadURL, type DownloadInfo } from '$lib/download_info'
 
 function getOwnerSurrenderFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg): CSVRow[] {
 	return [
@@ -63,30 +60,33 @@ function getOwnerSurrenderFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg):
 	]
 }
 
-function getOwnerSurrenderCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string {
-	const catName: string = catInfo.catName
-	const intakeDate: string = catInfo.intakeDate // TODO verify MMDDYY
-	const humanName: string = receivedFrom.fromName
-	const rawStem = `${catName}-${humanName}-${intakeDate}-owner-surrender`
-	return getCSVFilename(rawStem)
+function getOwnerSurrenderCSVFilename(intakeFilename: string): string {
+	return intakeFilename.replace(intakeNameMarker, '-surrender-')
 }
 
-async function saveOwnerSurrenderForm(formParams: FormParams) {
-	const csvFilename = getOwnerSurrenderCSVFilename(formParams.catInfo, formParams.receivedFrom)
+async function saveOwnerSurrenderForm(
+	formParams: FormParams,
+	intakeFilename: string
+): Promise<DownloadInfo> {
+	const csvFilename = getOwnerSurrenderCSVFilename(intakeFilename)
 	const records = getOwnerSurrenderFormRows(formParams.catInfo, formParams.receivedFrom)
-	writeFnFCSV(csvFilename, records)
+	await writeFnFCSV(csvFilename, records)
+	const url = getCSVDownloadURL(csvFilename)
+	return { srcURL: url, filename: csvFilename }
 }
 
 export async function POST(event: RequestEvent): Promise<Response> {
 	const formParams: FormParams = await event.request.json()
 
 	try {
-		// TODO Also save the owner surrender form.  It has info such as owner address
-		// that may not be captured in the intake form.
-		await saveOwnerSurrenderForm(formParams)
-
-		const info = await saveIntakeForm(formParams)
-		return json(info)
+		const intakeInfo = await saveIntakeForm(formParams)
+		const surrenderInfo = await saveOwnerSurrenderForm(formParams, intakeInfo.filename)
+		const result: SurrenderIntakeInfo = {
+			surrender: surrenderInfo,
+			intake: intakeInfo
+		}
+		console.debug('Result: %o', result)
+		return json(result)
 	} catch (e: any) {
 		console.error(e.message)
 		return json('Failed to save intake record', { status: 500 })

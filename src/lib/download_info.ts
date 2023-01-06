@@ -1,15 +1,16 @@
 import { jwtSession } from '$lib/auth/auth'
-export class DownloadInfo {
+export type DownloadInfo = {
 	srcURL: string
 	filename: string
-
-	constructor(srcURL: string, filename: string) {
-		this.srcURL = srcURL
-		this.filename = filename
-	}
 }
 
-export async function downloadIntakeForm(downloadInfo: DownloadInfo) {
+// Intended for server-side:
+export function getCSVDownloadURL(csvFilename: string): string {
+	return encodeURI(`/api/v1/download/${csvFilename}`)
+}
+
+// Intended for client-side:
+export async function downloadCompletedForm(downloadInfo: DownloadInfo) {
 	// Automatically download the generated intake form.
 	// https://stackoverflow.com/a/42274086/2826337
 	const options = {

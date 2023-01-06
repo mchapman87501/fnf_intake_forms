@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
-	import { downloadIntakeForm, type DownloadInfo } from '$lib/download_info.js'
+	import { downloadCompletedForm, type DownloadInfo } from '$lib/download_info.js'
 	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
@@ -48,7 +48,7 @@
 			updateSessionToken(response)
 
 			const body = await response.json()
-			await downloadIntakeForm(body as DownloadInfo)
+			await downloadCompletedForm(body as DownloadInfo)
 		}
 	}
 
