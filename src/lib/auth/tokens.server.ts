@@ -127,9 +127,8 @@ export function renewedAccessToken(request: Request): string {
 }
 
 export function invalidTokenResponse() {
-	const secure = ''
 	const headers = new Headers([
-		['set-cookie', `refresh_token=; Max-Age=0; Path=/;${secure} HttpOnly`]
+		['set-cookie', `refresh_token=; Max-Age=0; Path=/; ${secureSetting()} HttpOnly`]
 	])
 	return new Response(null, { status: 401, headers: headers })
 }
