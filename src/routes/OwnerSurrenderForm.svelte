@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
-	import { downloadCompletedForm, type DownloadInfo } from '$lib/download_info.js'
+	import { downloadCompletedForm, type DownloadInfo } from '$lib/api_support/download_info.js'
 	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
@@ -21,7 +21,7 @@
 	import TreatableMedical from '../components/TreatableMedical.svelte'
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
 	import SurrenderType from '../components/SurrenderType.svelte'
-	import type { SurrenderIntakeInfo } from '$lib/surrender_and_intake_info.js'
+	import type { SurrenderIntakeInfo } from '$lib/api_support/surrender_and_intake_info.js'
 
 	async function handleSubmit() {
 		const bearerToken = $session_token

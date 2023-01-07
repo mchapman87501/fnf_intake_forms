@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
-	import { downloadCompletedForm, type DownloadInfo } from '$lib/download_info.js'
+	import { downloadCompletedForm, type DownloadInfo } from '$lib/api_support/download_info.js'
 	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'

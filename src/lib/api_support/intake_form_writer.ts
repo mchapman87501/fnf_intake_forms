@@ -1,5 +1,5 @@
-import { getCSVDownloadURL, type DownloadInfo } from '$lib/download_info'
-import { type CSVRow, writeFnFCSV, getCSVFilename, row, boolStr, posNegStr } from './fnf_csv_writer'
+import { getCSVDownloadURL, type DownloadInfo } from './download_info'
+import { type CSVRow, writeFnFCSV, row, boolStr, posNegStr } from './fnf_csv_writer'
 
 // TODO define CatPkg and ReceivedPkg as interfaces, in $lib.
 export type CatPkg = any
@@ -59,23 +59,13 @@ function getIntakeFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg): CSVRow[
 	]
 }
 
-function getIntakeCSVFilename(catInfo: CatPkg, receivedFrom: ReceivedFromPkg): string {
-	const catName: string = catInfo.catName
-	const intakeDate: string = catInfo.intakeDate // TODO verify MMDDYY
-	const humanName: string = receivedFrom.fromName
-
-	// TODO provide a globally unique index.
-	const now = new Date().getTime()
-	const index: string = `${now}`
-	const rawStem = `${catName}-${humanName}-${intakeDate}${intakeNameMarker}${index}`
-	return getCSVFilename(rawStem)
-}
-
 // Save a new intake form, and return its download link.
-export async function saveIntakeForm(formParams: FormParams): Promise<DownloadInfo> {
+export async function saveIntakeForm(
+	formParams: FormParams,
+	csvFilename: string
+): Promise<DownloadInfo> {
 	const catInfo = formParams['catInfo']
 	const receivedFrom = formParams['receivedFrom']
-	const csvFilename = getIntakeCSVFilename(catInfo, receivedFrom)
 	try {
 		await writeFnFCSV(csvFilename, getIntakeFormRows(catInfo, receivedFrom))
 

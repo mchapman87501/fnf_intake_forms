@@ -8,8 +8,9 @@ import {
 	intakeNameMarker
 } from '$lib/api_support/intake_form_writer'
 import { writeFnFCSV, row, boolStr, type CSVRow } from '$lib/api_support/fnf_csv_writer'
-import type { SurrenderIntakeInfo } from '$lib/surrender_and_intake_info'
-import { getCSVDownloadURL, type DownloadInfo } from '$lib/download_info'
+import type { SurrenderIntakeInfo } from '$lib/api_support/surrender_and_intake_info'
+import { getCSVDownloadURL, type DownloadInfo } from '$lib/api_support/download_info'
+import { FormFileNamer } from '$lib/api_support/form_file_namer'
 
 function getOwnerSurrenderFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg): CSVRow[] {
 	return [
@@ -60,15 +61,10 @@ function getOwnerSurrenderFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg):
 	]
 }
 
-function getOwnerSurrenderCSVFilename(intakeFilename: string): string {
-	return intakeFilename.replace(intakeNameMarker, '-surrender-')
-}
-
 async function saveOwnerSurrenderForm(
 	formParams: FormParams,
-	intakeFilename: string
+	csvFilename: string
 ): Promise<DownloadInfo> {
-	const csvFilename = getOwnerSurrenderCSVFilename(intakeFilename)
 	const records = getOwnerSurrenderFormRows(formParams.catInfo, formParams.receivedFrom)
 	await writeFnFCSV(csvFilename, records)
 	const url = getCSVDownloadURL(csvFilename)
@@ -77,10 +73,13 @@ async function saveOwnerSurrenderForm(
 
 export async function POST(event: RequestEvent): Promise<Response> {
 	const formParams: FormParams = await event.request.json()
-
+	// See src/infrastructure/stores.js
+	const catInfo: CatPkg = formParams.catInfo
+	const receivedFrom: ReceivedFromPkg = formParams.receivedFrom
+	const filenamer = new FormFileNamer(catInfo.catName, receivedFrom.fromName)
 	try {
-		const intakeInfo = await saveIntakeForm(formParams)
-		const surrenderInfo = await saveOwnerSurrenderForm(formParams, intakeInfo.filename)
+		const intakeInfo = await saveIntakeForm(formParams, filenamer.intake)
+		const surrenderInfo = await saveOwnerSurrenderForm(formParams, filenamer.surrender)
 		const result: SurrenderIntakeInfo = {
 			surrender: surrenderInfo,
 			intake: intakeInfo

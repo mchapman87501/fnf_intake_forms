@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import cookie from 'cookie'
 
 import * as tokens from '$lib/auth/tokens.server'
 

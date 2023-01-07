@@ -28,20 +28,6 @@ export function posNegStr(value: boolean | null) {
 	return value === null ? 'Unknown' : value ? 'Pos' : 'Neg'
 }
 
-// Create a sanitized filename from a rawStem string.
-export function getCSVFilename(rawStem: string): string {
-	// Needed: filename sanitization rules.
-	const validStemChars = Array.from(rawStem).flatMap((c) => {
-		if (c.match(/(\w|-)/)) {
-			return c
-		} else if (c.match(/\s/)) {
-			return '_'
-		} else {
-			return ''
-		}
-	})
-	return validStemChars.join('').replaceAll(/[_-][_-]+/g, '_') + '.csv'
-}
 //----------------------------------------------------------------------
 
 export async function writeFnFCSV(filename: string, records: CSVRow[]) {
