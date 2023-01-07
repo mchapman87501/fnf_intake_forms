@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, test } from 'vitest'
 
 import * as tokens from '$lib/auth/tokens.server'
 
@@ -20,7 +20,7 @@ describe('Test token basics', async () => {
 		tokens.configure(defaultConfig)
 	})
 
-	it('Create a new access token', () => {
+	test('Create a new access token', () => {
 		const username = 'Access Token User'
 		const accessToken = tokens.newAccessToken(username)
 		expect(accessToken).not.toBeNull()
@@ -29,7 +29,7 @@ describe('Test token basics', async () => {
 		expect(payload.username).toBe(username)
 	})
 
-	it('Create a new refresh token', () => {
+	test('Create a new refresh token', () => {
 		const username = 'Refresh token username'
 		const refreshToken = tokens.newRefreshToken(username)
 		expect(refreshToken).not.toBeNull()
@@ -38,7 +38,7 @@ describe('Test token basics', async () => {
 		expect(payload.username).toBe(username)
 	})
 
-	it('Weakly check the use of secrets', () => {
+	test('Weakly check the use of secrets', () => {
 		const username = 'seekrit you sr'
 		const accessToken = tokens.newAccessToken(username)
 		const refreshToken = tokens.newRefreshToken(username)
@@ -49,7 +49,7 @@ describe('Test token basics', async () => {
 		expect(tokens.verifyRefreshToken(refreshToken)).not.toBeNull()
 	})
 
-	it('Ignores non-numeric durations', () => {
+	test('Ignores non-numeric durations', () => {
 		// Override default config.
 		const config = {
 			...defaultConfig,
@@ -93,17 +93,17 @@ describe('Test token basics', async () => {
 		expect(isSecure).toBe(expectSecure)
 	}
 
-	it('addRefreshToken adds token to headers - insecure', () => {
+	test('addRefreshToken adds token to headers - insecure', () => {
 		// Default config is insecure:
 		checkAddRefreshToken(false)
 	})
 
-	it('addRefreshToken adds token to headers - secure', () => {
+	test('addRefreshToken adds token to headers - secure', () => {
 		tokens.configure(defaultProdConfig)
 		checkAddRefreshToken(true)
 	})
 
-	it('invalidTokenResponse clears refresh token', () => {
+	test('invalidTokenResponse clears refresh token', () => {
 		const response = tokens.invalidTokenResponse()
 		let foundClearedRefreshCookie = false
 		response.headers.forEach((value, key) => {
@@ -114,7 +114,7 @@ describe('Test token basics', async () => {
 		expect(foundClearedRefreshCookie).toBe(true)
 	})
 
-	it('validAccessToken recognizes unexpired access token', () => {
+	test('validAccessToken recognizes unexpired access token', () => {
 		const username = 'vat user'
 		const token = tokens.newAccessToken(username)
 
@@ -124,7 +124,7 @@ describe('Test token basics', async () => {
 		expect(tokens.validAccessToken(request)).toBe(true)
 	})
 
-	it('validAccessToken recognizes expired token', async () => {
+	test('validAccessToken recognizes expired token', async () => {
 		const username = 'expired access token user'
 		const accessMinutes = 1.0 / 60.0
 		const expiringConfig = {
@@ -150,7 +150,7 @@ describe('Test token basics', async () => {
 		expect(tokens.validAccessToken(request)).toBe(false)
 	})
 
-	it('renewedAccessToken reuses still-valid access token', () => {
+	test('renewedAccessToken reuses still-valid access token', () => {
 		const username = 'reuser'
 		const origAccessToken = tokens.newAccessToken(username)
 		let headers = new Headers()
@@ -161,7 +161,7 @@ describe('Test token basics', async () => {
 		expect(renewed).toBe(origAccessToken)
 	})
 
-	it('renewedAccessToken replaces expired access token', async () => {
+	test('renewedAccessToken replaces expired access token', async () => {
 		// JWT minimum resolvable duration appears to be 1 second.
 		const accessMinutes = 1.0 / 60.0
 		const username = 'expirer'
