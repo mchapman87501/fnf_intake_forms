@@ -6,6 +6,8 @@ export const firstRun = writable(true);
 
 // Information about the party from
 // whom the cat was received
+
+/** @type {import("./info_packages").ReceivedFromPkg} */
 let  recvdFrom = {
     fromName: '',
     driversLic: '',
@@ -29,6 +31,7 @@ let  recvdFrom = {
 export const recvdFromPkg = writable(recvdFrom);
 
 // Information about the cat
+/** @type {import("./info_packages").CatPkg} */
 let cat = {
    
     intakeDate: '',

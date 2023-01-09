@@ -1,11 +1,7 @@
 <script lang="ts" context="module">
 	import { catPkg, firstRun, recvdFromPkg } from './stores'
 	import { get } from 'svelte/store'
-	import {
-		uynChoices,
-		genderChoices,
-		surrenderChoices
-	} from'../infrastructure/Definitions.svelte'
+	import { uynChoices, genderChoices, surrenderChoices } from '../infrastructure/Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
 	export function initForms() {
@@ -94,21 +90,19 @@
 
 		temp.intakeReason = ''
 		temp.oKToShow = true
-		temp.intakeFnFRepr = '(F & F representative)',
-
-		temp.FVRCP1 = `2000-01-01`
+		;(temp.intakeFnFRepr = ''), (temp.FVRCP1 = `2000-01-01`)
 		temp.FVRCP2 = `2000-01-01`
 		temp.FVRCP3 = `2000-01-01`
 		temp.rabiesExpirationDate = `2000-01-01`
-		temp.hairLength= ''
-		temp.currentWeight= ''
-		temp.estMatureSize= ''
-		temp.distinctiveFeatures= ''
-		temp.temperament= ''
-		temp.motherLittermates= ''
-		temp.knownHistory= ''
-		temp.otherCommentsInternalUseOnly= ''
-		temp.fosterHomeOnIntake= ''
+		temp.hairLength = ''
+		temp.currentWeight = ''
+		temp.estMatureSize = ''
+		temp.distinctiveFeatures = ''
+		temp.temperament = ''
+		temp.motherLittermates = ''
+		temp.knownHistory = ''
+		temp.otherCommentsInternalUseOnly = ''
+		temp.fosterHomeOnIntake = ''
 		temp.profilePic = ''
 
 		temp.hairLength = ''

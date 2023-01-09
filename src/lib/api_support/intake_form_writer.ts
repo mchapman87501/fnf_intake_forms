@@ -1,9 +1,7 @@
 import { getCSVDownloadURL, type DownloadInfo } from './download_info'
 import { type CSVRow, writeFnFCSV, row, boolStr, posNegStr } from './fnf_csv_writer'
 
-// TODO define CatPkg and ReceivedPkg as interfaces, in $lib.
-export type CatPkg = any
-export type ReceivedFromPkg = any
+import type { ReceivedFromPkg, CatPkg } from 'src/infrastructure/info_packages'
 export type FormParams = { [index: string]: any }
 
 export const intakeNameMarker = '-intake-'
