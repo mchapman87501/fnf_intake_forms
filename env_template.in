@@ -16,5 +16,4 @@ ADMIN_USERNAME='admin'
 ADMIN_PASSWORD='shhh!'
 
 # Where to find the user account database.
-# I suppose absolute pathnames are best.
 USER_DB_PATH='./data/internal/users.db'

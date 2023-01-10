@@ -9,3 +9,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .direnv/
 __pycache__/
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+.git
+.gitignore

@@ -22,6 +22,9 @@ RUN npm install
 COPY --chown=service_runner:service_runner .env .env
 RUN npm run build
 
+# Needed for use with 'eb local run --port 80', which doesn't use docker-compose.
+EXPOSE 3000
+
 # Why the 'ORIGIN' setting?
 # https://stackoverflow.com/a/73821896
 # https://github.com/sveltejs/kit/tree/master/packages/adapter-node#origin-protocol_header-and-host_header
