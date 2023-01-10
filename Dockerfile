@@ -11,15 +11,15 @@ WORKDIR /home/service_runner/intake_forms
 RUN npm install
 
 # NOTES: "npm run build" needs the project's secrets to be defined in
-# .env.production.docker.  The required vars are listed in env_template.in, modulo bit rot.
+# .env.  The required vars are listed in env_template.in, modulo bit rot.
 #
 # Environment variables will be needed at runtime, as well.
-# docker run -d -p 80:3000 --env-file=.env.production.docker <tag>
+# docker run -d -p 80:3000 --env-file=.env <tag>
 #
 # It may be easier to use
 # docker compose up --build
 
-COPY --chown=service_runner:service_runner .env.production.docker .env
+COPY --chown=service_runner:service_runner .env .env
 RUN npm run build
 
 # Why the 'ORIGIN' setting?
