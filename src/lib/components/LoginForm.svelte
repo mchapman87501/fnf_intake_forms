@@ -64,7 +64,7 @@
 	<input type="password" name="password" placeholder="Password" bind:value={password} />
 	<div class="button_box">
 		<button type="submit">Sign in</button>
-		<button type="cancel" on:click|preventDefault={close}>Cancel</button>
+		<button type="button" on:click|preventDefault={close}>Cancel</button>
 	</div>
 </form>
 
