@@ -17,11 +17,14 @@ version: "3"
 #     file: .docker_compose_secrets/USER_DB_PATH
 
 services:
-  intake_server:
-    build: .
-
+  web:
+    image: nginx
+    volumes:
+      - ./nginx_config:/etc/nginx
     ports:
-      - 80:3000 # outside:inside container
+      - "80:80" # outside:inside container
+  fnf_intake_server:
+    build: .
 
     # Elastic beanstalk writes env vars to .env, but not to any 
     # other path.

@@ -1,5 +1,14 @@
 FROM node:slim
 
+#=======================================================================
+# Why the 'PROTOCOL_HEADER' AND 'HOST_HEADER' settings?
+# https://stackoverflow.com/a/73821896
+# https://github.com/sveltejs/kit/tree/master/packages/adapter-node#origin-protocol_header-and-host_header
+ENV PROTOCOL_HEADER=X-Forwarded-Proto
+ENV HOST_HEADER=X-Forwarded-Host
+#=======================================================================
+
+
 RUN groupadd service_runner && \
     useradd -g service_runner -d /home/service_runner --create-home -s /usr/bin/bash service_runner
 
@@ -25,8 +34,4 @@ RUN npm run build
 # Needed for use with 'eb local run --port 80', which doesn't use docker-compose.
 EXPOSE 3000
 
-# Why the 'ORIGIN' setting?
-# https://stackoverflow.com/a/73821896
-# https://github.com/sveltejs/kit/tree/master/packages/adapter-node#origin-protocol_header-and-host_header
-ENV ORIGIN=http://localhost
 ENTRYPOINT ["node", "build/index.js"]
