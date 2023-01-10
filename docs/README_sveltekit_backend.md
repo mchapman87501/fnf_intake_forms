@@ -47,17 +47,32 @@ const config = {
 
 ### Elastic Beanstalk
 
-What a mess that is...
+(What a mess EB is...)
 
-To deploy to eb: `eb create` and answer a bunch of questions.
-Supposedly if you have a `.env` file at the root of your repository, that can contain
-environment variable definition ("secrets") to use during deployment.
+The easiest way to deploy this code as an EB application may be via the Elastic Beanstalk [command-line app](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html), `eb`.
 
-As an alternative, if you have a saved, working beanstalk environment that has been
-saved via `eb config get`, then you can create/deploy using `eb create --cfg saved-config-name`.
+The following is surely incomplete and not reproducible. But I was able _(once)_ to get the app up and running under ElasticBeanstalk by following these steps:
 
-As another alternative, you can specify environment variables:
-`eb create --envvars ENVVARS` where `ENVVARS` is "a comma-separated list of environment variables as key=value pairs".
+```shell
+$ cd <root directory of this repo>
+
+$ eb init
+# answer a bunch of questions
+
+$ eb create
+# answer a bunch of questions
+
+# Pass all of my secret config values to ElasticBeanstalk
+# (for the world to see?):
+$ eb setenv $(cat .env)
+```
+
+The resulting ElasticBeanstalk configuration _may_ be reflected in `elastic_beanstalk_example_config.yml`.
+Supposedly one can install this configuration, after performing an `eb create`, by incanting the following:
+
+```shell
+$ ev config --update "file://${PWD}/docs/elastic_beanstalk_example_config.yml"
+```
 
 ## Session Management
 
