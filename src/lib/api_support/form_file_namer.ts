@@ -1,4 +1,10 @@
+import * as path from 'path'
+import fsPromises from 'fs/promises'
+
 import type { CatPkg, ReceivedFromPkg } from 'src/infrastructure/info_packages'
+
+export const dataDir = path.join(process.cwd(), 'data', 'out')
+await fsPromises.mkdir(dataDir, { recursive: true })
 
 function pad(s: string, len: number): string {
 	const padding = '0'.repeat(len)
@@ -24,6 +30,7 @@ class DayUniqueID {
 		return pad(`${DayUniqueID.#dayUniqueID}`, 2)
 	}
 }
+
 export class FormFileNamer {
 	#stemStem: string
 
@@ -53,6 +60,10 @@ export class FormFileNamer {
 		return this.#sanitizedName(`${this.#stemStem}-${docSpecifier}`) + '.csv'
 	}
 
+	#csvPathname(docSpecifier: string): string {
+		return path.join(dataDir, this.#csvFilename(docSpecifier))
+	}
+
 	// Create a sanitized filename from an unclean filename.
 	#sanitizedName(uncleanFilename: string): string {
 		// Needed: filename sanitization rules.
@@ -68,27 +79,35 @@ export class FormFileNamer {
 		return validStemChars.join('').replaceAll(/[_-][_-]+/g, '_')
 	}
 
-	get surrender(): string {
-		return this.#csvFilename('surrender')
+	// I am still confused about surrender ID vs the stem-stem vs. the
+	// <catname>-<ownername> convention.
+	// In any case, perhaps this namer can serve as the single source of truth
+	// for all identifiers relating to a given cat.
+	get surrenderID(): string {
+		return this.#stemStem
 	}
 
-	get stray(): string {
-		return this.#csvFilename('stray')
+	get surrenderPathname(): string {
+		return this.#csvPathname('surrender')
 	}
 
-	get rescue(): string {
-		return this.#csvFilename('rescue')
+	get strayPathname(): string {
+		return this.#csvPathname('stray')
 	}
 
-	get pregnantNursing(): string {
-		return this.#csvFilename('preg-nursing')
+	get rescuePathname(): string {
+		return this.#csvPathname('rescue')
 	}
 
-	get intake(): string {
-		return this.#csvFilename('intake')
+	get pregnantNursingPathname(): string {
+		return this.#csvPathname('preg-nursing')
 	}
 
-	photo(origPhotoName: string): string {
+	get intakePathname(): string {
+		return this.#csvPathname('intake')
+	}
+
+	photoPathname(origPhotoName: string): string {
 		const stem = this.#sanitizedName(`${this.#stemStem}-photo`)
 
 		// TODO Use std filename manipulation functions.
@@ -97,6 +116,6 @@ export class FormFileNamer {
 		if (suffixMatch === null) {
 			return stem + '.jpg'
 		}
-		return stem + suffixMatch.at(0)
+		return path.join(dataDir, stem + suffixMatch.at(0))
 	}
 }

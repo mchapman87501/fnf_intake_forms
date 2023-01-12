@@ -6,7 +6,6 @@ import { temporaryDirectoryTask } from 'tempy'
 
 import { testSmtpServer } from 'test-smtp-server'
 
-import { writeFnFCSV } from '$lib/api_support/fnf_csv_writer'
 import * as emailer from './emailer.server'
 
 let mockSMTP = new testSmtpServer({
@@ -38,12 +37,13 @@ describe('Test emailer basics', async () => {
 
 	test('Report uninitialized config', async () => {
 		const sendMsg = () => {
-			return emailer.emailCatInfo(
-				'surrenderID',
-				'noSuchSurrender.csv',
-				'noSuchIntake.csv',
-				'noSuchPhoto.jpg'
-			)
+			return emailer.emailSurrenderInfo({
+				surrenderID: '<surrender ID>',
+				surrenderType: 'Stray',
+				surrenderFormPath: 'noSuchSurrender.csv',
+				intakeFormPath: 'noSuchIntake.csv',
+				photoPath: 'noSuchPhoto.jpg'
+			})
 		}
 		expect(emailer.canSend()).toBe(false)
 		await expect(sendMsg()).rejects.toThrow(/is not configured/)
@@ -76,12 +76,14 @@ describe('Test emailer basics', async () => {
 		expect(configured).toBe(true)
 		expect(emailer.canSend()).toBe(true)
 
-		const didSend = emailer.emailCatInfo(
-			'surrenderID',
-			'noSuchSurrender.csv',
-			'noSuchIntake.csv',
-			'noSuchPhoto.jpg'
-		)
+		const didSend = emailer.emailSurrenderInfo({
+			surrenderID: '<surrenderID>',
+			surrenderType: 'Owner',
+			surrenderFormPath: 'noSuchSurrender.csv',
+			intakeFormPath: 'noSuchIntake.csv',
+			photoPath: null
+		})
+
 		await expect(didSend).rejects.toThrow(/no such file/)
 	})
 
@@ -102,7 +104,13 @@ describe('Test emailer basics', async () => {
 			await fsPromises.writeFile(surrPath, '')
 			await fsPromises.writeFile(intakePath, '')
 
-			const didSend = await emailer.emailCatInfo('fake_surrender_id', surrPath, intakePath, null)
+			const didSend = await emailer.emailSurrenderInfo({
+				surrenderID: 'fake_surrender_id',
+				surrenderType: 'Stray',
+				surrenderFormPath: surrPath,
+				intakeFormPath: intakePath,
+				photoPath: null
+			})
 			expect(didSend).toBe(true)
 			const emails = mockSMTP.getEmails()
 			expect(emails.length).toBe(1)

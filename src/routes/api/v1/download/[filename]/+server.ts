@@ -2,8 +2,7 @@ import path from 'path'
 import fsPromises from 'fs/promises'
 import type { RequestEvent } from '@sveltejs/kit'
 
-// TODO Move this definition to a separate $lib module.
-const dataDir = path.join(process.cwd(), 'data', 'out')
+import { dataDir } from '$lib/api_support/form_file_namer'
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const filename = event.params.filename

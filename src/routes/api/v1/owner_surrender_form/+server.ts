@@ -1,16 +1,12 @@
 import type { RequestEvent } from '@sveltejs/kit'
 import { json } from '@sveltejs/kit'
-import {
-	saveIntakeForm,
-	type CatPkg,
-	type ReceivedFromPkg,
-	type FormParams,
-	intakeNameMarker
-} from '$lib/api_support/intake_form_writer'
+import { saveIntakeForm, type FormParams } from '$lib/api_support/intake_form_writer'
 import { writeFnFCSV, row, boolStr, type CSVRow } from '$lib/api_support/fnf_csv_writer'
 import type { SurrenderIntakeInfo } from '$lib/api_support/surrender_and_intake_info'
-import { getCSVDownloadURL, type DownloadInfo } from '$lib/api_support/download_info'
+import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
 import { FormFileNamer } from '$lib/api_support/form_file_namer'
+import type { CatPkg, ReceivedFromPkg } from 'src/infrastructure/info_packages'
+import * as emailer from '$lib/intake_emails/emailer.server'
 
 function getOwnerSurrenderFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg): CSVRow[] {
 	return [
@@ -37,7 +33,7 @@ function getOwnerSurrenderFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg):
 		row('Current on Shots', boolStr(catInfo.currentShots)),
 		row('FELV/FIV Tested', boolStr(catInfo.FELVFIVTested)),
 		row('FELV/FIV Tested Positive', boolStr(catInfo.FELVFIVPositive)),
-		row('FELV/FIV Date Tested', catInfo.FELFVIFTestedDate),
+		row('FELV/FIV Date Tested', catInfo.FELVFIVTestedDate),
 		row('Previous Vet', catInfo.namePrevVet),
 		row('Vet Phone', catInfo.phonePrevVet),
 
@@ -63,28 +59,31 @@ function getOwnerSurrenderFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg):
 
 async function saveOwnerSurrenderForm(
 	formParams: FormParams,
-	csvFilename: string
+	csvPathname: string
 ): Promise<DownloadInfo> {
 	const records = getOwnerSurrenderFormRows(formParams.catInfo, formParams.receivedFrom)
-	await writeFnFCSV(csvFilename, records)
-	const url = getCSVDownloadURL(csvFilename)
-	return { srcURL: url, filename: csvFilename }
+	await writeFnFCSV(csvPathname, records)
+	return getDownloadInfo(csvPathname)
 }
 
 export async function POST(event: RequestEvent): Promise<Response> {
 	const formParams: FormParams = await event.request.json()
-	// See src/infrastructure/stores.js
-	const catInfo: CatPkg = formParams.catInfo
-	const receivedFrom: ReceivedFromPkg = formParams.receivedFrom
-	const filenamer = new FormFileNamer(catInfo.catName, receivedFrom.fromName)
+	const namer = new FormFileNamer(formParams.catInfo, formParams.receivedFrom)
 	try {
-		const intakeInfo = await saveIntakeForm(formParams, filenamer.intake)
-		const surrenderInfo = await saveOwnerSurrenderForm(formParams, filenamer.surrender)
+		const intakeInfo = await saveIntakeForm(formParams, namer.intakePathname)
+		const surrenderInfo = await saveOwnerSurrenderForm(formParams, namer.surrenderPathname)
+		emailer.emailSurrenderInfo({
+			surrenderID: namer.surrenderID,
+			surrenderType: 'Owner',
+			surrenderFormPath: namer.surrenderPathname,
+			intakeFormPath: namer.intakePathname,
+			photoPath: null
+		})
+
 		const result: SurrenderIntakeInfo = {
 			surrender: surrenderInfo,
 			intake: intakeInfo
 		}
-		console.debug('Result: %o', result)
 		return json(result)
 	} catch (e: any) {
 		console.error(e.message)

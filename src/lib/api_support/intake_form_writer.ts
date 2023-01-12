@@ -1,10 +1,8 @@
-import { getCSVDownloadURL, type DownloadInfo } from './download_info'
+import { getDownloadInfo, type DownloadInfo } from './download_info'
 import { type CSVRow, writeFnFCSV, row, boolStr, posNegStr } from './fnf_csv_writer'
 
 import type { ReceivedFromPkg, CatPkg } from 'src/infrastructure/info_packages'
 export type FormParams = { [index: string]: any }
-
-export const intakeNameMarker = '-intake-'
 
 function getIntakeFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg): CSVRow[] {
 	// This is derived from IntakeForm.svelte.
@@ -60,16 +58,13 @@ function getIntakeFormRows(catInfo: CatPkg, recvdFrom: ReceivedFromPkg): CSVRow[
 // Save a new intake form, and return its download link.
 export async function saveIntakeForm(
 	formParams: FormParams,
-	csvFilename: string
+	csvPathname: string
 ): Promise<DownloadInfo> {
-	const catInfo = formParams['catInfo']
-	const receivedFrom = formParams['receivedFrom']
+	const catInfo = formParams.catInfo
+	const receivedFrom = formParams.receivedFrom
 	try {
-		await writeFnFCSV(csvFilename, getIntakeFormRows(catInfo, receivedFrom))
-
-		const downloadURL = getCSVDownloadURL(csvFilename)
-		const result: DownloadInfo = { srcURL: downloadURL, filename: csvFilename }
-		return result
+		await writeFnFCSV(csvPathname, getIntakeFormRows(catInfo, receivedFrom))
+		return getDownloadInfo(csvPathname)
 	} catch (e: any) {
 		console.error(e.message)
 		return Promise.reject(e.message)

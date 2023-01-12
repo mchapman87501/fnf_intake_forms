@@ -71,15 +71,18 @@ export async function configure(newConfig: Configuration): Promise<Boolean> {
 	return result
 }
 
-function newMessage(
-	surrenderID: string,
-	surrenderFormPath: string,
-	intakeFormPath: string,
-	photoPath: string | null
-): nodemailer.SendMailOptions {
+export type SurrenderInfo = {
+	surrenderID: string
+	surrenderType: string // E.g., "Rescue" or "Stray"
+	surrenderFormPath: string // Pathname of the CSV surrender form -- an owner-surrender, stray, rescue, etc., CSV
+	intakeFormPath: string // Pathname of the intake form
+	photoPath: string | null // Optional pathname of a photo of the cat.
+}
+
+function newMessage(info: SurrenderInfo): nodemailer.SendMailOptions {
 	const body = `Greetings!
 
-A cat has been surrendered.  Here are its details.
+A cat has been surrendered.  Here is info about the ${info.surrenderType} surrender.
 
 --
 Felines & Friends Intake Service
@@ -87,25 +90,25 @@ Felines & Friends Intake Service
 
 	let attachments = [
 		{
-			path: surrenderFormPath,
-			filename: path.basename(surrenderFormPath)
+			path: info.surrenderFormPath,
+			filename: path.basename(info.surrenderFormPath)
 		},
 		{
-			path: intakeFormPath,
-			filename: path.basename(intakeFormPath)
+			path: info.intakeFormPath,
+			filename: path.basename(info.intakeFormPath)
 		}
 	]
-	if (photoPath != null) {
+	if (info.photoPath != null) {
 		attachments.push({
-			path: photoPath,
-			filename: path.basename(photoPath)
+			path: info.photoPath,
+			filename: path.basename(info.photoPath)
 		})
 	}
 
 	const result = {
 		from: 'noreply@fnf_intake_service.org',
 		to: config.formRecipients,
-		subject: `Cat Surrender ${surrenderID}`,
+		subject: `${info.surrenderType} Surrender ${info.surrenderID}`,
 		text: body,
 		attachments: attachments
 	}
@@ -116,17 +119,12 @@ export function canSend(): boolean {
 	return transporter !== null
 }
 
-export async function emailCatInfo(
-	surrenderID: string,
-	surrenderFormPath: string,
-	intakeFormPath: string,
-	photoPath: string | null
-): Promise<boolean> {
+export async function emailSurrenderInfo(info: SurrenderInfo): Promise<boolean> {
 	if (transporter == null) {
 		return Promise.reject(new Error('Mail transporter is not configured.'))
 	}
 
-	const message = newMessage(surrenderID, surrenderFormPath, intakeFormPath, photoPath)
+	const message = newMessage(info)
 	await transporter.sendMail(message)
 	return true
 }

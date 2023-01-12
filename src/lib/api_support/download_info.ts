@@ -1,3 +1,4 @@
+import * as path from 'path'
 import { jwtSession } from '$lib/auth/auth'
 export type DownloadInfo = {
 	srcURL: string
@@ -5,8 +6,12 @@ export type DownloadInfo = {
 }
 
 // Intended for server-side:
-export function getCSVDownloadURL(csvFilename: string): string {
-	return encodeURI(`/api/v1/download/${csvFilename}`)
+export function getDownloadInfo(pathname: string): DownloadInfo {
+	const filename = path.basename(pathname)
+	return {
+		srcURL: encodeURI(`/api/v1/download/${filename}`),
+		filename: filename
+	}
 }
 
 // Intended for client-side:

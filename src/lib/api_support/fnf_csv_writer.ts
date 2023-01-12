@@ -3,8 +3,6 @@ import { createObjectCsvWriter } from 'csv-writer'
 import path from 'path'
 import fsPromises from 'fs/promises'
 
-const dataDir = path.join(process.cwd(), 'data', 'out')
-
 export interface CSVRow {
 	name: string
 	value: any
@@ -30,11 +28,8 @@ export function posNegStr(value: boolean | null) {
 
 //----------------------------------------------------------------------
 
-export async function writeFnFCSV(filename: string, records: CSVRow[]) {
-	const csvPathname = path.join(dataDir, filename)
+export async function writeFnFCSV(csvPathname: string, records: CSVRow[]) {
 	try {
-		await fsPromises.mkdir(dataDir, { recursive: true })
-
 		const csvHeaders = [
 			{ id: 'name', title: '' },
 			{ id: 'value', title: 'INFO' },

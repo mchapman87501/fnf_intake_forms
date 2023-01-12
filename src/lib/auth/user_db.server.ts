@@ -194,8 +194,8 @@ async function addDefaultAdminUser(username: string, password: string): Promise<
 }
 
 export async function initUserDB(dbPath: string, adminUsername: string, adminPassword: string) {
-	const dataDir = path.dirname(path.resolve(dbPath))
-	await fsPromises.mkdir(dataDir, { recursive: true })
+	const dbDataDir = path.dirname(path.resolve(dbPath))
+	await fsPromises.mkdir(dbDataDir, { recursive: true })
 	db = new JSONDB(dbPath)
 
 	const success = await addDefaultAdminUser(adminUsername, adminPassword)
