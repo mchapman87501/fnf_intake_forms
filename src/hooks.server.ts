@@ -7,16 +7,21 @@ import { dev } from '$app/environment'
 import {
 	ADMIN_USERNAME,
 	ADMIN_PASSWORD,
+	USER_DB_PATH,
 	JWT_ACCESS_SECRET,
 	JWT_ACCESS_DURATION,
 	JWT_REFRESH_SECRET,
 	JWT_REFRESH_DURATION,
-	USER_DB_PATH
+	SMTP_SERVER,
+	SMTP_PORT,
+	EMAIL_USERNAME,
+	EMAIL_PASSWORD,
+	SURRENDER_EMAIL_RECIPIENTS
 } from '$env/static/private'
 
 import * as tokens from '$lib/auth/tokens.server'
-
 import * as userDB from '$lib/auth/user_db.server'
+import * as emailer from '$lib/intake_emails/emailer.server'
 
 // Verify that all required envs are defined
 if (
@@ -27,7 +32,11 @@ if (
 		JWT_ACCESS_DURATION &&
 		JWT_REFRESH_SECRET &&
 		JWT_REFRESH_DURATION &&
-		USER_DB_PATH
+		USER_DB_PATH &&
+		SMTP_SERVER &&
+		EMAIL_USERNAME &&
+		EMAIL_PASSWORD &&
+		SURRENDER_EMAIL_RECIPIENTS
 	)
 ) {
 	const msg = `
@@ -51,8 +60,15 @@ tokens.configure({
 	usernameForRefreshToken: userDB.usernameForRefreshTokenSync
 })
 
-// All required env vars are defined.  It's safe to initialize the user DB.
 await userDB.initUserDB(USER_DB_PATH, ADMIN_USERNAME, ADMIN_PASSWORD)
+
+await emailer.configure({
+	smtpServer: SMTP_SERVER,
+	smtpPort: parseInt(SMTP_PORT),
+	username: EMAIL_USERNAME,
+	passwd: EMAIL_PASSWORD,
+	formRecipients: SURRENDER_EMAIL_RECIPIENTS
+})
 
 // Some API endpoints can be accessed only by authenticated (and, someday, authorized) clients.
 const authenticatedEndPoints = new Set([

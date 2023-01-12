@@ -17,3 +17,19 @@ ADMIN_PASSWORD='shhh!'
 
 # Where to find the user account database.
 USER_DB_PATH='./data/internal/users.db'
+
+#-----------------------------------------------------------------------
+# Outbound email server
+SMTP_SERVER='smtp.gmail.com'
+# Port on which to connect to server.  Port 465 is for SSL.
+SMTP_PORT=465
+
+# Authenticate to the server with this username.
+# All outbound messages will be From: this address.
+EMAIL_USERNAME=catperson@gmail.com
+# and this password
+EMAIL_PASSWORD='I have a secret'
+
+# Addresses to which to send all new intake records --
+# format as a comma-separated string
+SURRENDER_EMAIL_RECIPIENTS='recipient1@fnf.org,recipient2@fnf.org'
