@@ -1,10 +1,13 @@
 import * as path from 'path'
 import fsPromises from 'fs/promises'
 
-import type { CatPkg, ReceivedFromPkg } from 'src/infrastructure/info_packages'
+import type { SurrenderPkg } from 'src/infrastructure/info_packages'
+import type { ProcessedSurrenderInfo } from './processed_surrender_info'
 
-export const dataDir = path.join(process.cwd(), 'data', 'out')
-await fsPromises.mkdir(dataDir, { recursive: true })
+function ensureDir(dirname: string): string {
+	fsPromises.mkdir(dirname, { recursive: true })
+	return dirname
+}
 
 function pad(s: string, len: number): string {
 	const padding = '0'.repeat(len)
@@ -34,6 +37,13 @@ class DayUniqueID {
 export class FormFileNamer {
 	#stemStem: string
 
+	constructor(info: SurrenderPkg) {
+		const medPrefix = info.catInfo.treatableMedical ? 'TM' : 'H'
+		const dateComp = this.#mmddyy()
+		const shelterID = info.receivedFrom.shelterNum || 'P'
+		this.#stemStem = `${medPrefix}-${dateComp}-${shelterID}${DayUniqueID.nextID()}`
+	}
+
 	#mmddyy(): string {
 		// Satisfy browsers like chrome that require
 		// 'yyyy-mm-dd' as their input.
@@ -49,11 +59,14 @@ export class FormFileNamer {
 		return result
 	}
 
-	constructor(catInfo: CatPkg, recvdFromInfo: ReceivedFromPkg) {
-		const medPrefix = catInfo.treatableMedical ? 'TM' : 'H'
-		const dateComp = this.#mmddyy()
-		const shelterID = recvdFromInfo.shelterNum || 'P'
-		this.#stemStem = `${medPrefix}-${dateComp}-${shelterID}${DayUniqueID.nextID()}`
+	static #dataDir: string = ensureDir(path.join(process.cwd(), 'data', 'out'))
+
+	static get dataDir(): string {
+		return FormFileNamer.#dataDir
+	}
+
+	static set dataDir(newValue: string) {
+		FormFileNamer.#dataDir = ensureDir(newValue)
 	}
 
 	#csvFilename(docSpecifier: string): string {
@@ -61,7 +74,7 @@ export class FormFileNamer {
 	}
 
 	#csvPathname(docSpecifier: string): string {
-		return path.join(dataDir, this.#csvFilename(docSpecifier))
+		return path.join(FormFileNamer.dataDir, this.#csvFilename(docSpecifier))
 	}
 
 	// Create a sanitized filename from an unclean filename.
@@ -83,39 +96,70 @@ export class FormFileNamer {
 	// <catname>-<ownername> convention.
 	// In any case, perhaps this namer can serve as the single source of truth
 	// for all identifiers relating to a given cat.
-	get surrenderID(): string {
+	get #surrenderID(): string {
 		return this.#stemStem
 	}
 
-	get surrenderPathname(): string {
+	get #surrenderPathname(): string {
 		return this.#csvPathname('surrender')
 	}
 
-	get strayPathname(): string {
+	get #strayPathname(): string {
 		return this.#csvPathname('stray')
 	}
 
-	get rescuePathname(): string {
+	get #rescuePathname(): string {
 		return this.#csvPathname('rescue')
 	}
 
-	get pregnantNursingPathname(): string {
-		return this.#csvPathname('preg-nursing')
-	}
+	// get #pregnantNursingPathname(): string {
+	// 	return this.#csvPathname('preg-nursing')
+	// }
 
-	get intakePathname(): string {
+	get #intakePathname(): string {
 		return this.#csvPathname('intake')
 	}
 
-	photoPathname(origPhotoName: string): string {
-		const stem = this.#sanitizedName(`${this.#stemStem}-photo`)
+	// #photoPathname(origPhotoName: string): string {
+	// 	const stem = this.#sanitizedName(`${this.#stemStem}-photo`)
 
-		// TODO Use std filename manipulation functions.
-		const suffixMatch = origPhotoName.match(/\.[^.]+$/)
+	// 	// TODO Use std filename manipulation functions.
+	// 	const suffixMatch = origPhotoName.match(/\.[^.]+$/)
 
-		if (suffixMatch === null) {
-			return stem + '.jpg'
+	// 	if (suffixMatch === null) {
+	// 		return stem + '.jpg'
+	// 	}
+	// 	return path.join(FormFileNamer.dataDir, stem + suffixMatch.at(0))
+	// }
+
+	ownerSurrenderInfo(): ProcessedSurrenderInfo {
+		// TODO Support optional photo.
+		return {
+			surrenderID: this.#surrenderID,
+			surrenderType: 'Owner',
+			surrenderFormPath: this.#surrenderPathname,
+			intakeFormPath: this.#intakePathname,
+			photoPath: null
 		}
-		return path.join(dataDir, stem + suffixMatch.at(0))
+	}
+
+	straySurrenderInfo(): ProcessedSurrenderInfo {
+		return {
+			surrenderID: this.#surrenderID,
+			surrenderType: 'Stray',
+			surrenderFormPath: this.#strayPathname,
+			intakeFormPath: this.#intakePathname,
+			photoPath: null
+		}
+	}
+
+	rescueSurrenderInfo(): ProcessedSurrenderInfo {
+		return {
+			surrenderID: this.#surrenderID,
+			surrenderType: 'Rescue',
+			surrenderFormPath: this.#rescuePathname,
+			intakeFormPath: this.#intakePathname,
+			photoPath: null
+		}
 	}
 }

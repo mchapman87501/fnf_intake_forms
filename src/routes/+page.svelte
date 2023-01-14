@@ -43,12 +43,12 @@
 		loginDialog.close()
 	}
 	async function signOut() {
-		let rqst = await fetch('/api/v1/logout', {
+		await fetch('/api/v1/logout', {
 			method: 'POST',
 			headers: { ...jwtSession() }
 		})
-		session_username.update((curr) => '')
-		session_token.update((curr) => '')
+		session_username.update(() => '')
+		session_token.update(() => '')
 	}
 
 	let isSignedIn = false

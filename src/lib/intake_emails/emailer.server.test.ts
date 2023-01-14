@@ -8,18 +8,29 @@ import { testSmtpServer } from 'test-smtp-server'
 
 import * as emailer from './emailer.server'
 
-let mockSMTP = new testSmtpServer({
-	/* debug: console.log, localhostOnly: true */
-})
+let mockSMTP = new testSmtpServer({ smtpPort: 5025 })
 
 describe('Test emailer basics', async () => {
+	async function delay(msec: number = 200): Promise<string> {
+		return new Promise((resolve, _) => {
+			setTimeout(() => {
+				resolve('Timeout elapsed')
+			}, msec)
+		})
+	}
+
 	beforeEach(async () => {
-		await mockSMTP.startServer()
+		mockSMTP.startServer()
 	})
 
 	afterEach(async () => {
+		// test-smtp-server seems not to wait until its underlying server --
+		// a nodemailer smtp-server has finished closing.
 		mockSMTP.stopServer()
+		await delay()
+
 		mockSMTP.clearEmails()
+		await emailer.reset()
 	})
 
 	test('Detect missing recipient list', async () => {
@@ -28,7 +39,8 @@ describe('Test emailer basics', async () => {
 			smtpPort: 465,
 			username: 'bob@host.org',
 			passwd: 'Bobs password',
-			formRecipients: ''
+			formRecipients: '',
+			verbose: true
 		})
 		expect(configured).toBe(false)
 
@@ -55,7 +67,8 @@ describe('Test emailer basics', async () => {
 			smtpPort: 465,
 			username: 'bob@host.org',
 			passwd: 'Bobs password',
-			formRecipients: 'abc@def.com'
+			formRecipients: 'abc@def.com',
+			verbose: true
 		})
 		// Should throw some sort of host lookup failure.
 		// I'm not sure how the error message might vary by platform,
@@ -70,7 +83,8 @@ describe('Test emailer basics', async () => {
 			smtpPort: mockSMTP.getPort(),
 			username: 'bob@host.org',
 			passwd: 'Bobs password',
-			formRecipients: 'bob@other_host.org,cat_person@spca.org'
+			formRecipients: 'bob@other_host.org,cat_person@spca.org',
+			verbose: true
 		}
 		const configured = await emailer.configure(config)
 		expect(configured).toBe(true)
@@ -93,7 +107,8 @@ describe('Test emailer basics', async () => {
 			smtpPort: mockSMTP.getPort(),
 			username: 'bob@host.org',
 			passwd: 'Bobs password',
-			formRecipients: 'bob@other_host.org,cat_person@spca.org'
+			formRecipients: 'bob@other_host.org,cat_person@spca.org',
+			verbose: true
 		}
 		const configured = await emailer.configure(config)
 		expect(configured).toBe(true)
@@ -117,5 +132,50 @@ describe('Test emailer basics', async () => {
 			// Worry not about the content.
 			// console.debug('Emails: %o', emails)
 		})
+	})
+
+	test('Send later without first configuring', async () => {
+		expect(emailer.canSend()).toBe(false)
+		emailer.emailSurrenderInfoLater({
+			surrenderID: '<surrender ID>',
+			surrenderType: 'Stray',
+			surrenderFormPath: 'noSuchSurrender.csv',
+			intakeFormPath: 'noSuchIntake.csv',
+			photoPath: 'noSuchPhoto.jpg'
+		})
+		// The whole point of email...Later is to fire and
+		// forget.  So there isn't much to test, except to
+		// verify that the call doesn't throw when, e.g.,
+		// the mailer is not configured.
+		//
+		// Still, wait a bit, in hopes that the console output will
+		// show something interesting.
+		// TODO use vitest-console to capture and check console output.
+		await delay()
+	})
+
+	test('Send later with missing attachment files.', async () => {
+		const config: emailer.Configuration = {
+			smtpServer: 'localhost',
+			smtpPort: mockSMTP.getPort(),
+			username: 'bob@host.org',
+			passwd: 'Bobs password',
+			formRecipients: 'bob@other_host.org,cat_person@spca.org',
+			verbose: true
+		}
+		const configured = await emailer.configure(config)
+		expect(configured).toBe(true)
+		expect(emailer.canSend()).toBe(true)
+
+		const surrenderInfo = {
+			surrenderID: '<surrenderID>',
+			surrenderType: 'Owner',
+			surrenderFormPath: 'noSuchSurrender.csv',
+			intakeFormPath: 'noSuchIntake.csv',
+			photoPath: null
+		}
+
+		emailer.emailSurrenderInfoLater(surrenderInfo)
+		await delay()
 	})
 })

@@ -8,7 +8,7 @@ import { addAccessToken, addRefreshToken } from '$lib/auth/tokens.server'
 // +server.ts (like this file) should still use
 // function POST.
 
-export async function POST(event: RequestEvent): Promise<Response> {
+export async function POST(_: RequestEvent): Promise<Response> {
 	// What prevents a malicious client from continuing to use an invalidated
 	// access token?
 	const refreshToken = '' // Invalid

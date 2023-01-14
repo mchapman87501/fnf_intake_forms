@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
 	import { downloadCompletedForm } from '$lib/api_support/download_info.js'
-	import type { SurrenderIntakeInfo } from '$lib/api_support/surrender_and_intake_info.js'
+	import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info.js'
 	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
 	import ReceivedFromName from '../components/ReceivedFromName.svelte'
@@ -48,7 +48,7 @@
 		} else if (response.status == 200) {
 			updateSessionToken(response)
 
-			const info = (await response.json()) as SurrenderIntakeInfo
+			const info = (await response.json()) as SurrenderDownloads
 			await downloadCompletedForm(info.surrender)
 			await downloadCompletedForm(info.intake)
 		}

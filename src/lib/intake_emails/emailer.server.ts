@@ -1,12 +1,15 @@
 import path from 'path'
 import * as nodemailer from 'nodemailer'
 
+import type { ProcessedSurrenderInfo } from '$lib/api_support/processed_surrender_info'
+
 export type Configuration = {
 	smtpServer: string
 	smtpPort: number
 	username: string
 	passwd: string
 	formRecipients: string // comma-separated email addresses
+	verbose: boolean
 }
 
 let config: Configuration = {
@@ -14,21 +17,11 @@ let config: Configuration = {
 	smtpPort: 0,
 	username: 'not configured',
 	passwd: 'not configured',
-	formRecipients: ''
+	formRecipients: '',
+	verbose: false
 }
 
 let transporter: nodemailer.Transporter | null = null
-
-async function verify(newTransporter: nodemailer.Transporter): Promise<boolean> {
-	return new Promise((resolve, reject) => {
-		newTransporter.verify((error, success) => {
-			if (error) {
-				reject(error)
-			}
-			resolve(success)
-		})
-	})
-}
 
 async function validateRecipients(recipients: string): Promise<boolean> {
 	const items = recipients.split(',')
@@ -38,11 +31,15 @@ async function validateRecipients(recipients: string): Promise<boolean> {
 		// https://www.abstractapi.com/guides/email-address-pattern-validation
 		let match = addr.match(/.+@.+\..+/)
 		if (match === null) {
-			console.warn('This email address looks wonky: %o', addr)
+			config.verbose && console.warn('This email address looks wonky: %o', addr)
 		}
 		return match != null
 	})
 	return hasAddresses && addressesLookPlausible
+}
+
+export async function reset() {
+	transporter = null
 }
 
 export async function configure(newConfig: Configuration): Promise<Boolean> {
@@ -60,7 +57,7 @@ export async function configure(newConfig: Configuration): Promise<Boolean> {
 	})
 
 	const result =
-		(await validateRecipients(newConfig.formRecipients)) && (await verify(newTransporter))
+		(await validateRecipients(newConfig.formRecipients)) && (await newTransporter.verify())
 
 	if (result) {
 		transporter = newTransporter
@@ -71,15 +68,7 @@ export async function configure(newConfig: Configuration): Promise<Boolean> {
 	return result
 }
 
-export type SurrenderInfo = {
-	surrenderID: string
-	surrenderType: string // E.g., "Rescue" or "Stray"
-	surrenderFormPath: string // Pathname of the CSV surrender form -- an owner-surrender, stray, rescue, etc., CSV
-	intakeFormPath: string // Pathname of the intake form
-	photoPath: string | null // Optional pathname of a photo of the cat.
-}
-
-function newMessage(info: SurrenderInfo): nodemailer.SendMailOptions {
+function newMessage(info: ProcessedSurrenderInfo): nodemailer.SendMailOptions {
 	const body = `Greetings!
 
 A cat has been surrendered.  Here is info about the ${info.surrenderType} surrender.
@@ -119,7 +108,7 @@ export function canSend(): boolean {
 	return transporter !== null
 }
 
-export async function emailSurrenderInfo(info: SurrenderInfo): Promise<boolean> {
+export async function emailSurrenderInfo(info: ProcessedSurrenderInfo): Promise<boolean> {
 	if (transporter == null) {
 		return Promise.reject(new Error('Mail transporter is not configured.'))
 	}
@@ -127,4 +116,14 @@ export async function emailSurrenderInfo(info: SurrenderInfo): Promise<boolean> 
 	const message = newMessage(info)
 	await transporter.sendMail(message)
 	return true
+}
+
+export function emailSurrenderInfoLater(info: ProcessedSurrenderInfo) {
+	emailSurrenderInfo(info).catch((error) => {
+		if (config.verbose) {
+			console.error('Surrender form could not be emailed.')
+			console.error('Error : %o', error.message)
+			console.error('Surrender info: %o', info)
+		}
+	})
 }

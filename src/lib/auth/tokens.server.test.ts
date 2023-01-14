@@ -10,7 +10,7 @@ describe('Test token basics', async () => {
 		refreshSecret: '44e98b421c870062beb7e51db020ddbf12fe8c4e3e39b62931285bfd23d3f77f',
 		refreshMinutes: 1,
 		usernameForRefreshToken: function (token: string): string {
-			return 'default user'
+			return 'default user for token ' + token
 		}
 	}
 
@@ -131,7 +131,7 @@ describe('Test token basics', async () => {
 			...defaultConfig,
 			...{
 				accessMinutes: accessMinutes,
-				usernameForRefreshToken: (token: string) => username
+				usernameForRefreshToken: () => username
 			}
 		}
 		tokens.configure(expiringConfig)
@@ -169,7 +169,7 @@ describe('Test token basics', async () => {
 			...defaultConfig,
 			...{
 				accessMinutes: accessMinutes,
-				usernameForRefreshToken: (token: string) => username
+				usernameForRefreshToken: () => username
 			}
 		}
 		tokens.configure(expiringConfig)

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-
 	// See https://dev.to/myleftshoe/svelte-dialogs-the-easy-way-e0f
 	export let dialog: HTMLDialogElement
 </script>

@@ -36,8 +36,8 @@
 		} else {
 			const tokenObj = await rqst.json()
 			const accessToken: string = tokenObj['access_token']
-			session_username.update((curr) => username)
-			session_token.update((curr) => accessToken)
+			session_username.update(() => username)
+			session_token.update(() => accessToken)
 			close()
 		}
 	}

@@ -19,29 +19,6 @@ export type ReceivedFromPkg = {
 	wantsMomBack: boolean
 }
 
-export function newReceivedFromPkg(): ReceivedFromPkg {
-	return {
-		fromName: '',
-		driversLic: '',
-		address: '',
-		city: '',
-		state: '',
-		zip: '',
-		phone: '',
-		textOK: true,
-		email: '',
-		donationAmount: '',
-		donationForm: '',
-		surrenderType: '',
-		locationOfRescue: '',
-		descriptionOfRescue: '',
-		shelterNum: '',
-		shelterPrevID: '',
-		courtesyListingNoRelinquishment: false,
-		wantsMomBack: false
-	}
-}
-
 export type CatPkg = {
 	intakeDate: string
 	catName: string
@@ -91,6 +68,34 @@ export type CatPkg = {
 	otherCommentsInternalUseOnly: string
 	fosterHomeOnIntake: string
 	profilePic: string
+}
+
+export type SurrenderPkg = {
+	catInfo: CatPkg
+	receivedFrom: ReceivedFromPkg
+}
+
+export function newReceivedFromPkg(): ReceivedFromPkg {
+	return {
+		fromName: '',
+		driversLic: '',
+		address: '',
+		city: '',
+		state: '',
+		zip: '',
+		phone: '',
+		textOK: true,
+		email: '',
+		donationAmount: '',
+		donationForm: '',
+		surrenderType: '',
+		locationOfRescue: '',
+		descriptionOfRescue: '',
+		shelterNum: '',
+		shelterPrevID: '',
+		courtesyListingNoRelinquishment: false,
+		wantsMomBack: false
+	}
 }
 
 export function newCatPkg(): CatPkg {

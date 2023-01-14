@@ -32,7 +32,6 @@ if (browser && typeof localStorage !== 'undefined') {
 	})
 
 	window.setTimeout(async () => {
-		const headers = jwtSession()
 		let rqst = await fetch('/api/v1/check_in', { headers: jwtSession() })
 		if (!rqst.ok) {
 			// Session is invalid.
@@ -52,6 +51,6 @@ export function updateSessionToken(response: Response) {
 	const fullAccessToken = response.headers.get('Authorization')
 	if (fullAccessToken) {
 		const accessToken = fullAccessToken.replace(/^Bearer /, '')
-		session_token.update((curr) => accessToken)
+		session_token.update(() => accessToken)
 	}
 }

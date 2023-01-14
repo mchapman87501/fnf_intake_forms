@@ -1,7 +1,5 @@
 // Write CSV files in a standrd three-column format.
 import { createObjectCsvWriter } from 'csv-writer'
-import path from 'path'
-import fsPromises from 'fs/promises'
 
 export interface CSVRow {
 	name: string

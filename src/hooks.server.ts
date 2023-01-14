@@ -67,7 +67,8 @@ await emailer.configure({
 	smtpPort: parseInt(SMTP_PORT),
 	username: EMAIL_USERNAME,
 	passwd: EMAIL_PASSWORD,
-	formRecipients: SURRENDER_EMAIL_RECIPIENTS
+	formRecipients: SURRENDER_EMAIL_RECIPIENTS,
+	verbose: true
 })
 
 // Some API endpoints can be accessed only by authenticated (and, someday, authorized) clients.
