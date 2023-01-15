@@ -23,5 +23,6 @@ describe('Test writing intake forms', async () => {
 		}
 		const outpath = path.join(dataDir, 'intake.csv')
 		const result = await saveIntakeForm(info, outpath)
+		expect(path.join(dataDir, result.filename)).toBe(outpath)
 	})
 })

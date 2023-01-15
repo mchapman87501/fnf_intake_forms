@@ -63,7 +63,8 @@ tokens.configure({
 await userDB.configure({
 	dbPath: USER_DB_PATH,
 	adminUsername: ADMIN_USERNAME,
-	adminPassword: ADMIN_PASSWORD
+	adminPassword: ADMIN_PASSWORD,
+	createRefreshToken: tokens.newRefreshToken
 })
 
 await emailer.configure({
