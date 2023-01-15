@@ -60,7 +60,11 @@ tokens.configure({
 	usernameForRefreshToken: userDB.usernameForRefreshTokenSync
 })
 
-await userDB.initUserDB(USER_DB_PATH, ADMIN_USERNAME, ADMIN_PASSWORD)
+await userDB.configure({
+	dbPath: USER_DB_PATH,
+	adminUsername: ADMIN_USERNAME,
+	adminPassword: ADMIN_PASSWORD
+})
 
 await emailer.configure({
 	smtpServer: SMTP_SERVER,

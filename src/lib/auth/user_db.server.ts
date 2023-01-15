@@ -193,12 +193,18 @@ async function addDefaultAdminUser(username: string, password: string): Promise<
 	return false
 }
 
-export async function initUserDB(dbPath: string, adminUsername: string, adminPassword: string) {
-	const dbDataDir = path.dirname(path.resolve(dbPath))
-	await fsPromises.mkdir(dbDataDir, { recursive: true })
-	db = new JSONDB(dbPath)
+export type Configuration = {
+	dbPath: string
+	adminUsername: string
+	adminPassword: string
+}
 
-	const success = await addDefaultAdminUser(adminUsername, adminPassword)
+export async function configure(config: Configuration) {
+	const dbDataDir = path.dirname(path.resolve(config.dbPath))
+	await fsPromises.mkdir(dbDataDir, { recursive: true })
+	db = new JSONDB(config.dbPath)
+
+	const success = await addDefaultAdminUser(config.adminUsername, config.adminPassword)
 	if (!success) {
 		console.error('Failed to initialize user DB.')
 	}
