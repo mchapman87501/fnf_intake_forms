@@ -2,6 +2,7 @@ import {
 	writeFnFCSV,
 	row,
 	boolStr,
+	dateStr,
 	type CSVRow
 } from '$lib/api_support/form_writers/fnf_csv_writer'
 import type { SurrenderPkg } from 'src/infrastructure/info_packages'
@@ -11,7 +12,7 @@ function getOwnerSurrenderFormRows(info: SurrenderPkg): CSVRow[] {
 	const catInfo = info.catInfo
 	const recvdFrom = info.receivedFrom
 	return [
-		row('Intake Date', catInfo.intakeDate),
+		row('Intake Date', dateStr(catInfo.intakeDate)),
 		row('Intake Type', recvdFrom.surrenderType),
 		row('Received From', recvdFrom.fromName),
 		row('Drivers License', recvdFrom.driversLic),
@@ -23,7 +24,7 @@ function getOwnerSurrenderFormRows(info: SurrenderPkg): CSVRow[] {
 		row('Email', recvdFrom.email),
 
 		row('Name of Cat', catInfo.catName),
-		row('DOB', catInfo.DOB),
+		row('DOB', dateStr(catInfo.DOB)),
 		row('Gender', catInfo.gender),
 		row('Spayed/Neutered', boolStr(catInfo.altered)),
 		row('Breed', catInfo.breed),
@@ -34,7 +35,7 @@ function getOwnerSurrenderFormRows(info: SurrenderPkg): CSVRow[] {
 		row('Current on Shots', boolStr(catInfo.currentShots)),
 		row('FELV/FIV Tested', boolStr(catInfo.FELVFIVTested)),
 		row('FELV/FIV Tested Positive', boolStr(catInfo.FELVFIVPositive)),
-		row('FELV/FIV Date Tested', catInfo.FELVFIVTestedDate),
+		row('FELV/FIV Date Tested', dateStr(catInfo.FELVFIVTestedDate)),
 		row('Previous Vet', catInfo.namePrevVet),
 		row('Vet Phone', catInfo.phonePrevVet),
 

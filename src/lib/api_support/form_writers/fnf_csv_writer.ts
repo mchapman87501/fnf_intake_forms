@@ -13,15 +13,28 @@ export function row(name: string, value: any): CSVRow {
 	return { name: name, value: value, comments: '' }
 }
 
-export function boolStr(value: boolean | string | null) {
+export function boolStr(value: boolean | string | null): string {
 	if (typeof value == 'string') {
 		return value
 	}
 	return value === null ? 'Unknown' : value ? 'Yes' : 'No'
 }
 
-export function posNegStr(value: boolean | null) {
+export function posNegStr(value: boolean | null): string {
 	return value === null ? 'Unknown' : value ? 'Pos' : 'Neg'
+}
+
+// Convert from the standard 'yyyy-mm-dd' of an input[type="date"] to
+// F&F's preferred 'mm-dd-yy'.
+export function dateStr(value: string): string {
+	const m = value.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+	if (m) {
+		const y4str = m.at(1) || '0000'
+		const mstr = m.at(2)
+		const dstr = m.at(3)
+		return `${mstr}-${dstr}-${y4str.slice(2)}`
+	}
+	return value
 }
 
 //----------------------------------------------------------------------

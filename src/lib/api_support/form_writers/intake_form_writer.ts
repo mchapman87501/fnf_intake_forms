@@ -1,5 +1,5 @@
 import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
-import { type CSVRow, writeFnFCSV, row, boolStr, posNegStr } from './fnf_csv_writer'
+import { type CSVRow, writeFnFCSV, row, boolStr, dateStr, posNegStr } from './fnf_csv_writer'
 
 import type { SurrenderPkg } from 'src/infrastructure/info_packages'
 
@@ -8,7 +8,7 @@ function getIntakeFormRows(info: SurrenderPkg): CSVRow[] {
 	const recvdFrom = info.receivedFrom
 	// This is derived from IntakeForm.svelte.
 	return [
-		row('Intake Date', catInfo.intakeDate),
+		row('Intake Date', dateStr(catInfo.intakeDate)),
 		row('Intake By', catInfo.intakeFnFRepr),
 		row('Received From', recvdFrom.fromName),
 
@@ -23,7 +23,7 @@ function getIntakeFormRows(info: SurrenderPkg): CSVRow[] {
 		row('Ok to show (not Web only)', boolStr(catInfo.oKToShow)),
 		row('Rescue ID', 'To do RESCUE ID'),
 		row('Name of Cat', catInfo.catName),
-		row('DOB', catInfo.DOB),
+		row('DOB', dateStr(catInfo.DOB)),
 		row('Gender', catInfo.gender),
 		row('Breed', catInfo.breed),
 		row('Hair length', catInfo.hairLength),
@@ -31,13 +31,13 @@ function getIntakeFormRows(info: SurrenderPkg): CSVRow[] {
 		row('Current Weight', catInfo.currentWeight),
 		row('Estimated Size at Maturity', catInfo.estMatureSize),
 		row('Distinctive Features', catInfo.distinctiveFeatures),
-		row('Spay/Neuter Date', catInfo.alteredDate),
+		row('Spay/Neuter Date', dateStr(catInfo.alteredDate)),
 		row('Where Done', catInfo.alteredFacility),
-		row('FVRCP #1', catInfo.FVRCP1),
-		row('FVRCP #2', catInfo.FVRCP2),
-		row('FVRCP #3', catInfo.FVRCP3),
-		row('Rabies Expires', catInfo.rabiesExpirationDate),
-		row('FELV/FIV Test Date', catInfo.FELVFIVTestedDate),
+		row('FVRCP #1', dateStr(catInfo.FVRCP1)),
+		row('FVRCP #2', dateStr(catInfo.FVRCP2)),
+		row('FVRCP #3', dateStr(catInfo.FVRCP3)),
+		row('Rabies Expires', dateStr(catInfo.rabiesExpirationDate)),
+		row('FELV/FIV Test Date', dateStr(catInfo.FELVFIVTestedDate)),
 		row('Pos/Neg?', posNegStr(catInfo.FELVFIVPositive)),
 		row('Microchip #', catInfo.microchipNum),
 		row('Likes Dogs?', boolStr(catInfo.okDogs)),
