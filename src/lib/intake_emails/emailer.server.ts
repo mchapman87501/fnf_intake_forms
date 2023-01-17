@@ -9,7 +9,7 @@ export type Configuration = {
 	username: string
 	passwd: string
 	formRecipients: string // comma-separated email addresses
-	verbose: boolean
+	verbose?: boolean // default: false-y
 }
 
 let config: Configuration = {
@@ -62,6 +62,7 @@ export async function configure(newConfig: Configuration): Promise<Boolean> {
 	if (result) {
 		transporter = newTransporter
 		config = newConfig
+		config.verbose = newConfig.verbose || false
 	} else {
 		transporter = null
 	}

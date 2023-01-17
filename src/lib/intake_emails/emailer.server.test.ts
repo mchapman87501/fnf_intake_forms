@@ -134,6 +134,8 @@ describe('Test emailer basics', async () => {
 		})
 	})
 
+	// TODO test with some valid, some invalid, formRecipient addresses.
+
 	test('Send later without first configuring', async () => {
 		expect(emailer.canSend()).toBe(false)
 		emailer.emailSurrenderInfoLater({
