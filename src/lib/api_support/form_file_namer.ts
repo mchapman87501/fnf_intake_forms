@@ -92,11 +92,7 @@ export class FormFileNamer {
 		return validStemChars.join('').replaceAll(/[_-][_-]+/g, '_')
 	}
 
-	// I am still confused about surrender ID vs the stem-stem vs. the
-	// <catname>-<ownername> convention.
-	// In any case, perhaps this namer can serve as the single source of truth
-	// for all identifiers relating to a given cat.
-	get #surrenderID(): string {
+	get #rescueID(): string {
 		return this.#stemStem
 	}
 
@@ -135,7 +131,7 @@ export class FormFileNamer {
 	ownerSurrenderInfo(): ProcessedSurrenderInfo {
 		// TODO Support optional photo.
 		return {
-			surrenderID: this.#surrenderID,
+			surrenderID: this.#rescueID,
 			surrenderType: 'Owner',
 			surrenderFormPath: this.#surrenderPathname,
 			intakeFormPath: this.#intakePathname,
@@ -145,7 +141,7 @@ export class FormFileNamer {
 
 	straySurrenderInfo(): ProcessedSurrenderInfo {
 		return {
-			surrenderID: this.#surrenderID,
+			surrenderID: this.#rescueID,
 			surrenderType: 'Stray',
 			surrenderFormPath: this.#strayPathname,
 			intakeFormPath: this.#intakePathname,
@@ -155,7 +151,7 @@ export class FormFileNamer {
 
 	rescueSurrenderInfo(): ProcessedSurrenderInfo {
 		return {
-			surrenderID: this.#surrenderID,
+			surrenderID: this.#rescueID,
 			surrenderType: 'Rescue',
 			surrenderFormPath: this.#rescuePathname,
 			intakeFormPath: this.#intakePathname,
