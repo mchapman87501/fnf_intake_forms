@@ -3,60 +3,18 @@ import fsPromises from 'fs/promises'
 
 import type { SurrenderPkg } from 'src/infrastructure/info_packages'
 import type { ProcessedSurrenderInfo } from './processed_surrender_info'
+import { getRescueID } from './rescue_id.server'
 
 function ensureDir(dirname: string): string {
 	fsPromises.mkdir(dirname, { recursive: true })
 	return dirname
 }
 
-function pad(s: string, len: number): string {
-	const padding = '0'.repeat(len)
-	const overPadded = padding + s
-	return overPadded.substring(overPadded.length - len)
-}
-
-class DayUniqueID {
-	// XXX FIX THIS Assumes atomic updates
-	static #currDate: string | undefined = undefined
-	static #dayUniqueID: number | undefined
-
-	static nextID(): string {
-		const today = new Date()
-		// Don't worry about padding for human-readability.
-		const todayStr = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`
-		if (DayUniqueID.#currDate != todayStr) {
-			DayUniqueID.#currDate = todayStr
-			DayUniqueID.#dayUniqueID = 1
-		} else {
-			DayUniqueID.#dayUniqueID = (DayUniqueID.#dayUniqueID || 1) + 1
-		}
-		return pad(`${DayUniqueID.#dayUniqueID}`, 2)
-	}
-}
-
 export class FormFileNamer {
-	#stemStem: string
+	#rescueID: string
 
 	constructor(info: SurrenderPkg) {
-		const medPrefix = info.catInfo.treatableMedical ? 'TM' : 'H'
-		const dateComp = this.#mmddyy()
-		const shelterID = info.receivedFrom.shelterNum || 'P'
-		this.#stemStem = `${medPrefix}-${dateComp}-${shelterID}${DayUniqueID.nextID()}`
-	}
-
-	#mmddyy(): string {
-		// Satisfy browsers like chrome that require
-		// 'yyyy-mm-dd' as their input.
-		const today = new Date()
-		const year = today.getFullYear()
-		const month = today.getMonth() + 1
-		const day = today.getDate()
-
-		const yStr = pad(year.toFixed(0), 2)
-		const mStr = pad(month.toFixed(0), 2)
-		const dStr = pad(day.toFixed(0), 2)
-		const result = `${mStr}${dStr}${yStr}`
-		return result
+		this.#rescueID = getRescueID(info, new Date())
 	}
 
 	static #dataDir: string = ensureDir(path.join(process.cwd(), 'data', 'out'))
@@ -70,7 +28,7 @@ export class FormFileNamer {
 	}
 
 	#csvFilename(docSpecifier: string): string {
-		return this.#sanitizedName(`${this.#stemStem}-${docSpecifier}`) + '.csv'
+		return this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + '.csv'
 	}
 
 	#csvPathname(docSpecifier: string): string {
@@ -90,10 +48,6 @@ export class FormFileNamer {
 			}
 		})
 		return validStemChars.join('').replaceAll(/[_-][_-]+/g, '_')
-	}
-
-	get #rescueID(): string {
-		return this.#stemStem
 	}
 
 	get #surrenderPathname(): string {
