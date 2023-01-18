@@ -1,5 +1,5 @@
 import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
-import { type CSVRow, writeFnFCSV, row, boolStr, dateStr, posNegStr } from './fnf_csv_writer'
+import { type CSVRow, writeTallCSV, row, boolStr, dateStr, posNegStr } from './tall_csv_writer'
 
 import type { SurrenderPkg } from 'src/infrastructure/info_packages'
 
@@ -62,7 +62,7 @@ export async function saveIntakeForm(
 	csvPathname: string
 ): Promise<DownloadInfo> {
 	try {
-		await writeFnFCSV(csvPathname, getIntakeFormRows(info))
+		await writeTallCSV(csvPathname, getIntakeFormRows(info))
 		return getDownloadInfo(csvPathname)
 	} catch (e: any) {
 		console.error(e.message)

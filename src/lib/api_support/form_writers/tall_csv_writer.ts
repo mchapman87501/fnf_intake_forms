@@ -39,7 +39,16 @@ export function dateStr(value: string): string {
 
 //----------------------------------------------------------------------
 
-export async function writeFnFCSV(csvPathname: string, records: CSVRow[]) {
+/**
+ * Write CSV records in the standard 3-column format used by
+ * Felines & Friends:
+ *  * Name - the name of some intake/surrender property, e.g., "Cat Name"
+ *  * Value - the corresponding value, e.g., "Felix"
+ *  * Comment - a blank column for free-form data to be entered separately
+ * @param csvPathname Where to write CSV data
+ * @param records Records to be written
+ */
+export async function writeTallCSV(csvPathname: string, records: CSVRow[]) {
 	try {
 		const csvHeaders = [
 			{ id: 'name', title: '' },
