@@ -1,10 +1,5 @@
-import {
-	writeTallCSV,
-	row,
-	boolStr,
-	dateStr,
-	type CSVRow
-} from '$lib/api_support/form_writers/tall_csv_writer'
+import { writeTallCSV, row, type CSVRow } from '$lib/api_support/form_writers/tall_csv_writer'
+import { boolStr, dateStr } from './value_converters'
 import type { SurrenderPkg } from 'src/infrastructure/info_packages'
 import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
 

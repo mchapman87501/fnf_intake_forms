@@ -54,6 +54,7 @@ describe('Test emailer basics', async () => {
 				surrenderType: 'Stray',
 				surrenderFormPath: 'noSuchSurrender.csv',
 				intakeFormPath: 'noSuchIntake.csv',
+				intakeSingleRowFormPath: 'noSuchWideIntake.csv',
 				photoPath: 'noSuchPhoto.jpg'
 			})
 		}
@@ -95,6 +96,7 @@ describe('Test emailer basics', async () => {
 			surrenderType: 'Owner',
 			surrenderFormPath: 'noSuchSurrender.csv',
 			intakeFormPath: 'noSuchIntake.csv',
+			intakeSingleRowFormPath: 'noSuchWideIntake.csv',
 			photoPath: null
 		})
 
@@ -116,14 +118,17 @@ describe('Test emailer basics', async () => {
 		await temporaryDirectoryTask(async (tempdir) => {
 			const surrPath = path.join(tempdir, 'surrender.csv')
 			const intakePath = path.join(tempdir, 'intake.csv')
+			const intakeWidePath = path.join(tempdir, 'intake-single-row.csv')
 			await fsPromises.writeFile(surrPath, '')
 			await fsPromises.writeFile(intakePath, '')
+			await fsPromises.writeFile(intakeWidePath, '')
 
 			const didSend = await emailer.emailSurrenderInfo({
 				rescueID: 'fake_surrender_id',
 				surrenderType: 'Stray',
 				surrenderFormPath: surrPath,
 				intakeFormPath: intakePath,
+				intakeSingleRowFormPath: intakeWidePath,
 				photoPath: null
 			})
 			expect(didSend).toBe(true)
@@ -143,6 +148,7 @@ describe('Test emailer basics', async () => {
 			surrenderType: 'Stray',
 			surrenderFormPath: 'noSuchSurrender.csv',
 			intakeFormPath: 'noSuchIntake.csv',
+			intakeSingleRowFormPath: 'noSuchWideIntake.csv',
 			photoPath: 'noSuchPhoto.jpg'
 		})
 		// The whole point of email...Later is to fire and
@@ -174,6 +180,7 @@ describe('Test emailer basics', async () => {
 			surrenderType: 'Owner',
 			surrenderFormPath: 'noSuchSurrender.csv',
 			intakeFormPath: 'noSuchIntake.csv',
+			intakeSingleRowFormPath: 'noSuchWideIntake.csv',
 			photoPath: null
 		}
 

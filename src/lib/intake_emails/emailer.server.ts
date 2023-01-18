@@ -86,6 +86,10 @@ Felines & Friends Intake Service
 		{
 			path: info.intakeFormPath,
 			filename: path.basename(info.intakeFormPath)
+		},
+		{
+			path: info.intakeSingleRowFormPath,
+			filename: path.basename(info.intakeSingleRowFormPath)
 		}
 	]
 	if (info.photoPath != null) {

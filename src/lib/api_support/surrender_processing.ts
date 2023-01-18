@@ -13,6 +13,7 @@ import { emailSurrenderInfoLater } from '$lib/intake_emails/emailer.server'
 import { saveOwnerSurrenderForm } from '$lib/api_support/form_writers/surrender_form_writer'
 import { saveRescueSurrenderForm } from './form_writers/rescue_form_writer'
 import { saveStraySurrenderForm } from './form_writers/stray_form_writer'
+import { saveWideIntakeForm } from './form_writers/wide_intake_form_writer'
 
 type SaveSurrenderFormMethod = (info: SurrenderPkg, csvPathname: string) => Promise<DownloadInfo>
 
@@ -25,7 +26,12 @@ async function processSurrenderPkg(
 		// Create the surrender and intake forms.
 		const result: SurrenderDownloads = {
 			surrender: await saveSurrenderForm(pkg, processingInfo.surrenderFormPath),
-			intake: await saveIntakeForm(processingInfo.rescueID, pkg, processingInfo.intakeFormPath)
+			intake: await saveIntakeForm(processingInfo.rescueID, pkg, processingInfo.intakeFormPath),
+			intakeSingleRow: await saveWideIntakeForm(
+				processingInfo.rescueID,
+				pkg,
+				processingInfo.intakeSingleRowFormPath
+			)
 		}
 		// Email the forms whenever able.
 		emailSurrenderInfoLater(processingInfo)

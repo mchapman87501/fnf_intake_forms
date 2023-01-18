@@ -29,7 +29,12 @@ describe('Surrender Processing tests', async () => {
 	}
 
 	function resultFilesExist(result: SurrenderDownloads): boolean {
-		return dataFileExists(result.intake.filename) && dataFileExists(result.surrender.filename)
+		// TODO verify each file contains valid CSV data.
+		return (
+			dataFileExists(result.intake.filename) &&
+			dataFileExists(result.surrender.filename) &&
+			dataFileExists(result.intakeSingleRow.filename)
+		)
 	}
 
 	type ProcMethod = (pkg: SurrenderPkg) => Promise<SurrenderDownloads>
@@ -41,10 +46,21 @@ describe('Surrender Processing tests', async () => {
 		}
 
 		const result = await method(pkg)
+
 		expect(result.intake.filename.startsWith('TM-')).toBe(true)
 		expect(result.intake.filename.endsWith('-intake.csv'), result.intake.filename).toBe(true)
+
+		expect(result.intakeSingleRow.filename.startsWith('TM-')).toBe(true)
+		expect(
+			result.intakeSingleRow.filename.endsWith('-intake-single-row.csv'),
+			result.intakeSingleRow.filename
+		).toBe(true)
+
 		expect(result.surrender.filename, result.surrender.filename).toMatch(
 			result.intake.filename.replace('-intake', formTypeName)
+		)
+		expect(result.intakeSingleRow.filename, result.intakeSingleRow.filename).toMatch(
+			result.intake.filename.replace('-intake', '-intake-single-row')
 		)
 		expect(resultFilesExist(result)).toBe(true)
 	}

@@ -51,6 +51,7 @@
 			const info = (await response.json()) as SurrenderDownloads
 			await downloadCompletedForm(info.surrender)
 			await downloadCompletedForm(info.intake)
+			await downloadCompletedForm(info.intakeSingleRow)
 		}
 	}
 

@@ -1,6 +1,6 @@
 import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
-import { type CSVRow, writeTallCSV, row, boolStr, dateStr, posNegStr } from './tall_csv_writer'
-
+import { type CSVRow, writeTallCSV, row } from './tall_csv_writer'
+import { boolStr, dateStr, posNegStr } from './value_converters'
 import type { SurrenderPkg } from 'src/infrastructure/info_packages'
 
 function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): CSVRow[] {

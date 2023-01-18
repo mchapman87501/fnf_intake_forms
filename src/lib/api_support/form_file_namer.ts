@@ -71,6 +71,10 @@ export class FormFileNamer {
 		return this.#csvPathname('intake')
 	}
 
+	get #intakeWidePathname(): string {
+		return this.#csvPathname('intake-single-row')
+	}
+
 	// #photoPathname(origPhotoName: string): string {
 	// 	const stem = this.#sanitizedName(`${this.#stemStem}-photo`)
 
@@ -90,6 +94,7 @@ export class FormFileNamer {
 			surrenderType: 'Owner',
 			surrenderFormPath: this.#surrenderPathname,
 			intakeFormPath: this.#intakePathname,
+			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
 		}
 	}
@@ -100,6 +105,7 @@ export class FormFileNamer {
 			surrenderType: 'Stray',
 			surrenderFormPath: this.#strayPathname,
 			intakeFormPath: this.#intakePathname,
+			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
 		}
 	}
@@ -110,6 +116,7 @@ export class FormFileNamer {
 			surrenderType: 'Rescue',
 			surrenderFormPath: this.#rescuePathname,
 			intakeFormPath: this.#intakePathname,
+			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
 		}
 	}
