@@ -8,38 +8,42 @@ function pad(s: string, len: number): string {
 
 class DayUniqueID {
 	// XXX FIX THIS Assumes atomic updates
-	static #currDate: string | undefined = undefined
-	static #dayUniqueID: number | undefined
+	#currDate: string | undefined = undefined
+	#dayUniqueID: number | undefined = undefined
 
-	static nextID(date: Date): string {
+	nextID(date: Date): string {
 		// Don't worry about padding for human-readability.
 		const todayStr = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-		if (DayUniqueID.#currDate != todayStr) {
-			DayUniqueID.#currDate = todayStr
-			DayUniqueID.#dayUniqueID = 1
+		if (this.#currDate != todayStr) {
+			this.#currDate = todayStr
+			this.#dayUniqueID = 1
 		} else {
-			DayUniqueID.#dayUniqueID = (DayUniqueID.#dayUniqueID || 1) + 1
+			this.#dayUniqueID = (this.#dayUniqueID || 1) + 1
 		}
-		return pad(`${DayUniqueID.#dayUniqueID}`, 2)
+		return pad(`${this.#dayUniqueID}`, 2)
 	}
 }
 
-function mmddyy(date: Date): string {
-	const year = date.getFullYear()
-	const month = date.getMonth() + 1
-	const day = date.getDate()
+export class RescueID {
+	#dud: DayUniqueID = new DayUniqueID()
 
-	const yStr = pad(year.toFixed(0), 2)
-	const mStr = pad(month.toFixed(0), 2)
-	const dStr = pad(day.toFixed(0), 2)
-	const result = `${mStr}${dStr}${yStr}`
-	return result
-}
+	#mmddyy(date: Date): string {
+		const year = date.getFullYear()
+		const month = date.getMonth() + 1
+		const day = date.getDate()
 
-export function getRescueID(info: SurrenderPkg, date: Date) {
-	const medPrefix = info.catInfo.treatableMedical ? 'TM' : 'H'
-	const dateComp = mmddyy(date)
-	const shelterID = info.receivedFrom.shelterNum || 'P'
-	const dayUniqueID = DayUniqueID.nextID(date)
-	return `${medPrefix}-${dateComp}-${shelterID}${dayUniqueID}`
+		const yStr = pad(year.toFixed(0), 2)
+		const mStr = pad(month.toFixed(0), 2)
+		const dStr = pad(day.toFixed(0), 2)
+		const result = `${mStr}${dStr}${yStr}`
+		return result
+	}
+
+	getID(info: SurrenderPkg, date: Date) {
+		const medPrefix = info.catInfo.treatableMedical ? 'TM' : 'H'
+		const dateComp = this.#mmddyy(date)
+		const shelterID = info.receivedFrom.shelterNum || 'P'
+		const dayUniqueID = this.#dud.nextID(date)
+		return `${medPrefix}-${dateComp}-${shelterID}${dayUniqueID}`
+	}
 }

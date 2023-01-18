@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from 'src/infrastructure/info_packages'
-import { getRescueID } from './rescue_id.server'
+import { RescueID } from './rescue_id.server'
 
 describe('Test rescue ID generation', async () => {
 	function surrenderPkg(hasTreatableMedical: boolean): SurrenderPkg {
@@ -18,7 +18,8 @@ describe('Test rescue ID generation', async () => {
 		const date = new Date()
 		date.setFullYear(yearnum, zeroMonth, dayOfMonth)
 
-		const actual = getRescueID(surrenderPkg(false), date)
+		const idSrc = new RescueID()
+		const actual = idSrc.getID(surrenderPkg(false), date)
 		expect(actual.indexOf(expected) > 0).toBe(true)
 	})
 
@@ -28,7 +29,8 @@ describe('Test rescue ID generation', async () => {
 	])('Treatable medical = %o', async (treatableMedical, expected) => {
 		const date = new Date()
 		date.setFullYear(2023, 0, 17)
-		const actual = getRescueID(surrenderPkg(treatableMedical), date)
+		const idSrc = new RescueID()
+		const actual = idSrc.getID(surrenderPkg(treatableMedical), date)
 
 		expect(actual.startsWith(expected)).toBe(true)
 	})
@@ -37,9 +39,7 @@ describe('Test rescue ID generation', async () => {
 		const pkg = surrenderPkg(false)
 		const date = new Date()
 
-		// Clear the stateful...
-		date.setFullYear(2001, 0, 1)
-		getRescueID(pkg, date)
+		const idSrc = new RescueID()
 
 		for (let day = 5; day < 9; day++) {
 			date.setFullYear(2023, 0, day)
@@ -49,7 +49,7 @@ describe('Test rescue ID generation', async () => {
 					dayCode = `0${i}`
 				}
 				const expected = `${dayCode}`
-				const actual = getRescueID(pkg, date)
+				const actual = idSrc.getID(pkg, date)
 				expect(actual.endsWith(expected), `${actual} ends with ${expected}`).toBe(true)
 			}
 		}

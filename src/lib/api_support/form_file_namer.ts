@@ -3,7 +3,7 @@ import fsPromises from 'fs/promises'
 
 import type { SurrenderPkg } from 'src/infrastructure/info_packages'
 import type { ProcessedSurrenderInfo } from './processed_surrender_info'
-import { getRescueID } from './rescue_id.server'
+import { RescueID } from './rescue_id.server'
 
 function ensureDir(dirname: string): string {
 	fsPromises.mkdir(dirname, { recursive: true })
@@ -11,10 +11,11 @@ function ensureDir(dirname: string): string {
 }
 
 export class FormFileNamer {
+	#idSrc: RescueID = new RescueID()
 	#rescueID: string
 
 	constructor(info: SurrenderPkg) {
-		this.#rescueID = getRescueID(info, new Date())
+		this.#rescueID = this.#idSrc.getID(info, new Date())
 	}
 
 	static #dataDir: string = ensureDir(path.join(process.cwd(), 'data', 'out'))
