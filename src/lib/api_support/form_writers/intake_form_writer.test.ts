@@ -17,12 +17,28 @@ describe('Test writing intake forms', async () => {
 	})
 
 	test('Can write empty-ish form', async () => {
+		const surrenderDate = '2023-01-18'
+		const rescueID = 'FAKE-rescue-id'
+		const surrenderType = 'Invalid-testing-value'
 		const info: SurrenderPkg = {
-			catInfo: { ...newCatPkg(), treatableMedical: true },
-			receivedFrom: { ...newReceivedFromPkg(), shelterNum: 'P' }
+			catInfo: { ...newCatPkg(), treatableMedical: true, intakeDate: surrenderDate },
+			receivedFrom: { ...newReceivedFromPkg(), shelterNum: 'P', surrenderType: surrenderType }
 		}
 		const outpath = path.join(dataDir, 'intake.csv')
-		const result = await saveIntakeForm(info, outpath)
+		const result = await saveIntakeForm(rescueID, info, outpath)
 		expect(path.join(dataDir, result.filename)).toBe(outpath)
+
+		const content = await fsPromises.readFile(outpath, { encoding: 'utf-8' })
+		expect(content.indexOf(rescueID)).toBeGreaterThan(0)
+		expect(content.indexOf(surrenderType)).toBeGreaterThan(0)
+	})
+
+	test('Reports at least some errors', async () => {
+		const info: SurrenderPkg = {
+			catInfo: { ...newCatPkg() },
+			receivedFrom: { ...newReceivedFromPkg() }
+		}
+		const outpath = '/no/such/subdir/intake.csv'
+		await expect(saveIntakeForm('rescue-id', info, outpath)).rejects.toThrow()
 	})
 })

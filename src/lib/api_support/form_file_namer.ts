@@ -86,7 +86,7 @@ export class FormFileNamer {
 	ownerSurrenderInfo(): ProcessedSurrenderInfo {
 		// TODO Support optional photo.
 		return {
-			surrenderID: this.#rescueID,
+			rescueID: this.#rescueID,
 			surrenderType: 'Owner',
 			surrenderFormPath: this.#surrenderPathname,
 			intakeFormPath: this.#intakePathname,
@@ -96,7 +96,7 @@ export class FormFileNamer {
 
 	straySurrenderInfo(): ProcessedSurrenderInfo {
 		return {
-			surrenderID: this.#rescueID,
+			rescueID: this.#rescueID,
 			surrenderType: 'Stray',
 			surrenderFormPath: this.#strayPathname,
 			intakeFormPath: this.#intakePathname,
@@ -106,7 +106,7 @@ export class FormFileNamer {
 
 	rescueSurrenderInfo(): ProcessedSurrenderInfo {
 		return {
-			surrenderID: this.#rescueID,
+			rescueID: this.#rescueID,
 			surrenderType: 'Rescue',
 			surrenderFormPath: this.#rescuePathname,
 			intakeFormPath: this.#intakePathname,

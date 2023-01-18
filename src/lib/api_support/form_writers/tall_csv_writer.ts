@@ -63,5 +63,6 @@ export async function writeTallCSV(csvPathname: string, records: CSVRow[]) {
 		await fileWriter.writeRecords(records)
 	} catch (e: any) {
 		console.error('Error writing CSV file %o: %o', csvPathname, e.message)
+		throw e
 	}
 }

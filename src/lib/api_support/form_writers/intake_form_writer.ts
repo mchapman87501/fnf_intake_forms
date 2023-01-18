@@ -3,9 +3,9 @@ import { type CSVRow, writeTallCSV, row, boolStr, dateStr, posNegStr } from './t
 
 import type { SurrenderPkg } from 'src/infrastructure/info_packages'
 
-function getIntakeFormRows(info: SurrenderPkg): CSVRow[] {
-	const catInfo = info.catInfo
-	const recvdFrom = info.receivedFrom
+function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): CSVRow[] {
+	const catInfo = surrenderInfo.catInfo
+	const recvdFrom = surrenderInfo.receivedFrom
 	// This is derived from IntakeForm.svelte.
 	return [
 		row('Intake Date', dateStr(catInfo.intakeDate)),
@@ -21,7 +21,7 @@ function getIntakeFormRows(info: SurrenderPkg): CSVRow[] {
 
 		row('Courtesy listing (no relinquishment)', boolStr(recvdFrom.courtesyListingNoRelinquishment)),
 		row('Ok to show (not Web only)', boolStr(catInfo.oKToShow)),
-		row('Rescue ID', 'To do RESCUE ID'),
+		row('Rescue ID', rescueID),
 		row('Name of Cat', catInfo.catName),
 		row('DOB', dateStr(catInfo.DOB)),
 		row('Gender', catInfo.gender),
@@ -58,14 +58,14 @@ function getIntakeFormRows(info: SurrenderPkg): CSVRow[] {
 
 // Save a new intake form, and return its download link.
 export async function saveIntakeForm(
-	info: SurrenderPkg,
+	rescueID: string,
+	surrenderInfo: SurrenderPkg,
 	csvPathname: string
 ): Promise<DownloadInfo> {
 	try {
-		await writeTallCSV(csvPathname, getIntakeFormRows(info))
+		await writeTallCSV(csvPathname, getIntakeFormRows(rescueID, surrenderInfo))
 		return getDownloadInfo(csvPathname)
 	} catch (e: any) {
-		console.error(e.message)
 		return Promise.reject(e.message)
 	}
 }

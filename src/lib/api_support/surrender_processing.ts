@@ -25,7 +25,7 @@ async function processSurrenderPkg(
 		// Create the surrender and intake forms.
 		const result: SurrenderDownloads = {
 			surrender: await saveSurrenderForm(pkg, processingInfo.surrenderFormPath),
-			intake: await saveIntakeForm(pkg, processingInfo.intakeFormPath)
+			intake: await saveIntakeForm(processingInfo.rescueID, pkg, processingInfo.intakeFormPath)
 		}
 		// Email the forms whenever able.
 		emailSurrenderInfoLater(processingInfo)

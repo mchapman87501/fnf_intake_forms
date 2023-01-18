@@ -98,7 +98,7 @@ Felines & Friends Intake Service
 	const result = {
 		from: 'noreply@fnf_intake_service.org',
 		to: config.formRecipients,
-		subject: `${info.surrenderType} Surrender ${info.surrenderID}`,
+		subject: `${info.surrenderType} Surrender ${info.rescueID}`,
 		text: body,
 		attachments: attachments
 	}

@@ -25,12 +25,16 @@ describe('User DB tests', async () => {
 
 		expect(fs.existsSync(dbPath)).toBe(true)
 
-		expect(UserDB.authenticate('admin', 'password')).resolves.not.toBe('')
-		expect(UserDB.authenticate('admin', 'wrong password')).rejects.toThrow(/authentication failed/)
+		await expect(UserDB.authenticate('admin', 'password')).resolves.not.toBe('')
+		await expect(UserDB.authenticate('admin', 'wrong password')).rejects.toThrow(
+			/authentication failed/
+		)
 	})
 
 	test('Use without config should report errors', async () => {
 		UserDB.resetForTesting()
-		expect(UserDB.authenticate('admin', 'password')).rejects.toThrow(/has not been configured/)
+		await expect(UserDB.authenticate('admin', 'password')).rejects.toThrow(
+			/has not been configured/
+		)
 	})
 })

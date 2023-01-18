@@ -50,7 +50,7 @@ describe('Test emailer basics', async () => {
 	test('Report uninitialized config', async () => {
 		const sendMsg = () => {
 			return emailer.emailSurrenderInfo({
-				surrenderID: '<surrender ID>',
+				rescueID: '<surrender ID>',
 				surrenderType: 'Stray',
 				surrenderFormPath: 'noSuchSurrender.csv',
 				intakeFormPath: 'noSuchIntake.csv',
@@ -91,7 +91,7 @@ describe('Test emailer basics', async () => {
 		expect(emailer.canSend()).toBe(true)
 
 		const didSend = emailer.emailSurrenderInfo({
-			surrenderID: '<surrenderID>',
+			rescueID: '<rescueID>',
 			surrenderType: 'Owner',
 			surrenderFormPath: 'noSuchSurrender.csv',
 			intakeFormPath: 'noSuchIntake.csv',
@@ -120,7 +120,7 @@ describe('Test emailer basics', async () => {
 			await fsPromises.writeFile(intakePath, '')
 
 			const didSend = await emailer.emailSurrenderInfo({
-				surrenderID: 'fake_surrender_id',
+				rescueID: 'fake_surrender_id',
 				surrenderType: 'Stray',
 				surrenderFormPath: surrPath,
 				intakeFormPath: intakePath,
@@ -139,7 +139,7 @@ describe('Test emailer basics', async () => {
 	test('Send later without first configuring', async () => {
 		expect(emailer.canSend()).toBe(false)
 		emailer.emailSurrenderInfoLater({
-			surrenderID: '<surrender ID>',
+			rescueID: '<surrender ID>',
 			surrenderType: 'Stray',
 			surrenderFormPath: 'noSuchSurrender.csv',
 			intakeFormPath: 'noSuchIntake.csv',
@@ -170,7 +170,7 @@ describe('Test emailer basics', async () => {
 		expect(emailer.canSend()).toBe(true)
 
 		const surrenderInfo = {
-			surrenderID: '<surrenderID>',
+			rescueID: '<rescueID>',
 			surrenderType: 'Owner',
 			surrenderFormPath: 'noSuchSurrender.csv',
 			intakeFormPath: 'noSuchIntake.csv',

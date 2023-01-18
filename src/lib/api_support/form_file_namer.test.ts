@@ -13,7 +13,7 @@ describe('Test generation of filenames for various forms', async () => {
 		FormFileNamer.dataDir = dataDir
 		const namer = new FormFileNamer(pkg)
 		const info = namer.ownerSurrenderInfo()
-		expect(info.surrenderID).toMatch(/^TM-/)
+		expect(info.rescueID).toMatch(/^TM-/)
 		expect(info.surrenderType.toLowerCase()).toBe('owner')
 		expect(info.intakeFormPath.startsWith(dataDir)).toBe(true)
 		expect(path.basename(info.intakeFormPath)).toMatch(/^TM-\d{6}-P\d{2}-intake\.csv/)
