@@ -3,13 +3,20 @@
 	export const uynChoices = ['Unknown', uynChoicesYes, 'No']
 
 	export const genderChoiceFemale = 'Female'
-    export const genderChoices = ['F/M Unknown', genderChoiceFemale, 'Male']
+	export const genderChoices = ['F/M Unknown', genderChoiceFemale, 'Male']
 
 	export const surrenderChoiceTransfer = 'Transfer'
 	export const surrenderChoiceSurrender = 'Surrender'
 	export const surrenderChoicePregnant = 'Pregnant'
+	export const surrenderChoiceRescue = 'Rescue'
 	export const surrenderChoiceStray = 'Stray'
 	export const surrenderChoiceUnspecified = 'Unspecified'
-	export const surrenderChoices = [surrenderChoiceUnspecified,surrenderChoiceSurrender,surrenderChoiceTransfer, surrenderChoiceStray, surrenderChoicePregnant]
-	
+	export const surrenderChoices = [
+		surrenderChoiceUnspecified,
+		surrenderChoiceSurrender,
+		surrenderChoiceTransfer,
+		surrenderChoiceStray,
+		surrenderChoicePregnant,
+		surrenderChoiceRescue
+	]
 </script>

@@ -19,8 +19,8 @@
 	import CourtesyListingNoRelinquishment from '../components/CourtesyListingNoRelinquishment.svelte'
 	import TreatableMedical from '../components/TreatableMedical.svelte'
 	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
-	import SurrenderType from '../components/SurrenderType.svelte'
-
+	import { onMount } from 'svelte'
+	import { surrenderChoiceRescue } from '../infrastructure/Definitions.svelte'
 	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
 
 	async function handleSubmit() {
@@ -59,13 +59,16 @@
 		return true
 	}
 	$: formValid = getFormValid()
+
+	onMount(() => {
+		$recvdFromPkg.surrenderType = surrenderChoiceRescue
+	})
 </script>
 
 <LoginDialog />
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate />
-	<SurrenderType /><br />
+	<IntakeDate /><br />
 	<ReceivedFromName />
 	<ReceivedFromDriversLic /> <br />
 	<ReceivedFromContactInfo />

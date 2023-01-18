@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
 	import { downloadCompletedForm } from '$lib/api_support/download_info.js'
 	import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info.js'
@@ -14,7 +15,7 @@
 	import IntakeDate from '../components/IntakeDate.svelte'
 	import RescueLocation from '../components/RescueLocation.svelte'
 	import Donation from '../components/Donation.svelte'
-	import SurrenderType from '../components/SurrenderType.svelte'
+	import { surrenderChoiceStray } from '../infrastructure/Definitions.svelte'
 
 	async function handleSubmit() {
 		const bearerToken = $session_token
@@ -52,13 +53,16 @@
 		return true
 	}
 	$: formValid = getFormValid()
+
+	onMount(() => {
+		$recvdFromPkg.surrenderType = surrenderChoiceStray
+	})
 </script>
 
 <LoginDialog />
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate />
-	<SurrenderType /><br />
+	<IntakeDate /><br />
 	<ReceivedFromName />
 	<ReceivedFromDriversLic /><br />
 	<ReceivedFromContactInfo />
