@@ -15,11 +15,15 @@ export async function POST(event: RequestEvent): Promise<Response> {
 	const username = formParams.get('username')?.toString() || ''
 	const password = formParams.get('password')?.toString() || ''
 
-	let refreshToken = await authenticate(username, password)
+	let refreshToken: string = ''
+	try {
+		refreshToken = await authenticate(username, password)
+	} catch (e: any) {
+		console.error(`${e}`)
+	}
 	if (!refreshToken) {
 		let headers = new Headers()
 		headers.set('WWW-Authenticate', 'Bearer')
-		// TODO what to use for challenge data?
 		return new Response('Could not authenticate', { status: 401, headers: headers })
 	}
 
