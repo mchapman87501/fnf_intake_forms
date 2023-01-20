@@ -51,21 +51,21 @@ I was able to get the app running on render.com with _very_ little futzing. Here
 
 - Create a new service by clicking the `New +` button.
 - Select `Web Service`
-- Connect to the fnf_intake_forms github repository
+- Connect to the fnf_intake_forms github repository.
   ...
-- Enter a unique name for the service
-- Choose a region -- Oregon (US West)
-- Use the `main` repo branch
-- Choose `Node` as the runtime environment
-- For the build command, use `npm install && npm run build`
-- For the start command, use `node build/index.js`
-- Click Advanced
-- Create an environment variable, name `NODE_VERSION`, value `19.4.0`
-- Add a secret file, named `.env`, with all of the entries listed in `env_template.in`
-  - Generate new secrets using `openssl rand -hex 32`, as usual
-- Use `/` as the Health Check Path
-- Set Auto-Deploy to `No`
-- Click `Create Web Service`
+- Enter a unique name for the service.
+- Choose a region -- Oregon (US West).
+- Use the `main` repo branch.
+- Choose `Node` as the runtime environment.
+- For the build command, use `npm install && npm run build`.
+- For the start command, use `node build/index.js`.
+- Click `Advanced`.
+- Create an environment variable, name `NODE_VERSION`, value `19.4.0`.
+- Add a secret file, named `.env`, with all of the entries listed in `env_template.in`.
+  - Generate new secrets using `openssl rand -hex 32`, as usual.
+- Use `/` as the Health Check Path.
+- Set Auto-Deploy to `No` (for no good reason).
+- Click `Create Web Service`.
 
 ### Elastic Beanstalk
 
