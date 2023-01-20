@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { jwtSession, session_token, session_username } from '$lib/auth/auth'
+	import { jwtSession, session_token, session_username } from '$lib/auth'
 	import Dialog from '$lib/components/Dialog.svelte'
 	import LoginForm from '$lib/components/LoginForm.svelte'
 	import { onMount } from 'svelte'
-	import { initForms, cloneForm, initSession } from '../infrastructure/StoreFns.svelte'
+	import { initForms, cloneForm, initSession } from '$lib/infrastructure/StoreFns.svelte'
 
 	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
-	import WantsMomBack from '../components/WantsMomBack.svelte'
+	import WantsMomBack from '$lib/components/WantsMomBack.svelte'
 	import RescueSurrenderForm from './RescueSurrenderForm.svelte'
 	import StraySurrenderForm from './StraySurrenderForm.svelte'
 

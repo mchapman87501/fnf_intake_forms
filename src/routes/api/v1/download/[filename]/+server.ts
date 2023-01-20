@@ -2,7 +2,7 @@ import path from 'path'
 import fsPromises from 'fs/promises'
 import type { RequestEvent } from '@sveltejs/kit'
 
-import { FormFileNamer } from '$lib/api_support/form_file_namer'
+import { FormFileNamer } from '$lib/server/api_support/form_file_namer'
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const filename = event.params.filename

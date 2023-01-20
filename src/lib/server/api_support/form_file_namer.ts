@@ -1,9 +1,9 @@
 import * as path from 'path'
 import fsPromises from 'fs/promises'
 
-import type { SurrenderPkg } from 'src/infrastructure/info_packages'
+import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 import type { ProcessedSurrenderInfo } from './processed_surrender_info'
-import { RescueID } from './rescue_id.server'
+import { RescueID } from './rescue_id'
 
 function ensureDir(dirname: string): string {
 	fsPromises.mkdir(dirname, { recursive: true })

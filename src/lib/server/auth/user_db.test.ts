@@ -3,7 +3,7 @@ import * as fsPromises from 'fs/promises'
 import * as fs from 'fs'
 import * as path from 'path'
 import { temporaryDirectory } from 'tempy'
-import * as UserDB from './user_db.server'
+import * as UserDB from './user_db'
 
 describe('User DB tests', async () => {
 	let dbDir = temporaryDirectory()

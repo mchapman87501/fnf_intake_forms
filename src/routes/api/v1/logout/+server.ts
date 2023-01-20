@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit'
 import type { RequestEvent } from '@sveltejs/kit'
-import { addAccessToken, addRefreshToken } from '$lib/auth/tokens.server'
+import { addAccessToken, addRefreshToken } from '$lib/server/auth/tokens'
 
 // To fix 405 error:
 // https://stackoverflow.com/a/73755196

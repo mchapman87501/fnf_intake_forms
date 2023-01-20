@@ -1,7 +1,7 @@
 import path from 'path'
 import * as nodemailer from 'nodemailer'
 
-import type { ProcessedSurrenderInfo } from '$lib/api_support/processed_surrender_info'
+import type { ProcessedSurrenderInfo } from '$lib/server/api_support/processed_surrender_info'
 
 export type Configuration = {
 	smtpServer: string

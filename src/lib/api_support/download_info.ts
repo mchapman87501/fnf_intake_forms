@@ -1,5 +1,5 @@
 import * as path from 'path'
-import { jwtSession } from '$lib/auth/auth'
+import { jwtSession } from '$lib/auth'
 export type DownloadInfo = {
 	srcURL: string
 	filename: string

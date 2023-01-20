@@ -1,4 +1,5 @@
 <script lang="ts">
-	import { catPkg } from '../infrastructure/stores.js'
+	import { catPkg } from '$lib/infrastructure/stores.js'
 </script>
-	<input type="text" placeholder={'(F&F representative)'} bind:value={$catPkg.intakeFnFRepr} />
+
+<input type="text" placeholder={'(F&F representative)'} bind:value={$catPkg.intakeFnFRepr} />

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { catPkg } from '../infrastructure/stores.js'
-	import Dropdown from '../infrastructure/Dropdown.svelte'
-	import { uynChoices, uynChoicesYes } from '../infrastructure/Definitions.svelte'
+	import { catPkg } from '$lib/infrastructure/stores.js'
+	import Dropdown from '$lib/infrastructure/Dropdown.svelte'
+	import { uynChoices, uynChoicesYes } from '$lib/infrastructure/Definitions.svelte'
 
 	import AlteredWhenWhere from './AlteredWhenWhere.svelte'
 	import CatnameDOBGender from './CatnameDOBGender.svelte'

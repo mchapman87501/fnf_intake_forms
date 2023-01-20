@@ -1,16 +1,16 @@
-import { saveIntakeForm } from '$lib/api_support/form_writers/intake_form_writer'
-import { FormFileNamer } from '$lib/api_support/form_file_namer'
+import { saveIntakeForm } from '$lib/server/api_support/form_writers/intake_form_writer'
+import { FormFileNamer } from './form_file_namer'
 
-import type { SurrenderPkg } from 'src/infrastructure/info_packages'
+import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 import type { ProcessedSurrenderInfo } from './processed_surrender_info'
-import type { DownloadInfo } from './download_info'
+import type { DownloadInfo } from '$lib/api_support/download_info'
 import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info'
 
-import { emailSurrenderInfoLater } from '$lib/intake_emails/emailer.server'
+import { emailSurrenderInfoLater } from '$lib/server/intake_emails/emailer'
 
 // Indirect import of csv-writer seems to trigger a server-side-check error:
 // TypeError: Cannot read properties of undefined (reading 'SSR')
-import { saveOwnerSurrenderForm } from '$lib/api_support/form_writers/surrender_form_writer'
+import { saveOwnerSurrenderForm } from '$lib/server/api_support/form_writers/surrender_form_writer'
 import { saveRescueSurrenderForm } from './form_writers/rescue_form_writer'
 import { saveStraySurrenderForm } from './form_writers/stray_form_writer'
 import { saveWideIntakeForm } from './form_writers/wide_intake_form_writer'

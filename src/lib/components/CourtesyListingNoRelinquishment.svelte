@@ -1,10 +1,10 @@
 <script lang="ts">
-	import {recvdFromPkg } from '../infrastructure/stores.js'
+	import { recvdFromPkg } from '$lib/infrastructure/stores.js'
 </script>
 
 <label>
 	Courtesy Listing (No Relinquishment)
-	<input type="checkbox" bind:checked={$recvdFromPkg.courtesyListingNoRelinquishment}/>
+	<input type="checkbox" bind:checked={$recvdFromPkg.courtesyListingNoRelinquishment} />
 </label>
 
 <style>

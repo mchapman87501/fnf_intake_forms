@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from 'src/infrastructure/info_packages'
-import { RescueID } from './rescue_id.server'
+import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from '$lib/infrastructure/info_packages'
+import { RescueID } from './rescue_id'
 
 describe('Test rescue ID generation', async () => {
 	function surrenderPkg(hasTreatableMedical: boolean): SurrenderPkg {

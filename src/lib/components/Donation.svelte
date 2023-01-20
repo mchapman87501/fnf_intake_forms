@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { recvdFromPkg } from '../infrastructure/stores.js'
+	import { recvdFromPkg } from '$lib/infrastructure/stores.js'
 
 	let donationPattern = '\\d+(\\.\\d{2})?'
 </script>

@@ -19,9 +19,9 @@ import {
 	SURRENDER_EMAIL_RECIPIENTS
 } from '$env/static/private'
 
-import * as tokens from '$lib/auth/tokens.server'
-import * as userDB from '$lib/auth/user_db.server'
-import * as emailer from '$lib/intake_emails/emailer.server'
+import * as tokens from '$lib/server/auth/tokens'
+import * as userDB from '$lib/server/auth/user_db'
+import * as emailer from '$lib/server/intake_emails/emailer'
 
 // Verify that all required envs are defined
 if (

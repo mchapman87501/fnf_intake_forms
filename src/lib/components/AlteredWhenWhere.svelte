@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { catPkg } from '../infrastructure/stores.js'
-	import CatnameDOBGender from '../components/CatnameDOBGender.svelte'
+	import { catPkg } from '$lib/infrastructure/stores.js'
+	import CatnameDOBGender from '$lib/components/CatnameDOBGender.svelte'
 </script>
 
 <CatnameDOBGender />

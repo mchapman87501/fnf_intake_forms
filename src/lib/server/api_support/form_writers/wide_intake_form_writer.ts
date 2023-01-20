@@ -1,6 +1,6 @@
 import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
-import { boolStr, dateStr, posNegStr } from './value_converters'
-import type { SurrenderPkg } from 'src/infrastructure/info_packages'
+import { dateStr } from './value_converters'
+import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 import { writeWideCSV, type WideCSVColumn, col } from './wide_csv_writer'
 
 function getIntakeFormRow(rescueID: string, surrenderInfo: SurrenderPkg): WideCSVColumn[] {

@@ -1,21 +1,21 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { session_token, jwtSession, updateSessionToken } from '$lib/auth/auth'
+	import { session_token, jwtSession, updateSessionToken } from '$lib/auth'
 	import { downloadCompletedForm } from '$lib/api_support/download_info.js'
 	import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info.js'
 	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
-	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
+	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores.js'
 
-	import ReceivedFromDriversLic from '../components/ReceivedFromDriversLic.svelte'
-	import ReceivedFromName from '../components/ReceivedFromName.svelte'
-	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
-	import ReceivedBy from '../components/ReceivedBy.svelte'
-	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
-	import IntakeDate from '../components/IntakeDate.svelte'
-	import RescueLocation from '../components/RescueLocation.svelte'
-	import Donation from '../components/Donation.svelte'
-	import { surrenderChoiceStray } from '../infrastructure/Definitions.svelte'
+	import ReceivedFromDriversLic from '$lib/components/ReceivedFromDriversLic.svelte'
+	import ReceivedFromName from '$lib/components/ReceivedFromName.svelte'
+	import ReceivedFromContactInfo from '$lib/components/ReceivedFromContactInfo.svelte'
+	import ReceivedBy from '$lib/components/ReceivedBy.svelte'
+	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
+	import IntakeDate from '$lib/components/IntakeDate.svelte'
+	import RescueLocation from '$lib/components/RescueLocation.svelte'
+	import Donation from '$lib/components/Donation.svelte'
+	import { surrenderChoiceStray } from '$lib/infrastructure/Definitions.svelte'
 
 	async function handleSubmit() {
 		const bearerToken = $session_token

@@ -1,7 +1,11 @@
 <script lang="ts">
-	import { recvdFromPkg } from '../infrastructure/stores.js'
-	import Dropdown from '../infrastructure/Dropdown.svelte'
-	import { surrenderChoices } from '../infrastructure/Definitions.svelte'
+	import { recvdFromPkg } from '$lib/infrastructure/stores.js'
+	import Dropdown from '$lib/infrastructure/Dropdown.svelte'
+	import { surrenderChoices } from '$lib/infrastructure/Definitions.svelte'
 </script>
-<Dropdown title="Intake type" choiceList={surrenderChoices} bind:value={$recvdFromPkg.surrenderType} />
 
+<Dropdown
+	title="Intake type"
+	choiceList={surrenderChoices}
+	bind:value={$recvdFromPkg.surrenderType}
+/>

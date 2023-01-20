@@ -6,7 +6,7 @@ import { temporaryDirectoryTask } from 'tempy'
 
 import { testSmtpServer } from 'test-smtp-server'
 
-import * as emailer from './emailer.server'
+import * as emailer from './emailer'
 
 let mockSMTP = new testSmtpServer({ smtpPort: 5025 })
 

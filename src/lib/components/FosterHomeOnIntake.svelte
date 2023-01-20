@@ -1,6 +1,7 @@
 <script lang="ts">
-	import {catPkg } from '../infrastructure/stores.js'
+	import { catPkg } from '$lib/infrastructure/stores.js'
 </script>
+
 <span>Foster Home upon intake:</span><br />
 <textarea bind:value={$catPkg.fosterHomeOnIntake} /><br />
 

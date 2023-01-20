@@ -1,10 +1,10 @@
 <script lang="ts">
-	import {catPkg } from '../infrastructure/stores.js'
+	import { catPkg } from '$lib/infrastructure/stores.js'
 </script>
 
 <label>
 	Treatable Medical
-	<input type="checkbox" bind:checked={$catPkg.treatableMedical}/>
+	<input type="checkbox" bind:checked={$catPkg.treatableMedical} />
 </label>
 
 <style>

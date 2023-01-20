@@ -1,7 +1,11 @@
 <script lang="ts" context="module">
 	import { catPkg, firstRun, recvdFromPkg } from './stores'
 	import { get } from 'svelte/store'
-	import { uynChoices, genderChoices, surrenderChoices } from '../infrastructure/Definitions.svelte'
+	import {
+		uynChoices,
+		genderChoices,
+		surrenderChoices
+	} from '$lib/infrastructure/Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
 	export function initForms() {

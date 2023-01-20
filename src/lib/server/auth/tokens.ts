@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 
-import { usernameForRefreshTokenSync } from './user_db.server'
+import { usernameForRefreshTokenSync } from './user_db'
 
 export type TokensServerConfig = {
 	isDevEnv: boolean
@@ -49,7 +49,7 @@ export function newRefreshToken(username: string): string {
 	const dfltMinutes = 60 * 4
 	return newToken(username, config.refreshSecret, duration(config.refreshMinutes, dfltMinutes))
 	// NB: The refreshToken needs to be stored in a transient "session" database.
-	// See user_db.server.ts
+	// See user_db.ts
 }
 
 function secureSetting(): string {

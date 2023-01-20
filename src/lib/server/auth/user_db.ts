@@ -195,7 +195,7 @@ class UserDB {
 		})
 	}
 
-	// XXX FIX THIS uncouple from tokens.server.
+	// XXX FIX THIS uncouple from tokens.
 	// Authenticate a user.
 	// If successful, update and return the user's refresh token.
 	async authenticate(username: string, password: string): Promise<string> {

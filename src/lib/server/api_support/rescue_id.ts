@@ -1,4 +1,4 @@
-import type { SurrenderPkg } from 'src/infrastructure/info_packages'
+import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 
 function pad(s: string, len: number): string {
 	const padding = '0'.repeat(len)

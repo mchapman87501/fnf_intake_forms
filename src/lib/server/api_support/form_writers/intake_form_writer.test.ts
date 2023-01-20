@@ -3,7 +3,7 @@ import fsPromises from 'fs/promises'
 import { temporaryDirectory } from 'tempy'
 import * as path from 'path'
 
-import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from 'src/infrastructure/info_packages'
+import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from '$lib/infrastructure/info_packages'
 import { saveIntakeForm } from './intake_form_writer'
 
 describe('Test writing intake forms', async () => {

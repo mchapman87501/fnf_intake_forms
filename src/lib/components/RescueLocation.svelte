@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {recvdFromPkg } from '../infrastructure/stores.js'
+	import { recvdFromPkg } from '$lib/infrastructure/stores.js'
 </script>
 
 <span>Location where cat was found:</span><br />

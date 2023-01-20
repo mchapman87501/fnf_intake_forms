@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 
-import * as tokens from '$lib/auth/tokens.server'
+import * as tokens from '$lib/server/auth/tokens'
 
 describe('Test token basics', async () => {
 	const defaultConfig: tokens.TokensServerConfig = {

@@ -6,8 +6,8 @@ import * as path from 'path'
 import { temporaryDirectory } from 'tempy'
 
 import { FormFileNamer } from './form_file_namer'
-import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from 'src/infrastructure/info_packages'
-import type { SurrenderDownloads } from './surrender_and_intake_info'
+import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from '$lib/infrastructure/info_packages'
+import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info'
 import {
 	processOwnerSurrender,
 	processRescueSurrender,

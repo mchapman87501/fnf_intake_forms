@@ -1,34 +1,34 @@
 <script lang="ts">
-	import { catPkg, recvdFromPkg } from '../infrastructure/stores.js'
-	import { getInfoAsCSV } from '../infrastructure/UtilFns.svelte'
+	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores.js'
+	import { getInfoAsCSV } from '$lib/infrastructure/UtilFns.svelte'
 
-	import OkWith from '../components/OkWith.svelte'
-	import ReceivedFromName from '../components/ReceivedFromName.svelte'
-	import ReceivedFromContactInfo from '../components/ReceivedFromContactInfo.svelte'
-	import CatnameDOBGender from '../components/CatnameDOBGender.svelte'
-	import BreedColorMarkings from '../components/BreedColorMarkings.svelte'
-	import Microchip from '../components/Microchip.svelte'
-	import IntakeReason from '../components/IntakeReason.svelte'
-	import IntakeDate from '../components/IntakeDate.svelte'
-	import ReceivedByName from '../components/ReceivedByName.svelte'
-	import PrevShelterNum from '../components/PrevShelterNum.svelte'
-	import ShowNotWebOnly from '../components/ShowNotWebOnly.svelte'
-	import CourtesyListingNoRelinquishment from '../components/CourtesyListingNoRelinquishment.svelte'
-	import AlteredWhenWhere from '../components/AlteredWhenWhere.svelte'
-	import Declawed from '../components/Declawed.svelte'
-	import PrevShelterBiteHistory from '../components/PrevShelterBiteHistory.svelte'
-	import FVRCPDates from '../components/FVRCPDates.svelte'
-	import RabiesExpirationDate from '../components/RabiesExpirationDate.svelte'
-	import Temperament from '../components/Temperament.svelte'
-	import MotherLittermates from '../components/MotherLittermates.svelte'
-	import InternalComments from '../components/InternalComments.svelte'
-	import FosterHomeOnIntake from '../components/FosterHomeOnIntake.svelte'
-	import HairLength from '../components/HairLength.svelte'
-	import CurrentWeight from '../components/CurrentWeight.svelte'
-	import EstSizeMaturity from '../components/EstSizeMaturity.svelte'
-	import DistinctiveFeatures from '../components/DistinctiveFeatures.svelte'
-	import SpecialNeeds from '../components/SpecialNeeds.svelte'
-	import SurrenderType from '../components/SurrenderType.svelte'
+	import OkWith from '$lib/components/OkWith.svelte'
+	import ReceivedFromName from '$lib/components/ReceivedFromName.svelte'
+	import ReceivedFromContactInfo from '$lib/components/ReceivedFromContactInfo.svelte'
+	import CatnameDOBGender from '$lib/components/CatnameDOBGender.svelte'
+	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
+	import Microchip from '$lib/components/Microchip.svelte'
+	import IntakeReason from '$lib/components/IntakeReason.svelte'
+	import IntakeDate from '$lib/components/IntakeDate.svelte'
+	import ReceivedByName from '$lib/components/ReceivedByName.svelte'
+	import PrevShelterNum from '$lib/components/PrevShelterNum.svelte'
+	import ShowNotWebOnly from '$lib/components/ShowNotWebOnly.svelte'
+	import CourtesyListingNoRelinquishment from '$lib/components/CourtesyListingNoRelinquishment.svelte'
+	import AlteredWhenWhere from '$lib/components/AlteredWhenWhere.svelte'
+	import Declawed from '$lib/components/Declawed.svelte'
+	import PrevShelterBiteHistory from '$lib/components/PrevShelterBiteHistory.svelte'
+	import FVRCPDates from '$lib/components/FVRCPDates.svelte'
+	import RabiesExpirationDate from '$lib/components/RabiesExpirationDate.svelte'
+	import Temperament from '$lib/components/Temperament.svelte'
+	import MotherLittermates from '$lib/components/MotherLittermates.svelte'
+	import InternalComments from '$lib/components/InternalComments.svelte'
+	import FosterHomeOnIntake from '$lib/components/FosterHomeOnIntake.svelte'
+	import HairLength from '$lib/components/HairLength.svelte'
+	import CurrentWeight from '$lib/components/CurrentWeight.svelte'
+	import EstSizeMaturity from '$lib/components/EstSizeMaturity.svelte'
+	import DistinctiveFeatures from '$lib/components/DistinctiveFeatures.svelte'
+	import SpecialNeeds from '$lib/components/SpecialNeeds.svelte'
+	import SurrenderType from '$lib/components/SurrenderType.svelte'
 
 	function getPrintMap() {
 		var map = new Map()
@@ -113,8 +113,8 @@
 				// console.log(files[0])
 				console.log($catPkg.profilePic)
 				Array.prototype.forEach.call(files, function (file) {
-						(<HTMLInputElement>document.getElementById('blah')).src = URL.createObjectURL(file)
-							$catPkg.profilePic = URL.createObjectURL(file)
+					;(<HTMLInputElement>document.getElementById('blah')).src = URL.createObjectURL(file)
+					$catPkg.profilePic = URL.createObjectURL(file)
 				})
 			}
 		}
@@ -137,7 +137,7 @@
 	<span>Received From <ReceivedFromName /> </span><br />
 	<ReceivedFromContactInfo /><br />
 	<IntakeReason /><br />
-	<SurrenderType/>
+	<SurrenderType />
 	<PrevShelterNum />
 	<br />
 	<CourtesyListingNoRelinquishment /><br />
@@ -163,8 +163,14 @@
 	<MotherLittermates /><br />
 	<InternalComments /><br />
 	<FosterHomeOnIntake /><br />
-	<input accept="image/*" type="file" id="imgInp" bind:value={$catPkg.profilePic} on:change={imageChange} />
-	<img id="blah" src={$catPkg.profilePic} alt="the cat" width="300" height="300"/>
+	<input
+		accept="image/*"
+		type="file"
+		id="imgInp"
+		bind:value={$catPkg.profilePic}
+		on:change={imageChange}
+	/>
+	<img id="blah" src={$catPkg.profilePic} alt="the cat" width="300" height="300" />
 	<div class="btns">
 		<button type="submit" disabled={!formValid}>Submit</button>
 		<button type="button" on:click={copyFormToClipboard}

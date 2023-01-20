@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import * as path from 'path'
 import { FormFileNamer } from './form_file_namer'
-import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from 'src/infrastructure/info_packages'
+import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from '$lib/infrastructure/info_packages'
 
 describe('Test generation of filenames for various forms', async () => {
 	test('Can get owner surrender info', () => {

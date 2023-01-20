@@ -1,10 +1,10 @@
 <script lang="ts">
-	import {catPkg } from '../infrastructure/stores.js'
+	import { catPkg } from '$lib/infrastructure/stores.js'
 </script>
 
 <label>
 	OK to show (Not Web only)
-	<input type="checkbox" bind:checked={$catPkg.oKToShow}/>
+	<input type="checkbox" bind:checked={$catPkg.oKToShow} />
 </label>
 
 <style>
