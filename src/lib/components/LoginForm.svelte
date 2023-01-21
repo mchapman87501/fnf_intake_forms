@@ -31,10 +31,9 @@
 			body: body
 		})
 		if (!rqst.ok) {
-			error = rqst.statusText
-			session_username.update(() => '')
+			error = 'Could not authenticate.'
 		} else {
-			session_username.update(() => username)
+			session_username.set(username)
 			close()
 		}
 	}
