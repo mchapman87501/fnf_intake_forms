@@ -1,10 +1,9 @@
 <script lang="ts">
 	// This follows
 	// https://dev.to/myleftshoe/svelte-dialogs-the-easy-way-e0f
+	import { session_username } from '$lib/auth'
+	import { why } from './login_reason'
 
-	import { session_token, session_username } from '$lib/auth'
-
-	export let loginReason = ''
 	export let close: () => void = () => {}
 
 	let username = ''
@@ -33,11 +32,9 @@
 		})
 		if (!rqst.ok) {
 			error = rqst.statusText
+			session_username.update(() => '')
 		} else {
-			const tokenObj = await rqst.json()
-			const accessToken: string = tokenObj['access_token']
 			session_username.update(() => username)
-			session_token.update(() => accessToken)
 			close()
 		}
 	}
@@ -48,9 +45,7 @@
 	<div>Sign In</div>
 </div>
 
-{#if loginReason != null && loginReason != ''}
-	<p class="why_here">{loginReason}</p>
-{/if}
+<p class="why_here">{$why}</p>
 
 <form on:submit|preventDefault={login}>
 	{#if error != ''}

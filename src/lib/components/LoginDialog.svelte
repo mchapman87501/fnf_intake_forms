@@ -1,22 +1,23 @@
 <script context="module" lang="ts">
-	import Dialog from '$lib/components/Dialog.svelte'
-	import LoginForm from '$lib/components/LoginForm.svelte'
+	import Dialog from './Dialog.svelte'
+	import LoginForm from './LoginForm.svelte'
+	import { why } from './login_reason'
 
 	let loginDialog: HTMLDialogElement
-	let loginReason = ''
 
 	const showLogin = (reason: string) => {
-		loginReason = reason
+		why.set(reason)
 		loginDialog.showModal()
 	}
 
 	function closeLoginDialog() {
 		loginDialog.close()
+		why.set('')
 	}
 
 	export { showLogin }
 </script>
 
 <Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
-	<LoginForm bind:loginReason close={closeLoginDialog} />
+	<LoginForm close={closeLoginDialog} />
 </Dialog>

@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit'
 import type { RequestEvent } from '@sveltejs/kit'
-import { addAccessToken, addRefreshToken } from '$lib/server/auth/tokens'
+import { clearSessionToken } from '$lib/server/auth/tokens'
 
 // To fix 405 error:
 // https://stackoverflow.com/a/73755196
@@ -8,15 +8,11 @@ import { addAccessToken, addRefreshToken } from '$lib/server/auth/tokens'
 // +server.ts (like this file) should still use
 // function POST.
 
-export async function POST(_: RequestEvent): Promise<Response> {
-	// What prevents a malicious client from continuing to use an invalidated
-	// access token?
-	const refreshToken = '' // Invalid
-	const accessToken = '' // Invalid
+export async function POST(event: RequestEvent): Promise<Response> {
+	event.locals.username = undefined
 
 	let headers = new Headers()
-	addAccessToken(headers, accessToken)
-	addRefreshToken(headers, refreshToken)
+	clearSessionToken(headers)
 
-	return json({ access_token: accessToken, token_type: 'bearer' }, { headers: headers })
+	return json('Successful logout', { headers: headers })
 }

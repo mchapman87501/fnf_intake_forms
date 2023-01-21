@@ -12,13 +12,11 @@ OptionSettings:
   aws:elb:policies:
     ConnectionDrainingEnabled: 'true'
   aws:elasticbeanstalk:application:environment:
-    JWT_REFRESH_SECRET: '''520e68114a9708683d1c34501ad34f8642f6f21478d386cceb40ac7b0556273b'''
     JWT_ACCESS_SECRET: '''a3077ee707a5152d04eb953027aa3200918bbb2bc1de3fa74f08c36a8f920936'''
     USER_DB_PATH: '''data/internal/users.db'''
     JWT_ACCESS_DURATION: '1'
     ADMIN_PASSWORD: '''log-me-in'''
     ADMIN_USERNAME: '''admin'''
-    JWT_REFRESH_DURATION: '240'
   aws:elb:loadbalancer:
     CrossZone: 'true'
   aws:elasticbeanstalk:environment:

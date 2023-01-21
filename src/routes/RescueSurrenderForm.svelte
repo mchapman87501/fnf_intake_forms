@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { session_token, jwtSession, updateSessionToken } from '$lib/auth'
+	import { session_username } from '$lib/auth'
 	import { downloadCompletedForm } from '$lib/api_support/download_info.js'
 	import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info.js'
 	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
@@ -24,8 +24,8 @@
 	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores'
 
 	async function handleSubmit() {
-		const bearerToken = $session_token
-		if (bearerToken == null) {
+		const username = $session_username || ''
+		if (username == '') {
 			showLogin('You must be logged in to submit a form.')
 			return
 		}
@@ -38,7 +38,7 @@
 		// TODO move backend communications like this to src/lib.
 		const response = await fetch('/api/v1/rescue_surrender_form', {
 			method: 'POST',
-			headers: { ...jwtSession(), 'Content-Type': 'application/json' },
+			headers: { 'Content-Type': 'application/json' },
 			body: bodyJSON
 		})
 
@@ -46,8 +46,6 @@
 			// Unauthorized, or session has expired. -- need to redirect to login.
 			showLogin('Your session has expired.')
 		} else if (response.status == 200) {
-			updateSessionToken(response)
-
 			const info = (await response.json()) as SurrenderDownloads
 			await downloadCompletedForm(info.surrender)
 			await downloadCompletedForm(info.intake)

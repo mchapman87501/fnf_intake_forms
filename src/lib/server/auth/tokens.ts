@@ -1,31 +1,27 @@
 import jwt from 'jsonwebtoken'
-import cookie from 'cookie'
-
-import { usernameForRefreshTokenSync } from './user_db'
 
 export type TokensServerConfig = {
 	isDevEnv: boolean
 	accessSecret: string
 	accessMinutes: number
-	refreshSecret: string
-	refreshMinutes: number
-	usernameForRefreshToken: (token: string) => string
 }
 
 let config: TokensServerConfig = {
 	isDevEnv: true,
 	accessSecret: 'uninitialized',
-	accessMinutes: NaN,
-	refreshSecret: 'uninitialized',
-	refreshMinutes: NaN,
-	usernameForRefreshToken: usernameForRefreshTokenSync
+	accessMinutes: NaN
 }
 
 export function configure(newValue: TokensServerConfig) {
 	config = newValue
 }
 
-// Get a duration, in seconds, from an env value; defaulting to defaultVal
+/**
+ * Get a duration, in seconds.
+ * @param minutes The desired duration as a real number of minutes (and fractions)
+ * @param defaultVal The fallback value to use if minutes is NaN
+ * @returns The given duration in seconds
+ */
 function duration(minutes: number, defaultVal: number): number {
 	if (isNaN(minutes)) {
 		minutes = defaultVal
@@ -33,55 +29,30 @@ function duration(minutes: number, defaultVal: number): number {
 	return minutes * 60
 }
 
+export type Payload = {
+	username: string
+}
+
 function newToken(username: string, secret: string, durationSecs: number): string {
-	const payload = {
+	const payload: Payload = {
 		username: username
 	}
 	return jwt.sign(payload, secret, { expiresIn: `${durationSecs}s` })
 }
 
-export function newAccessToken(username: string): string {
-	return newToken(username, config.accessSecret, duration(config.accessMinutes, 1))
+function sessionTokenDuration(): number {
+	const dfltMinutes = 60 * 4
+	return duration(config.accessMinutes, dfltMinutes)
 }
 
-export function newRefreshToken(username: string): string {
-	// Let refresh tokens live for a half-day shift.
-	const dfltMinutes = 60 * 4
-	return newToken(username, config.refreshSecret, duration(config.refreshMinutes, dfltMinutes))
-	// NB: The refreshToken needs to be stored in a transient "session" database.
-	// See user_db.ts
+export function newSessionToken(username: string): string {
+	return newToken(username, config.accessSecret, sessionTokenDuration())
 }
 
 function secureSetting(): string {
 	// Development vs. production.
 	// See https://kit.svelte.dev/docs/modules#$app-environment-dev
 	return config.isDevEnv ? '' : ' Secure;'
-}
-
-export function addAccessToken(headers: Headers, accessToken: string) {
-	headers.set('Authorization', 'Bearer ' + accessToken)
-}
-
-export function addRefreshToken(headers: Headers, refreshToken: string) {
-	const secure = secureSetting()
-	const maxSeconds = 30 * 24 * 60 * 60 // Cookie lifetime : days * hrs/day * minutes/hr * seconds/minute
-
-	// TODO Allow restricting the cookie's PATH to /api/v<whatever>.
-	const refreshCookie = `refresh_token=${refreshToken}; Max-Age=${maxSeconds}; Path=/; ${secure} HttpOnly`
-	// Set the cookie even when the refreshToken is blank/invalid, to help clear
-	// refresh tokens from well-behaved clients.
-	headers.set('set-cookie', refreshCookie)
-}
-
-export function extractedAccessToken(request: Request): string {
-	const fullAuthValue = request.headers.get('Authorization') || ''
-	return fullAuthValue.replace(/^Bearer /, '')
-}
-
-export function extractedRefreshToken(request: Request): string {
-	const rawCookies = request.headers.get('cookie') || ''
-	const cookies = cookie.parse(rawCookies)
-	return cookies['refresh_token'] || ''
 }
 
 function verifyToken(token: string, secret: string, title: string): any | null {
@@ -98,43 +69,40 @@ function verifyToken(token: string, secret: string, title: string): any | null {
 	return null
 }
 
-// This should not be exported -- but I need to be able to test it.
-export function verifyRefreshToken(token: string): any | null {
-	return verifyToken(token, config.refreshSecret, 'refresh')
+export const sessionCookieName = 'sess_tok'
+
+export function addSessionToken(headers: Headers, sessTok: string) {
+	const secure = secureSetting()
+	const maxAgeSeconds = sessionTokenDuration()
+	const cookie = `${sessionCookieName}=${sessTok}; Max-Age=${maxAgeSeconds}; Path=/; ${secure} HttpOnly`
+	headers.set('set-cookie', cookie)
 }
 
-// This should not be exported -- but I need to be able to test it.
-export function verifyAccessToken(token: string): any | null {
-	return verifyToken(token, config.accessSecret, 'access')
+export function clearSessionToken(headers: Headers) {
+	headers.set('set-cookie', `${sessionCookieName}=; Max-Age=0; Path=/; ${secureSetting()} HttpOnly`)
 }
 
-export function validAccessToken(request: Request): boolean {
-	return verifyAccessToken(extractedAccessToken(request)) != null
+export function verifySessionToken(token: string): any | null {
+	return verifyToken(token, config.accessSecret, 'session')
 }
 
-// Get a new access token, if a valid refresh token is supplied.
-export function renewedAccessToken(request: Request): string {
-	const currAccessToken = extractedAccessToken(request)
-	if (verifyAccessToken(currAccessToken)) {
-		return currAccessToken
-	}
-	const currRefreshToken = extractedRefreshToken(request)
-	try {
-		if (verifyRefreshToken(currRefreshToken)) {
-			const username = config.usernameForRefreshToken(currRefreshToken)
-			if (username) {
-				return newAccessToken(username)
-			}
+export function sessionUsernameFromToken(sessTok: string | undefined): string | null {
+	if (sessTok !== undefined) {
+		const payload = verifySessionToken(sessTok)
+		if (payload !== null) {
+			return payload.username
 		}
-	} catch (e) {
-		console.error('renewedAccessToken error: %o', e)
 	}
-	return ''
+	return null
+}
+
+export function addSessionTokenForUsername(headers: Headers, username: string) {
+	const token = newSessionToken(username)
+	addSessionToken(headers, token)
 }
 
 export function invalidTokenResponse() {
-	const headers = new Headers([
-		['set-cookie', `refresh_token=; Max-Age=0; Path=/; ${secureSetting()} HttpOnly`]
-	])
+	const headers = new Headers()
+	clearSessionToken(headers)
 	return new Response(null, { status: 401, headers: headers })
 }

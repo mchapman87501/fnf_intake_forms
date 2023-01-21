@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { jwtSession, session_token, session_username } from '$lib/auth'
+	import { session_username } from '$lib/auth'
 	import Dialog from '$lib/components/Dialog.svelte'
 	import LoginForm from '$lib/components/LoginForm.svelte'
 	import { onMount } from 'svelte'
@@ -44,15 +44,13 @@
 	}
 	async function signOut() {
 		await fetch('/api/v1/logout', {
-			method: 'POST',
-			headers: { ...jwtSession() }
+			method: 'POST'
 		})
 		session_username.update(() => '')
-		session_token.update(() => '')
 	}
 
 	let isSignedIn = false
-	$: isSignedIn = !($session_token === undefined || $session_token == '')
+	$: isSignedIn = !(($session_username || '') == '')
 
 	//initialize defaults
 	onMount(() => {
@@ -74,9 +72,9 @@
 	{/if}
 </div>
 
-{#if $session_token === undefined || $session_token == ''}
+{#if !isSignedIn}
 	<Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
-		<LoginForm loginReason="" close={closeLoginDialog} />
+		<LoginForm why="" close={closeLoginDialog} />
 	</Dialog>
 {:else}
 	<label class="right-margin"

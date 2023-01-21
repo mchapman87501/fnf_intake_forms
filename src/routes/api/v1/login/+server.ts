@@ -1,8 +1,7 @@
 import { json } from '@sveltejs/kit'
 import type { RequestEvent } from '@sveltejs/kit'
-import { addAccessToken, addRefreshToken, newAccessToken } from '$lib/server/auth/tokens'
 
-import { authenticate } from '$lib/server/auth/user_db'
+import { auth } from '$lib/server/auth/user_db'
 
 // To fix 405 error:
 // https://stackoverflow.com/a/73755196
@@ -15,22 +14,15 @@ export async function POST(event: RequestEvent): Promise<Response> {
 	const username = formParams.get('username')?.toString() || ''
 	const password = formParams.get('password')?.toString() || ''
 
-	let refreshToken: string = ''
 	try {
-		refreshToken = await authenticate(username, password)
-	} catch (e: any) {
-		console.error(`${e}`)
+		if (await auth(username, password)) {
+			// Record the authenticated user, so that hooks.server.ts\handle knows
+			// to add a session cookie to the response.
+			event.locals.username = username
+			return json('Successful login')
+		}
+	} catch (e) {
+		console.error(`Login error: ${e}`)
 	}
-	if (!refreshToken) {
-		let headers = new Headers()
-		headers.set('WWW-Authenticate', 'Bearer')
-		return new Response('Could not authenticate', { status: 401, headers: headers })
-	}
-
-	const accessToken = newAccessToken(username)
-	let headers = new Headers()
-	addAccessToken(headers, accessToken)
-	addRefreshToken(headers, refreshToken)
-
-	return json({ access_token: accessToken, token_type: 'bearer' }, { headers: headers })
+	return new Response('Could not authenticate', { status: 401 })
 }

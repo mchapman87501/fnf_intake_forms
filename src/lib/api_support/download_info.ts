@@ -1,5 +1,5 @@
 import * as path from 'path'
-import { jwtSession } from '$lib/auth'
+
 export type DownloadInfo = {
 	srcURL: string
 	filename: string
@@ -18,10 +18,7 @@ export function getDownloadInfo(pathname: string): DownloadInfo {
 export async function downloadCompletedForm(downloadInfo: DownloadInfo) {
 	// Automatically download the generated intake form.
 	// https://stackoverflow.com/a/42274086/2826337
-	const options = {
-		headers: { ...jwtSession() }
-	}
-	const downloadResp = await fetch(downloadInfo.srcURL, options)
+	const downloadResp = await fetch(downloadInfo.srcURL)
 	if (downloadResp.status == 200) {
 		// Need to do this in order to save to downloadInfo.filename, instead
 		// of saving to a randomly generated UUID.

@@ -1,3 +1,5 @@
+// TODO consider a real database: npm install --save better-sqlite3
+
 // This is a *really* basic user registration / authentication database.
 // It uses simple-json-db for its persistent, key-value store.
 // It probably isn't multi-thread safe.
@@ -21,20 +23,15 @@ import * as bcrypt from 'bcrypt'
 import path from 'path'
 import fsPromises from 'fs/promises'
 
-// Fragile: must invoke initUserDB before invoking any other exported functions.
-// let db: JSONDB
-
 class UserRecord {
 	username: string
 	password: string // Hashed!
 	roles: string[]
-	refreshToken: string
 
-	constructor(username: string, password: string, roles: string[] = [], refreshToken: string = '') {
+	constructor(username: string, password: string, roles: string[] = []) {
 		this.username = username
 		this.password = password
 		this.roles = roles
-		this.refreshToken = refreshToken
 	}
 
 	static fromDBObj(rec: any): UserRecord | null {
@@ -49,8 +46,7 @@ class UserRecord {
 				return null
 			}
 			const roles = rec.roles || []
-			const refreshToken = rec.refreshToken || ''
-			return new UserRecord(rec.username, rec.password, roles, refreshToken)
+			return new UserRecord(rec.username, rec.password, roles)
 		} catch {
 			return null
 		}
@@ -60,8 +56,7 @@ class UserRecord {
 		return {
 			username: this.username,
 			password: this.password,
-			roles: this.roles,
-			refreshToken: this.refreshToken
+			roles: this.roles
 		}
 	}
 }
@@ -71,12 +66,10 @@ export type Configuration = {
 	dbPath: string
 	adminUsername: string
 	adminPassword: string
-	createRefreshToken: CreateRefreshTokenFn
 }
 
 class UserDB {
 	db: JSONDB | null = null
-	createRefreshToken: CreateRefreshTokenFn | null = null
 
 	// Don't call this!  Use the 'create' factory method instead.
 	constructor() {}
@@ -86,7 +79,6 @@ class UserDB {
 		const dbDataDir = path.dirname(path.resolve(config.dbPath))
 		await fsPromises.mkdir(dbDataDir, { recursive: true })
 		result.db = new JSONDB(config.dbPath)
-		result.createRefreshToken = config.createRefreshToken
 
 		const success = await result.#addDefaultAdminUser(config.adminUsername, config.adminPassword)
 		if (success) {
@@ -97,17 +89,12 @@ class UserDB {
 
 	// Persistent store initialization:
 	async #addDefaultAdminUser(username: string, password: string): Promise<boolean> {
-		const existing = this.db?.get(username)
+		const existing = this.db?.get(this.#userKey(username))
 		if (existing) {
 			return true
 		}
-		const hashedPass = await this.#hash(password)
-		if (hashedPass) {
-			const record = new UserRecord(username, hashedPass, ['admin'])
-			this.#insertOrUpdateUser(record)
-			return true
-		}
-		return false
+
+		return this.addUser(username, password, ['admin'])
 	}
 
 	async #hash(plaintext: string): Promise<string> {
@@ -118,40 +105,19 @@ class UserDB {
 		return `Username: ${username}`
 	}
 
-	#refreshTokenKey(token: string): string {
-		return `Refresh token: ${token}`
-	}
-
 	getByUsername(username: string): UserRecord | null {
 		return UserRecord.fromDBObj(this.db?.get(this.#userKey(username)))
 	}
 
-	getByRefreshToken(token: string): UserRecord | null {
-		return UserRecord.fromDBObj(this.db?.get(this.#refreshTokenKey(token)))
-	}
-
 	async #insertOrUpdateUser(record: UserRecord) {
-		const currRec = this.getByUsername(record.username)
-		const currRefresh = currRec?.refreshToken || ''
-
 		// Save the user record, keyed on username.
 		this.db?.set(this.#userKey(record.username), record)
-
-		// Save the user record, keyed on refresh token.
-		// OR, if the refresh token is empty, clear any stored refresh token.
-		if (record.refreshToken) {
-			this.db?.set(this.#refreshTokenKey(record.refreshToken), record)
-		} else if (currRefresh) {
-			this.db?.delete(this.#refreshTokenKey(currRefresh))
-		}
-		// Supposedly not necessary:
-		this.db?.sync()
 	}
 
 	// Add a new user account.
 	// Fail if an account with the given name already exists.
 	// Return whether or not the account was added.
-	async addUser(username: string, password: string): Promise<boolean> {
+	async addUser(username: string, password: string, roles: string[] = []): Promise<boolean> {
 		if (!username || !password) {
 			return Promise.reject('Neither username nor password may be empty.')
 		}
@@ -166,26 +132,26 @@ class UserDB {
 			if (!hashedPass) {
 				return Promise.reject('Could not hash password')
 			}
-			const record = new UserRecord(username, password)
-			this.#insertOrUpdateUser(record)
+			const record = new UserRecord(username, hashedPass, roles)
+			await this.#insertOrUpdateUser(record)
 			return true
 		} catch (e) {
 			return Promise.reject(e)
 		}
 	}
 
-	// Remove a user account.
-	async removeUser(username: string): Promise<boolean> {
-		const existing = UserRecord.fromDBObj(this.db?.get(this.#userKey(username)))
-		if (!existing) {
-			return Promise.reject('Record not found')
-		}
-		if (!this.db?.delete(username)) {
-			return Promise.reject('Failed to delete record')
-		}
-		this.db?.sync()
-		return true
-	}
+	// // Remove a user account.
+	// async removeUser(username: string): Promise<boolean> {
+	// 	const existing = UserRecord.fromDBObj(this.db?.get(this.#userKey(username)))
+	// 	if (!existing) {
+	// 		return Promise.reject('Record not found')
+	// 	}
+	// 	if (!this.db?.delete(username)) {
+	// 		return Promise.reject('Failed to delete record')
+	// 	}
+	// 	this.db?.sync()
+	// 	return true
+	// }
 
 	async #compare(password: string, recordedPassword: string): Promise<boolean> {
 		return new Promise((resolve, _) => {
@@ -195,42 +161,24 @@ class UserDB {
 		})
 	}
 
-	// XXX FIX THIS uncouple from tokens.
-	// Authenticate a user.
-	// If successful, update and return the user's refresh token.
-	async authenticate(username: string, password: string): Promise<string> {
-		const json = this.db?.get(this.#userKey(username))
-		const record = UserRecord.fromDBObj(json)
+	/**
+	 * Authenticate a username/password.
+	 * @param username username to authenticate
+	 * @param password password to authenticate
+	 * @returns whether or not the password is correct for the given username
+	 */
+	async auth(username: string, password: string): Promise<boolean> {
+		const recObj = this.db?.get(this.#userKey(username))
+		const record = UserRecord.fromDBObj(recObj)
 		if (record) {
-			const passwordIsCorrect = await this.#compare(password, record.password)
-			if (passwordIsCorrect) {
-				let result: string = record.refreshToken
-				if (!result) {
-					if (this.createRefreshToken) {
-						result = this.createRefreshToken(username)
-					}
-					record.refreshToken = result
-					this.#insertOrUpdateUser(record)
-				}
-				return result
-			}
+			return await this.#compare(password, record.password)
 		}
-		return Promise.reject('User authentication failed')
+		return false
 	}
 
-	// Get the user associated with a refresh token, if any.
-	usernameForRefreshTokenSync(token: string): string {
-		const record = UserRecord.fromDBObj(this.getByRefreshToken(token))
-		return record?.username || ''
-	}
-
-	// Remove a user's current refresh token, if any.
-	async removeRefreshToken(username: string) {
-		const record = UserRecord.fromDBObj(this.db?.get(this.#userKey(username)))
-		if (record) {
-			record.refreshToken = ''
-			this.#insertOrUpdateUser(record)
-		}
+	isKnownUser(username: string): boolean {
+		const record = UserRecord.fromDBObj(this.getByUsername(username))
+		return record !== null
 	}
 }
 
@@ -245,16 +193,24 @@ export async function resetForTesting() {
 	db = null
 }
 
-export function usernameForRefreshTokenSync(token: string): string {
-	if (db == null) {
-		console.error("Can't get username for refresh token: User DB has not been configured.")
-	}
-	return db?.usernameForRefreshTokenSync(token) || ''
+/**
+ * Find out whether a given username is in the user database.
+ * @param username Username to test
+ * @returns whether or not the given username is in the database
+ */
+export function isKnownUser(username: string): boolean {
+	return db?.isKnownUser(username) || false
 }
 
-export async function authenticate(username: string, password: string): Promise<string> {
-	if (db === null) {
-		return Promise.reject('User DB has not been configured.')
+/**
+ * Authenticate a username and password.
+ * @param username Username to authenticate
+ * @param password Password to authenticate
+ * @returns Whether the given username:password matches any database entry
+ */
+export async function auth(username: string, password: string): Promise<boolean> {
+	if (db == null) {
+		return Promise.reject("Can't authenticate: UserDB has not been configured")
 	}
-	return db.authenticate(username, password)
+	return db?.auth(username, password) || false
 }

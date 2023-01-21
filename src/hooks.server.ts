@@ -1,6 +1,6 @@
 // Hooks to run at app startup.
 
-import type { Handle } from '@sveltejs/kit'
+import type { Handle, RequestEvent } from '@sveltejs/kit'
 import { dev } from '$app/environment'
 
 // See https://kit.svelte.dev/docs/modules#$env-static-private
@@ -10,8 +10,6 @@ import {
 	USER_DB_PATH,
 	JWT_ACCESS_SECRET,
 	JWT_ACCESS_DURATION,
-	JWT_REFRESH_SECRET,
-	JWT_REFRESH_DURATION,
 	SMTP_SERVER,
 	SMTP_PORT,
 	EMAIL_USERNAME,
@@ -30,8 +28,6 @@ if (
 		ADMIN_PASSWORD &&
 		JWT_ACCESS_SECRET &&
 		JWT_ACCESS_DURATION &&
-		JWT_REFRESH_SECRET &&
-		JWT_REFRESH_DURATION &&
 		USER_DB_PATH &&
 		SMTP_SERVER &&
 		EMAIL_USERNAME &&
@@ -54,17 +50,13 @@ defined in, e.g., your .env file.
 tokens.configure({
 	isDevEnv: dev,
 	accessSecret: JWT_ACCESS_SECRET,
-	accessMinutes: parseFloat(JWT_ACCESS_DURATION),
-	refreshSecret: JWT_REFRESH_SECRET,
-	refreshMinutes: parseFloat(JWT_REFRESH_DURATION),
-	usernameForRefreshToken: userDB.usernameForRefreshTokenSync
+	accessMinutes: parseFloat(JWT_ACCESS_DURATION)
 })
 
 await userDB.configure({
 	dbPath: USER_DB_PATH,
 	adminUsername: ADMIN_USERNAME,
-	adminPassword: ADMIN_PASSWORD,
-	createRefreshToken: tokens.newRefreshToken
+	adminPassword: ADMIN_PASSWORD
 })
 
 await emailer.configure({
@@ -95,23 +87,33 @@ function needsAuthentication(request: Request): boolean {
 	return false
 }
 
+function extractSessionInfo(event: RequestEvent) {
+	// How should this stuff be done?
+	// See https://github.com/sveltejs/realworld, src/hooks.server.js, and be more confused.
+
+	// Get user from session token.
+	const username = tokens.sessionUsernameFromToken(event.cookies.get('sess_tok'))
+	if (username != null && userDB.isKnownUser(username)) {
+		event.locals.username = username
+	}
+}
+
 export const handle: Handle = async function ({ event, resolve }) {
+	extractSessionInfo(event)
+
 	let accessToken: string = ''
 	const needsAuth = needsAuthentication(event.request)
 	if (needsAuth) {
-		accessToken = tokens.renewedAccessToken(event.request)
-		if (!accessToken) {
-			console.debug('hooks.server.ts\\handle: Could not renew the access token.')
+		if (event.locals.username === undefined) {
 			return tokens.invalidTokenResponse()
 		}
 	}
 
 	const response = await resolve(event)
 
-	if (needsAuth) {
-		const refreshToken = tokens.extractedRefreshToken(event.request)
-		tokens.addAccessToken(response.headers, accessToken)
-		tokens.addRefreshToken(response.headers, refreshToken)
+	// If we still have a username for the session, add a session cookie.
+	if (event.locals.username !== undefined) {
+		tokens.addSessionTokenForUsername(response.headers, event.locals.username)
 	}
 
 	return response

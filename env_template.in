@@ -2,14 +2,11 @@
 
 # For creating/signing JWT access tokens:
 JWT_ACCESS_SECRET='SEKRIT'
-# and refresh tokens:
-JWT_REFRESH_SECRET='a different SEKRIT'
 
 # Token durations, in minutes:
 # These are optional.  If they aren't defined, the server
 # will use hardcoded default values.
 JWT_ACCESS_DURATION=1
-JWT_REFRESH_DURATION=240
 
 # Administrative account's unencrypted credentials:
 ADMIN_USERNAME='admin'
