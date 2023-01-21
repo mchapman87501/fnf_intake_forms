@@ -5,7 +5,7 @@
 	import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info.js'
 	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
-	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores.js'
+	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores'
 
 	import ReceivedFromDriversLic from '$lib/components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '$lib/components/ReceivedFromName.svelte'

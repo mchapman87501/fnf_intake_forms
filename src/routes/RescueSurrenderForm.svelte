@@ -21,7 +21,7 @@
 	import ShowNotWebOnly from '$lib/components/ShowNotWebOnly.svelte'
 	import { onMount } from 'svelte'
 	import { surrenderChoiceRescue } from '$lib/infrastructure/Definitions.svelte'
-	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores.js'
+	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores'
 
 	async function handleSubmit() {
 		const bearerToken = $session_token

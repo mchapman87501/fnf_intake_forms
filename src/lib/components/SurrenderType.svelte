@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { recvdFromPkg } from '$lib/infrastructure/stores.js'
+	import { recvdFromPkg } from '$lib/infrastructure/stores'
 	import Dropdown from '$lib/infrastructure/Dropdown.svelte'
 	import { surrenderChoices } from '$lib/infrastructure/Definitions.svelte'
 </script>

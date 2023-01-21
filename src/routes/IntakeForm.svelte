@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores.js'
+	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores'
 	import { getInfoAsCSV } from '$lib/infrastructure/UtilFns.svelte'
 
 	import OkWith from '$lib/components/OkWith.svelte'

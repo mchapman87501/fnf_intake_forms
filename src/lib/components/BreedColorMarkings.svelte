@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { catPkg } from '$lib/infrastructure/stores.js'
+	import { catPkg } from '$lib/infrastructure/stores'
 </script>
 
 <input type="text" placeholder="Breed" bind:value={$catPkg.breed} />
