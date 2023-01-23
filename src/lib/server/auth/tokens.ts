@@ -12,7 +12,7 @@ let config: TokensServerConfig = {
 	accessMinutes: NaN
 }
 
-export function configure(newValue: TokensServerConfig) {
+export async function configure(newValue: TokensServerConfig) {
 	config = newValue
 }
 

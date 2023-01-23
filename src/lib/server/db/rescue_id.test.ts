@@ -36,7 +36,7 @@ describe('Test rescue ID generation', async () => {
 		expect(actual.startsWith(expected)).toBe(true)
 	})
 
-	test('Day unique ID ascends, resets on new day.', async () => {
+	test('Day unique ID ascends, resets on new day', async () => {
 		const pkg = surrenderPkg(false)
 		const date = new Date()
 
@@ -54,5 +54,22 @@ describe('Test rescue ID generation', async () => {
 				expect(actual.endsWith(expected), `${actual} ends with ${expected}`).toBe(true)
 			}
 		}
+	})
+
+	test('Does not reset on server restart', async () => {
+		const date = new Date()
+		date.setFullYear(2023, 0, 17)
+		// TODO use an actual filesystem path...
+		const dbDocument = await newDB(':memory:')
+		const idSrc = new RescueID(dbDocument)
+
+		const iRestart = 3
+		for (let i = 1; i <= iRestart; i++) {
+			idSrc.getID(surrenderPkg(false), date)
+		}
+
+		const newSrc = new RescueID(dbDocument)
+		const nextID = newSrc.getID(surrenderPkg(false), date)
+		expect(nextID.endsWith('04'), nextID).toBe(true)
 	})
 })

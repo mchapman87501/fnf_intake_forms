@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit'
 import type { RequestEvent } from '@sveltejs/kit'
 
-import { auth } from '$lib/server/auth/user_db'
+import * as AppDB from '$lib/server/db/app_db'
 
 // To fix 405 error:
 // https://stackoverflow.com/a/73755196
@@ -15,7 +15,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
 	const password = formParams.get('password')?.toString() || ''
 
 	try {
-		if (await auth(username, password)) {
+		if (AppDB.shared && (await AppDB.shared?.user.auth(username, password))) {
 			// Record the authenticated user, so that hooks.server.ts\handle knows
 			// to add a session cookie to the response.
 			event.locals.username = username

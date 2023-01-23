@@ -27,7 +27,7 @@ export class RescueID {
 		return result
 	}
 
-	getID(info: SurrenderPkg, date: Date) {
+	getID(info: SurrenderPkg, date: Date): string {
 		const medPrefix = info.catInfo.treatableMedical ? 'TM' : 'H'
 		const dateComp = this.#mmddyy(date)
 		const shelterID = info.receivedFrom.shelterNum || 'P'

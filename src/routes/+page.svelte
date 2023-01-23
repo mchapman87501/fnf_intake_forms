@@ -74,7 +74,7 @@
 
 {#if !isSignedIn}
 	<Dialog bind:dialog={loginDialog} on:close={closeLoginDialog}>
-		<LoginForm why="" close={closeLoginDialog} />
+		<LoginForm close={closeLoginDialog} />
 	</Dialog>
 {:else}
 	<label class="right-margin"

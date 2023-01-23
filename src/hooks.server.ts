@@ -17,9 +17,9 @@ import {
 	SURRENDER_EMAIL_RECIPIENTS
 } from '$env/static/private'
 
-import * as tokens from '$lib/server/auth/tokens'
-import * as userDB from '$lib/server/auth/user_db'
-import * as emailer from '$lib/server/intake_emails/emailer'
+import * as Tokens from '$lib/server/auth/tokens'
+import * as Emailer from '$lib/server/intake_emails/emailer'
+import * as AppDB from '$lib/server/db/app_db'
 
 // Verify that all required envs are defined
 if (
@@ -47,19 +47,19 @@ defined in, e.g., your .env file.
 	throw new Error(msg)
 }
 
-tokens.configure({
+await Tokens.configure({
 	isDevEnv: dev,
 	accessSecret: JWT_ACCESS_SECRET,
 	accessMinutes: parseFloat(JWT_ACCESS_DURATION)
 })
 
-await userDB.configure({
+await AppDB.configure({
 	dbPath: USER_DB_PATH,
 	adminUsername: ADMIN_USERNAME,
 	adminPassword: ADMIN_PASSWORD
 })
 
-await emailer.configure({
+await Emailer.configure({
 	smtpServer: SMTP_SERVER,
 	smtpPort: parseInt(SMTP_PORT),
 	username: EMAIL_USERNAME,
@@ -92,8 +92,8 @@ function extractSessionInfo(event: RequestEvent) {
 	// See https://github.com/sveltejs/realworld, src/hooks.server.js, and be more confused.
 
 	// Get user from session token.
-	const username = tokens.sessionUsernameFromToken(event.cookies.get('sess_tok'))
-	if (username != null && userDB.isKnownUser(username)) {
+	const username = Tokens.sessionUsernameFromToken(event.cookies.get('sess_tok'))
+	if (username != null && AppDB.shared?.user.isKnownUser(username)) {
 		event.locals.username = username
 	}
 }
@@ -101,11 +101,10 @@ function extractSessionInfo(event: RequestEvent) {
 export const handle: Handle = async function ({ event, resolve }) {
 	extractSessionInfo(event)
 
-	let accessToken: string = ''
 	const needsAuth = needsAuthentication(event.request)
 	if (needsAuth) {
 		if (event.locals.username === undefined) {
-			return tokens.invalidTokenResponse()
+			return Tokens.invalidTokenResponse()
 		}
 	}
 
@@ -113,7 +112,7 @@ export const handle: Handle = async function ({ event, resolve }) {
 
 	// If we still have a username for the session, add a session cookie.
 	if (event.locals.username !== undefined) {
-		tokens.addSessionTokenForUsername(response.headers, event.locals.username)
+		Tokens.addSessionTokenForUsername(response.headers, event.locals.username)
 	}
 
 	return response

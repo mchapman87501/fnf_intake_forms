@@ -5,7 +5,10 @@ import * as path from 'path'
 
 import { temporaryDirectory } from 'tempy'
 
+import * as AppDB from '$lib/server/db/app_db'
+
 import { FormFileNamer } from './form_file_namer'
+
 import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from '$lib/infrastructure/info_packages'
 import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info'
 import {
@@ -17,6 +20,7 @@ import {
 describe('Surrender Processing tests', async () => {
 	beforeEach(async () => {
 		FormFileNamer.dataDir = temporaryDirectory()
+		await AppDB.configure({ dbPath: ':memory:' })
 	})
 
 	afterEach(async () => {
@@ -65,15 +69,15 @@ describe('Surrender Processing tests', async () => {
 		expect(resultFilesExist(result)).toBe(true)
 	}
 
-	test('Can process an owner surrender form.', async () => {
+	test('Can process an owner surrender form', async () => {
 		await testProcessMethod(processOwnerSurrender, '-surrender')
 	})
 
-	test('Can process a stray surrender form.', async () => {
+	test('Can process a stray surrender form', async () => {
 		await testProcessMethod(processStraySurrender, '-stray')
 	})
 
-	test('Can process a rescue surrender form.', async () => {
+	test('Can process a rescue surrender form', async () => {
 		await testProcessMethod(processRescueSurrender, '-rescue')
 	})
 })

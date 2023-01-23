@@ -28,3 +28,18 @@ export class AppDB {
 		this.user = new User(db)
 	}
 }
+
+export let shared: AppDB | null = null
+
+export type Configuration = {
+	dbPath: string
+	adminUsername?: string
+	adminPassword?: string
+}
+
+export async function configure(config: Configuration) {
+	shared = new AppDB(await newDB(config.dbPath))
+	if (config.adminUsername && config.adminPassword) {
+		await shared.user.addOrUpdateUser(config.adminUsername, config.adminPassword)
+	}
+}
