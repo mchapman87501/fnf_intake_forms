@@ -114,9 +114,6 @@ class UserDB {
 		this.db?.set(this.#userKey(record.username), record)
 	}
 
-	// Add a new user account.
-	// Fail if an account with the given name already exists.
-	// Return whether or not the account was added.
 	async addUser(username: string, password: string, roles: string[] = []): Promise<boolean> {
 		if (!username || !password) {
 			return Promise.reject('Neither username nor password may be empty.')

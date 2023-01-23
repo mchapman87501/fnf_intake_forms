@@ -1,3 +1,5 @@
+import type Database from 'better-sqlite3'
+import { DayUniqueID } from './day_unique_id'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 
 function pad(s: string, len: number): string {
@@ -6,27 +8,12 @@ function pad(s: string, len: number): string {
 	return overPadded.substring(overPadded.length - len)
 }
 
-class DayUniqueID {
-	// XXX FIX THIS Assumes atomic updates
-	// XXX FIX THIS Use persistent storage - survive server restart.
-	#currDate: string | undefined = undefined
-	#dayUniqueID: number | undefined = undefined
-
-	nextID(date: Date): string {
-		// Don't worry about padding for human-readability.
-		const todayStr = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-		if (this.#currDate != todayStr) {
-			this.#currDate = todayStr
-			this.#dayUniqueID = 1
-		} else {
-			this.#dayUniqueID = (this.#dayUniqueID || 1) + 1
-		}
-		return pad(`${this.#dayUniqueID}`, 2)
-	}
-}
-
 export class RescueID {
-	#dud: DayUniqueID = new DayUniqueID()
+	#dud: DayUniqueID
+
+	constructor(db: Database.Database) {
+		this.#dud = new DayUniqueID(db)
+	}
 
 	#mmddyy(date: Date): string {
 		const year = date.getFullYear()
@@ -44,7 +31,7 @@ export class RescueID {
 		const medPrefix = info.catInfo.treatableMedical ? 'TM' : 'H'
 		const dateComp = this.#mmddyy(date)
 		const shelterID = info.receivedFrom.shelterNum || 'P'
-		const dayUniqueID = this.#dud.nextID(date)
+		const dayUniqueID = pad(`${this.#dud.consumeDayUniqueID(date)}`, 2)
 		return `${medPrefix}-${dateComp}-${shelterID}${dayUniqueID}`
 	}
 }
