@@ -2,6 +2,7 @@
 
 import type { Handle, RequestEvent } from '@sveltejs/kit'
 import { dev } from '$app/environment'
+import { env } from '$env/dynamic/public'
 
 // See https://kit.svelte.dev/docs/modules#$env-static-private
 import {
@@ -47,8 +48,11 @@ defined in, e.g., your .env file.
 	throw new Error(msg)
 }
 
+// WORKAROUND to enable testing with Safari, and with app running inside Docker
+// from http://localhost/.
+// Safari will not send Secure cookies to an http: endpoint -- not even http://localhost/.
 await Tokens.configure({
-	isDevEnv: dev,
+	isDevEnv: dev || env.PUBLIC_SET_INSECURE_SESSION_COOKIE == 'true',
 	accessSecret: JWT_ACCESS_SECRET,
 	accessMinutes: parseFloat(JWT_ACCESS_DURATION)
 })

@@ -30,3 +30,14 @@ EMAIL_PASSWORD='I have a secret'
 # Addresses to which to send all new intake records --
 # format as a comma-separated string
 SURRENDER_EMAIL_RECIPIENTS='recipient1@fnf.org,recipient2@fnf.org'
+
+
+#-----------------------------------------------------------------------
+# Optional:  Serve insecure cookies even when running a production build.
+#
+# Browsers will send 'Secure' cookies only to a secure (https:) endpoint.
+# Many browsers will also send 'Secure' cookies to insecure localhost
+# (http://localhost/), but some will not.  This impedes testing when
+# running the app inside a local docker container.
+# To work around this, define PUBLIC_SET_INSECURE_SESSION_COOKIE with a value of 'true'.
+PUBLIC_SET_INSECURE_SESSION_COOKIE='true'

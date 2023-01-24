@@ -1,4 +1,7 @@
-FROM node:slim
+# I don't know where buster, slim, et al are documented.
+# Here is some unofficial documentation:
+# https://medium.com/swlh/alpine-slim-stretch-buster-jessie-bullseye-bookworm-what-are-the-differences-in-docker-62171ed4531d
+FROM node:lts
 
 #=======================================================================
 # Why the 'PROTOCOL_HEADER' AND 'HOST_HEADER' settings?
