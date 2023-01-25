@@ -78,26 +78,24 @@ A: Single login is fine. Let people just write their names in.
 Q: Should all of the downloads be combined into a single zip download?
 A: Separate files are better.
 
-# Next Steps
+## Next Steps
 
-Make web form layouts identical, to the extent possible.
+### Web UI
 
-Let users specify "unknown" for all dates except cat DOB. In emailed documents, leave any "unknown" dates blank.
+- Make web form layouts identical, to the extent possible.
+- Ensure checkboxes are formatted with the label following the checkbox, in reading order.
+- Let users specify "unknown" for all dates except cat DOB.
+- Present the rabies vaccination date as an expiration date.
+- Get cat photo upload working.
+- Ensure the UI is usable on tablet and phone form factors.
 
-Present the rabies vaccination date as an expiration date.
+### Emailed Documents
 
-In emailed documents, leave the spay/neuter date blank when the spay/neuter status is "unknown".
-
-Append a column to the single-row CSV (the "Google sheet" document), for the name of the receiving F & F Representative.
-
-Generate the 3-column forms as Excel documents, to make it easier to print them with cell borders.
-
-Explore the feasibility of creating/emailing PDF versions of the current paper forms, with fields filled in.
-
-Ensure that the subject for automatic emails includes both the rescue ID and the cat's name.
-
-Get cat photo upload working.
-
-Add cat photo (if any) to generated emails.
-
-Ensure the UI is usable on tablet and phone form factors.
+- Ensure that the subject for automatic emails includes both the rescue ID and the cat's name.
+- Leave any "unknown" dates blank.
+- Leave the spay/neuter date blank when the spay/neuter status is "unknown".
+- Append a column to the single-row CSV (the "Google sheet" document), for the name of the receiving F & F Representative.
+- Generate the 3-column documents as Excel documents.
+  - This should make it easier to print them with cell borders.
+- Explore the feasibility of creating/emailing PDF versions of the current paper forms, with fields filled in.
+- Add cat photo (if any) to generated emails.
