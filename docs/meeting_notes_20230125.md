@@ -83,17 +83,31 @@ A: Separate files are better.
 ### Web UI
 
 - Make web form layouts identical, to the extent possible.
+  - Fields unique to a form should, if possible, appear toward the end, just above the payment/signature/submit section.
+- Hide the intake form for now.
+- Display "bite history" input on all forms.
+- Display "Treatable Medical" just above "Current diet / medications".
 - Ensure checkboxes are formatted with the label following the checkbox, in reading order.
 - Let users specify "unknown" for all dates except cat DOB.
-- Present the rabies vaccination date as an expiration date.
+- Display Rabies, FVRCP and FEL/FIV Test inputs on all forms. (See suggested layout from Lisa, below.)
 - Get cat photo upload working.
 - Ensure the UI is usable on tablet and phone form factors.
+
+#### Vaccines and Tests
+
+From Lisa:
+
+```text
+[ ] Received Rabies Vax? Expiration date (if known): ________
+[ ] Received FVRCP Vax? Expiration date (if known): ________
+[ ] FELV/FIV Tested? Test date and result (if known): ________
+```
 
 ### Emailed Documents
 
 - Ensure that the subject for automatic emails includes both the rescue ID and the cat's name.
 - Leave any "unknown" dates blank.
-- Leave the spay/neuter date blank when the spay/neuter status is "unknown".
+- Leave the spay/neuter date blank when the spay/neuter status is either "unknown" or "no".
 - Append a column to the single-row CSV (the "Google sheet" document), for the name of the receiving F & F Representative.
 - Generate the 3-column documents as Excel documents.
   - This should make it easier to print them with cell borders.
