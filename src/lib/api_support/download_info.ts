@@ -25,7 +25,16 @@ export async function downloadCompletedForm(downloadInfo: DownloadInfo) {
 		const anchor = document.createElement('a')
 		anchor.href = window.URL.createObjectURL(await downloadResp.blob())
 		anchor.download = downloadInfo.filename
+
+		// Kludge: Safari on macOS doesn't always complete all downloads.
+		// Add a delay to allow time for anchor.click() to complete.
+		const timeoutPromise = new Promise((resolve, reject) => {
+			window.setTimeout(() => {
+				resolve('timeout completed')
+			}, 100)
+		})
 		anchor.click()
+		await timeoutPromise
 	} else {
 		console.error('Failed to download %o: %o', downloadInfo.srcURL, downloadResp.statusText)
 	}
