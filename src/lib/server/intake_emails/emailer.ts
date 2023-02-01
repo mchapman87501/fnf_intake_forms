@@ -88,8 +88,8 @@ Felines & Friends Intake Service
 			filename: path.basename(info.surrenderFormPath)
 		},
 		{
-			path: info.intakeFormExcelPath,
-			filename: path.basename(info.intakeFormExcelPath)
+			path: info.intakeFormPath,
+			filename: path.basename(info.intakeFormPath)
 		},
 		{
 			path: info.intakeSingleRowFormPath,

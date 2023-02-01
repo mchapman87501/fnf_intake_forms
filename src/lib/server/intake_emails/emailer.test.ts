@@ -63,7 +63,7 @@ describe('Test emailer basics', async () => {
 				catName: 'Cat Hear Me Roar',
 				surrenderType: 'Stray',
 				surrenderFormPath: 'noSuchSurrender.csv',
-				intakeFormExcelPath: 'noSuchIntake.xlsx',
+				intakeFormPath: 'noSuchIntake.xlsx',
 				intakeSingleRowFormPath: 'noSuchWideIntake.csv',
 				photoPath: 'noSuchPhoto.jpg'
 			})
@@ -106,7 +106,7 @@ describe('Test emailer basics', async () => {
 			catName: 'Attachment Issues',
 			surrenderType: 'Owner',
 			surrenderFormPath: 'noSuchSurrender.csv',
-			intakeFormExcelPath: 'noSuchIntake.xlsx',
+			intakeFormPath: 'noSuchIntake.xlsx',
 			intakeSingleRowFormPath: 'noSuchWideIntake.csv',
 			photoPath: null
 		})
@@ -134,7 +134,7 @@ describe('Test emailer basics', async () => {
 				catName: 'Fido',
 				surrenderType: 'Stray',
 				surrenderFormPath: await createTmpF('surrender.csv'),
-				intakeFormExcelPath: await createTmpF('intake.xlsx'),
+				intakeFormPath: await createTmpF('intake.xlsx'),
 				intakeSingleRowFormPath: await createTmpF('intake-single-row.csv'),
 				photoPath: null
 			})
@@ -155,7 +155,7 @@ describe('Test emailer basics', async () => {
 			catName: 'Unnamed Stray',
 			surrenderType: 'Stray',
 			surrenderFormPath: 'noSuchSurrender.csv',
-			intakeFormExcelPath: 'noSuchIntake.xlsx',
+			intakeFormPath: 'noSuchIntake.xlsx',
 			intakeSingleRowFormPath: 'noSuchWideIntake.csv',
 			photoPath: 'noSuchPhoto.jpg'
 		})

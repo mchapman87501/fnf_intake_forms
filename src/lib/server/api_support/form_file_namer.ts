@@ -29,20 +29,14 @@ export class FormFileNamer {
 		FormFileNamer.#dataDir = ensureDir(newValue)
 	}
 
-	#csvFilename(docSpecifier: string): string {
-		return this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + '.csv'
-	}
-
-	#excelFilename(docSpecifier: string): string {
-		return this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + '.xlsx'
-	}
-
 	#csvPathname(docSpecifier: string): string {
-		return path.join(FormFileNamer.dataDir, this.#csvFilename(docSpecifier))
+		const pathname = this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + '.csv'
+		return path.join(FormFileNamer.dataDir, pathname)
 	}
 
 	#excelPathname(docSpecifier: string): string {
-		return path.join(FormFileNamer.dataDir, this.#excelFilename(docSpecifier))
+		const pathname = this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + '.xlsx'
+		return path.join(FormFileNamer.dataDir, pathname)
 	}
 
 	// Create a sanitized filename from an unclean filename.
@@ -61,22 +55,22 @@ export class FormFileNamer {
 	}
 
 	get #surrenderPathname(): string {
-		return this.#csvPathname('surrender')
+		return this.#excelPathname('surrender')
 	}
 
 	get #strayPathname(): string {
-		return this.#csvPathname('stray')
+		return this.#excelPathname('stray')
 	}
 
 	get #rescuePathname(): string {
-		return this.#csvPathname('rescue')
+		return this.#excelPathname('rescue')
 	}
 
 	// get #pregnantNursingPathname(): string {
 	// 	return this.#csvPathname('preg-nursing')
 	// }
 
-	get #intakeExcelPathname(): string {
+	get #intakePathname(): string {
 		return this.#excelPathname('intake')
 	}
 
@@ -103,7 +97,7 @@ export class FormFileNamer {
 			catName: this.#catName,
 			surrenderType: 'Owner',
 			surrenderFormPath: this.#surrenderPathname,
-			intakeFormExcelPath: this.#intakeExcelPathname,
+			intakeFormPath: this.#intakePathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
 		}
@@ -115,7 +109,7 @@ export class FormFileNamer {
 			catName: this.#catName,
 			surrenderType: 'Stray',
 			surrenderFormPath: this.#strayPathname,
-			intakeFormExcelPath: this.#intakeExcelPathname,
+			intakeFormPath: this.#intakePathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
 		}
@@ -127,7 +121,7 @@ export class FormFileNamer {
 			catName: this.#catName,
 			surrenderType: 'Rescue',
 			surrenderFormPath: this.#rescuePathname,
-			intakeFormExcelPath: this.#intakeExcelPathname,
+			intakeFormPath: this.#intakePathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
 		}

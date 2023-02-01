@@ -1,16 +1,21 @@
-import { writeTallCSV, row, type CSVRow } from './tall_csv_writer'
+import { row, writeFile, type Row } from './tall_excel_writer'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
-import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
+import type { DownloadInfo } from '$lib/api_support/download_info'
 
-function getStrayFormRows(info: SurrenderPkg): CSVRow[] {
+function getStrayFormRows(info: SurrenderPkg): Row[] {
 	return [row('TBD', '')]
 }
 
+/**
+ * Save a stray surrender document.
+ * @param info Description of the surrender
+ * @param pathname Where to write the surrender document
+ * @returns a promise of the Download info for the surrender document
+ */
 export async function saveStraySurrenderForm(
 	info: SurrenderPkg,
-	csvPathname: string
+	pathname: string
 ): Promise<DownloadInfo> {
 	const records = getStrayFormRows(info)
-	await writeTallCSV(csvPathname, records)
-	return getDownloadInfo(csvPathname)
+	return writeFile(pathname, 'Stray Surrender Form', records)
 }

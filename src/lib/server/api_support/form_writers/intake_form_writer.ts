@@ -1,10 +1,9 @@
-import * as exceljs from 'exceljs'
-import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
-import { type CSVRow, writeTallCSV, row } from './tall_csv_writer'
+import { row, writeFile, type Row } from './tall_excel_writer'
+import type { DownloadInfo } from '$lib/api_support/download_info'
 import { boolStr, dateStr, posNegStr } from './value_converters'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 
-function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): CSVRow[] {
+function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): Row[] {
 	const catInfo = surrenderInfo.catInfo
 	const recvdFrom = surrenderInfo.receivedFrom
 	// This is derived from IntakeForm.svelte.
@@ -57,38 +56,17 @@ function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): CSVRo
 	]
 }
 
-// Save a new intake form, and return its download link.
+/**
+ * Save an intake form.
+ * @param rescueID Identifies the rescue described by the for
+ * @param surrenderInfo Information about the rescue
+ * @param pathname Where to save the intake form
+ * @returns A promise of DownloadInfo for the saved form
+ */
 export async function saveIntakeForm(
-	rescueID: string,
-	surrenderInfo: SurrenderPkg,
-	csvPathname: string
-): Promise<DownloadInfo> {
-	try {
-		await writeTallCSV(csvPathname, getIntakeFormRows(rescueID, surrenderInfo))
-		return getDownloadInfo(csvPathname)
-	} catch (e: any) {
-		return Promise.reject(e.message)
-	}
-}
-
-export async function saveIntakeFormExcel(
 	rescueID: string,
 	surrenderInfo: SurrenderPkg,
 	pathname: string
 ): Promise<DownloadInfo> {
-	const wb = new exceljs.Workbook()
-	const sheet = wb.addWorksheet('Intake Form')
-	sheet.properties.defaultColWidth = 32
-	sheet.columns = [
-		{ header: '', key: 'name' },
-		{ header: 'INFO', key: 'info' },
-		{ header: 'COMMENTS', key: 'comments' }
-	]
-	const rows = getIntakeFormRows(rescueID, surrenderInfo)
-	rows.forEach((row) => {
-		sheet.addRow({ name: row.name, info: row.value, comments: row.comments })
-	})
-
-	await wb.xlsx.writeFile(pathname)
-	return getDownloadInfo(pathname)
+	return writeFile(pathname, 'Intake Form', getIntakeFormRows(rescueID, surrenderInfo))
 }

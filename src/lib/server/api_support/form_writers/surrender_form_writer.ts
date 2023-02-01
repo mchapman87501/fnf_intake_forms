@@ -1,9 +1,9 @@
-import { writeTallCSV, row, type CSVRow } from './tall_csv_writer'
+import { row, writeFile, type Row } from './tall_excel_writer'
 import { boolStr, dateStr } from './value_converters'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
-import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
+import type { DownloadInfo } from '$lib/api_support/download_info'
 
-function getOwnerSurrenderFormRows(info: SurrenderPkg): CSVRow[] {
+function getOwnerSurrenderFormRows(info: SurrenderPkg): Row[] {
 	const catInfo = info.catInfo
 	const recvdFrom = info.receivedFrom
 	return [
@@ -54,11 +54,16 @@ function getOwnerSurrenderFormRows(info: SurrenderPkg): CSVRow[] {
 	]
 }
 
+/**
+ * Save an owner surrender document.
+ * @param info Description of the surrender
+ * @param pathname Where to write the surrender document
+ * @returns a promise of the Download info for the surrender document
+ */
 export async function saveOwnerSurrenderForm(
 	info: SurrenderPkg,
-	csvPathname: string
+	pathname: string
 ): Promise<DownloadInfo> {
 	const records = getOwnerSurrenderFormRows(info)
-	await writeTallCSV(csvPathname, records)
-	return getDownloadInfo(csvPathname)
+	return writeFile(pathname, 'Owner Surrender Form', records)
 }

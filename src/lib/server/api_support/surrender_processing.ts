@@ -1,4 +1,4 @@
-import { saveIntakeFormExcel } from '$lib/server/api_support/form_writers/intake_form_writer'
+import { saveIntakeForm } from '$lib/server/api_support/form_writers/intake_form_writer'
 import { FormFileNamer } from './form_file_namer'
 
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
@@ -26,11 +26,7 @@ async function processSurrenderPkg(
 		// Create the surrender and intake forms.
 		const result: SurrenderDownloads = {
 			surrender: await saveSurrenderForm(pkg, processingInfo.surrenderFormPath),
-			intake: await saveIntakeFormExcel(
-				processingInfo.rescueID,
-				pkg,
-				processingInfo.intakeFormExcelPath
-			),
+			intake: await saveIntakeForm(processingInfo.rescueID, pkg, processingInfo.intakeFormPath),
 			intakeSingleRow: await saveWideIntakeForm(
 				processingInfo.rescueID,
 				pkg,

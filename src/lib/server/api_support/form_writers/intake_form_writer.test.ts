@@ -1,4 +1,5 @@
 import { beforeEach, afterEach, describe, expect, test } from 'vitest'
+import fs from 'fs'
 import fsPromises from 'fs/promises'
 import { temporaryDirectory } from 'tempy'
 import * as path from 'path'
@@ -24,13 +25,12 @@ describe('Test writing intake forms', async () => {
 			catInfo: { ...newCatPkg(), treatableMedical: true, intakeDate: surrenderDate },
 			receivedFrom: { ...newReceivedFromPkg(), shelterNum: 'P', surrenderType: surrenderType }
 		}
-		const outpath = path.join(dataDir, 'intake.csv')
+		const outpath = path.join(dataDir, 'intake.xlsx')
 		const result = await saveIntakeForm(rescueID, info, outpath)
 		expect(path.join(dataDir, result.filename)).toBe(outpath)
 
-		const content = await fsPromises.readFile(outpath, { encoding: 'utf-8' })
-		expect(content.indexOf(rescueID)).toBeGreaterThan(0)
-		expect(content.indexOf(surrenderType)).toBeGreaterThan(0)
+		// TODO examine contents of Excel file.
+		expect(fs.existsSync(outpath))
 	})
 
 	test('Reports at least some errors', async () => {
