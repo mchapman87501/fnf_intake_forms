@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { session_username } from '$lib/auth'
-	import { downloadCompletedForm } from '$lib/api_support/download_info.js'
-	import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info.js'
+	import { downloadCompletedForm } from '$lib/api_support/download_info'
+	import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info'
 	import LoginDialog, { showLogin } from '$lib/components/LoginDialog.svelte'
 
 	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores'

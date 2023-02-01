@@ -28,7 +28,7 @@ export async function downloadCompletedForm(downloadInfo: DownloadInfo) {
 
 		// Kludge: Safari on macOS doesn't always complete all downloads.
 		// Add a delay to allow time for anchor.click() to complete.
-		const timeoutPromise = new Promise((resolve, reject) => {
+		const timeoutPromise = new Promise((resolve, _) => {
 			window.setTimeout(() => {
 				resolve('timeout completed')
 			}, 100)

@@ -1,3 +1,4 @@
+import * as exceljs from 'exceljs'
 import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
 import { type CSVRow, writeTallCSV, row } from './tall_csv_writer'
 import { boolStr, dateStr, posNegStr } from './value_converters'
@@ -68,4 +69,26 @@ export async function saveIntakeForm(
 	} catch (e: any) {
 		return Promise.reject(e.message)
 	}
+}
+
+export async function saveIntakeFormExcel(
+	rescueID: string,
+	surrenderInfo: SurrenderPkg,
+	pathname: string
+): Promise<DownloadInfo> {
+	const wb = new exceljs.Workbook()
+	const sheet = wb.addWorksheet('Intake Form')
+	sheet.properties.defaultColWidth = 32
+	sheet.columns = [
+		{ header: '', key: 'name' },
+		{ header: 'INFO', key: 'info' },
+		{ header: 'COMMENTS', key: 'comments' }
+	]
+	const rows = getIntakeFormRows(rescueID, surrenderInfo)
+	rows.forEach((row) => {
+		sheet.addRow({ name: row.name, info: row.value, comments: row.comments })
+	})
+
+	await wb.xlsx.writeFile(pathname)
+	return getDownloadInfo(pathname)
 }

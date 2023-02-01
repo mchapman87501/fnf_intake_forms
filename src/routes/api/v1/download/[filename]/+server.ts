@@ -8,13 +8,13 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	const filename = event.params.filename
 
 	if (filename !== undefined) {
-		const csvPathname = path.join(FormFileNamer.dataDir, filename)
+		const pathname = path.join(FormFileNamer.dataDir, filename)
 		try {
-			const content = await fsPromises.readFile(csvPathname, { encoding: 'utf-8' })
-			const headers = { status: 200, 'Content-Type': 'text/csv' }
+			const content = await fsPromises.readFile(pathname)
+			const headers = { status: 200, 'Content-Type': 'application/octet-stream' }
 			return new Response(content, headers)
 		} catch (e) {
-			console.error('Could not return contents of %o: %o', csvPathname, e)
+			console.error('Could not return contents of %o: %o', pathname, e)
 		}
 	}
 

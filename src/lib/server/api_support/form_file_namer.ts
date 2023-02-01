@@ -33,8 +33,16 @@ export class FormFileNamer {
 		return this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + '.csv'
 	}
 
+	#excelFilename(docSpecifier: string): string {
+		return this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + '.xlsx'
+	}
+
 	#csvPathname(docSpecifier: string): string {
 		return path.join(FormFileNamer.dataDir, this.#csvFilename(docSpecifier))
+	}
+
+	#excelPathname(docSpecifier: string): string {
+		return path.join(FormFileNamer.dataDir, this.#excelFilename(docSpecifier))
 	}
 
 	// Create a sanitized filename from an unclean filename.
@@ -72,6 +80,10 @@ export class FormFileNamer {
 		return this.#csvPathname('intake')
 	}
 
+	get #intakeExcelPathname(): string {
+		return this.#excelPathname('intake')
+	}
+
 	get #intakeWidePathname(): string {
 		return this.#csvPathname('intake-single-row')
 	}
@@ -96,6 +108,7 @@ export class FormFileNamer {
 			surrenderType: 'Owner',
 			surrenderFormPath: this.#surrenderPathname,
 			intakeFormPath: this.#intakePathname,
+			intakeFormExcelPath: this.#intakeExcelPathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
 		}
@@ -108,6 +121,7 @@ export class FormFileNamer {
 			surrenderType: 'Stray',
 			surrenderFormPath: this.#strayPathname,
 			intakeFormPath: this.#intakePathname,
+			intakeFormExcelPath: this.#intakeExcelPathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
 		}
@@ -120,6 +134,7 @@ export class FormFileNamer {
 			surrenderType: 'Rescue',
 			surrenderFormPath: this.#rescuePathname,
 			intakeFormPath: this.#intakePathname,
+			intakeFormExcelPath: this.#intakeExcelPathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
 		}

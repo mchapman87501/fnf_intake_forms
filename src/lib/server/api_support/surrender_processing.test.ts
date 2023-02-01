@@ -52,7 +52,7 @@ describe('Surrender Processing tests', async () => {
 		const result = await method(pkg)
 
 		expect(result.intake.filename.startsWith('TM-')).toBe(true)
-		expect(result.intake.filename.endsWith('-intake.csv'), result.intake.filename).toBe(true)
+		expect(result.intake.filename.endsWith('-intake.xlsx'), result.intake.filename).toBe(true)
 
 		expect(result.intakeSingleRow.filename.startsWith('TM-')).toBe(true)
 		expect(
@@ -60,11 +60,12 @@ describe('Surrender Processing tests', async () => {
 			result.intakeSingleRow.filename
 		).toBe(true)
 
+		const intakeCoreName = result.intake.filename.replace(/.[^.]+$/, '')
 		expect(result.surrender.filename, result.surrender.filename).toMatch(
-			result.intake.filename.replace('-intake', formTypeName)
+			intakeCoreName.replace('-intake', formTypeName)
 		)
 		expect(result.intakeSingleRow.filename, result.intakeSingleRow.filename).toMatch(
-			result.intake.filename.replace('-intake', '-intake-single-row')
+			intakeCoreName.replace('-intake', '-intake-single-row')
 		)
 		expect(resultFilesExist(result)).toBe(true)
 	}

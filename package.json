@@ -51,7 +51,8 @@
 		"simple-json-db": "^2.0.0",
 		"better-sqlite3": "8.0.1",
 		"@types/better-sqlite3": "7.6.3",
-		"tempy": "^3.0.0"
+		"tempy": "^3.0.0",
+		"exceljs": "4.3.0"
 	},
 	"type": "module"
 }
