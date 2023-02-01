@@ -51,6 +51,7 @@ describe('Test emailer basics', async () => {
 		const sendMsg = () => {
 			return emailer.emailSurrenderInfo({
 				rescueID: '<surrender ID>',
+				catName: 'Cat Hear Me Roar',
 				surrenderType: 'Stray',
 				surrenderFormPath: 'noSuchSurrender.csv',
 				intakeFormPath: 'noSuchIntake.csv',
@@ -93,6 +94,7 @@ describe('Test emailer basics', async () => {
 
 		const didSend = emailer.emailSurrenderInfo({
 			rescueID: '<rescueID>',
+			catName: 'Attachment Issues',
 			surrenderType: 'Owner',
 			surrenderFormPath: 'noSuchSurrender.csv',
 			intakeFormPath: 'noSuchIntake.csv',
@@ -125,6 +127,7 @@ describe('Test emailer basics', async () => {
 
 			const didSend = await emailer.emailSurrenderInfo({
 				rescueID: 'fake_surrender_id',
+				catName: 'Fido',
 				surrenderType: 'Stray',
 				surrenderFormPath: surrPath,
 				intakeFormPath: intakePath,
@@ -145,6 +148,7 @@ describe('Test emailer basics', async () => {
 		expect(emailer.canSend()).toBe(false)
 		emailer.emailSurrenderInfoLater({
 			rescueID: '<surrender ID>',
+			catName: 'Unnamed Stray',
 			surrenderType: 'Stray',
 			surrenderFormPath: 'noSuchSurrender.csv',
 			intakeFormPath: 'noSuchIntake.csv',
@@ -177,6 +181,7 @@ describe('Test emailer basics', async () => {
 
 		const surrenderInfo = {
 			rescueID: '<rescueID>',
+			catName: '<catName>',
 			surrenderType: 'Owner',
 			surrenderFormPath: 'noSuchSurrender.csv',
 			intakeFormPath: 'noSuchIntake.csv',
@@ -186,5 +191,47 @@ describe('Test emailer basics', async () => {
 
 		emailer.emailSurrenderInfoLater(surrenderInfo)
 		await delay()
+	})
+
+	test('Email subject has both rescueID and cat name', async () => {
+		const config: emailer.Configuration = {
+			smtpServer: 'localhost',
+			smtpPort: mockSMTP.getPort(),
+			username: 'bob@host.org',
+			passwd: 'Bobs password',
+			formRecipients: 'bob@other_host.org,cat_person@spca.org',
+			verbose: true
+		}
+		const configured = await emailer.configure(config)
+		expect(configured).toBe(true)
+		expect(emailer.canSend()).toBe(true)
+
+		await temporaryDirectoryTask(async (tempdir) => {
+			const createTmpF = async (filename: string) => {
+				const result = path.join(tempdir, filename)
+				await fsPromises.writeFile(result, '')
+				return result
+			}
+
+			const rescueID = '<rescue_id>'
+			const catName = '<cat_name>'
+			const surrenderInfo = {
+				rescueID: rescueID,
+				catName: catName,
+				surrenderType: 'Owner',
+				surrenderFormPath: await createTmpF('surrender.csv'),
+				intakeFormPath: await createTmpF('intake.csv'),
+				intakeSingleRowFormPath: await createTmpF('intake-single-row.csv'),
+				photoPath: null
+			}
+
+			await emailer.emailSurrenderInfo(surrenderInfo)
+			const emails = mockSMTP.getEmails()
+			expect(emails.length).toBe(1)
+			const parsed = await emails[0].getParsed()
+			const subjectHasRescueID = (parsed.subject || '').indexOf(rescueID) >= 0
+			const subjectHasCatName = (parsed.subject || '').indexOf(catName) >= 0
+			expect(subjectHasRescueID && subjectHasCatName).toBe(true)
+		})
 	})
 })

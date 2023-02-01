@@ -12,9 +12,11 @@ function ensureDir(dirname: string): string {
 
 export class FormFileNamer {
 	#rescueID: string
+	#catName: string
 
 	constructor(info: SurrenderPkg) {
 		this.#rescueID = AppDB.shared?.rescueID.getID(info, new Date()) || ''
+		this.#catName = info.catInfo.catName || '(no name given)'
 	}
 
 	static #dataDir: string = ensureDir(path.join(process.cwd(), 'data', 'out'))
@@ -90,6 +92,7 @@ export class FormFileNamer {
 		// TODO Support optional photo.
 		return {
 			rescueID: this.#rescueID,
+			catName: this.#catName,
 			surrenderType: 'Owner',
 			surrenderFormPath: this.#surrenderPathname,
 			intakeFormPath: this.#intakePathname,
@@ -101,6 +104,7 @@ export class FormFileNamer {
 	straySurrenderInfo(): ProcessedSurrenderInfo {
 		return {
 			rescueID: this.#rescueID,
+			catName: this.#catName,
 			surrenderType: 'Stray',
 			surrenderFormPath: this.#strayPathname,
 			intakeFormPath: this.#intakePathname,
@@ -112,6 +116,7 @@ export class FormFileNamer {
 	rescueSurrenderInfo(): ProcessedSurrenderInfo {
 		return {
 			rescueID: this.#rescueID,
+			catName: this.#catName,
 			surrenderType: 'Rescue',
 			surrenderFormPath: this.#rescuePathname,
 			intakeFormPath: this.#intakePathname,

@@ -72,7 +72,11 @@ export async function configure(newConfig: Configuration): Promise<Boolean> {
 function newMessage(info: ProcessedSurrenderInfo): nodemailer.SendMailOptions {
 	const body = `Greetings!
 
-A cat has been surrendered.  Here is info about the ${info.surrenderType} surrender.
+A cat has been surrendered.  
+Rescue ID: ${info.rescueID}
+Cat's Name: ${info.catName}
+
+Here is more info about the ${info.surrenderType} surrender.
 
 --
 Felines & Friends Intake Service
@@ -102,7 +106,7 @@ Felines & Friends Intake Service
 	const result = {
 		from: 'noreply@fnf_intake_service.org',
 		to: config.formRecipients,
-		subject: `${info.surrenderType} Surrender ${info.rescueID}`,
+		subject: `${info.surrenderType} Surrender ${info.rescueID} - ${info.catName}`,
 		text: body,
 		attachments: attachments
 	}
