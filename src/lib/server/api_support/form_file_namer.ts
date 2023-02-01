@@ -76,10 +76,6 @@ export class FormFileNamer {
 	// 	return this.#csvPathname('preg-nursing')
 	// }
 
-	get #intakePathname(): string {
-		return this.#csvPathname('intake')
-	}
-
 	get #intakeExcelPathname(): string {
 		return this.#excelPathname('intake')
 	}
@@ -107,7 +103,6 @@ export class FormFileNamer {
 			catName: this.#catName,
 			surrenderType: 'Owner',
 			surrenderFormPath: this.#surrenderPathname,
-			intakeFormPath: this.#intakePathname,
 			intakeFormExcelPath: this.#intakeExcelPathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
@@ -120,7 +115,6 @@ export class FormFileNamer {
 			catName: this.#catName,
 			surrenderType: 'Stray',
 			surrenderFormPath: this.#strayPathname,
-			intakeFormPath: this.#intakePathname,
 			intakeFormExcelPath: this.#intakeExcelPathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
@@ -133,7 +127,6 @@ export class FormFileNamer {
 			catName: this.#catName,
 			surrenderType: 'Rescue',
 			surrenderFormPath: this.#rescuePathname,
-			intakeFormPath: this.#intakePathname,
 			intakeFormExcelPath: this.#intakeExcelPathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
 			photoPath: null
