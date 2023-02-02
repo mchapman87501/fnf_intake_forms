@@ -13,7 +13,10 @@ export function posNegStr(value: boolean | null): string {
 
 // Convert from the standard 'yyyy-mm-dd' of an input[type="date"] to
 // F&F's preferred 'mm-dd-yy'.
-export function dateStr(value: string): string {
+export function dateStr(value: string | null | undefined): string {
+	if (value === undefined || value === null) {
+		return ''
+	}
 	const m = value.match(/^(\d{4})-(\d{2})-(\d{2})$/)
 	if (m) {
 		const y4str = m.at(1) || '0000'

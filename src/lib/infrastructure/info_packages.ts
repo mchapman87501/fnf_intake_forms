@@ -23,10 +23,12 @@ export type CatPkg = {
 	intakeDate: string
 	catName: string
 	treatableMedical: boolean
+	// Issue #19: All dates are optional except DOB.  This type declaration
+	// allows all kinds of invalid values, but at least it prohibits undefined.
 	DOB: string
 	gender: string
 	altered: string
-	alteredDate: string
+	alteredDate: string | undefined
 	alteredFacility: string
 	breed: string
 	color: string
@@ -35,7 +37,7 @@ export type CatPkg = {
 	microchipNum: string
 	FELVFIVTested: boolean
 	FELVFIVPositive: boolean
-	FELVFIVTestedDate: string
+	FELVFIVTestedDate: string | undefined
 	currentShots: boolean
 	namePrevVet: string
 	phonePrevVet: string
@@ -54,10 +56,10 @@ export type CatPkg = {
 	intakeReason: string
 	oKToShow: boolean
 	intakeFnFRepr: string
-	FVRCP1: string
-	FVRCP2: string
-	FVRCP3: string
-	rabiesExpirationDate: string
+	FVRCP1: string | undefined
+	FVRCP2: string | undefined
+	FVRCP3: string | undefined
+	rabiesExpirationDate: string | undefined
 	hairLength: string
 	currentWeight: string
 	estMatureSize: string

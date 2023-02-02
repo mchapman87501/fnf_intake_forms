@@ -61,10 +61,10 @@
 
 		temp.catName = ''
 		temp.treatableMedical = false
-		temp.DOB = `2000-01-01`
+		temp.DOB = ''
 		temp.gender = genderChoices[0]
 		temp.altered = uynChoices[0]
-		temp.alteredDate = `2000-01-01`
+		temp.alteredDate = undefined
 		temp.alteredFacility = ''
 		temp.breed = ''
 		temp.color = ''
@@ -74,7 +74,7 @@
 
 		temp.FELVFIVPositive = false
 		temp.FELVFIVTested = false
-		temp.FELVFIVTestedDate = `2000-01-01`
+		temp.FELVFIVTestedDate = undefined
 		temp.currentShots = false
 		temp.namePrevVet = ''
 		temp.phonePrevVet = ''
@@ -94,10 +94,11 @@
 
 		temp.intakeReason = ''
 		temp.oKToShow = true
-		;(temp.intakeFnFRepr = ''), (temp.FVRCP1 = `2000-01-01`)
-		temp.FVRCP2 = `2000-01-01`
-		temp.FVRCP3 = `2000-01-01`
-		temp.rabiesExpirationDate = `2000-01-01`
+		temp.intakeFnFRepr = ''
+		temp.FVRCP1 = undefined
+		temp.FVRCP2 = undefined
+		temp.FVRCP3 = undefined
+		temp.rabiesExpirationDate = ''
 		temp.hairLength = ''
 		temp.currentWeight = ''
 		temp.estMatureSize = ''
