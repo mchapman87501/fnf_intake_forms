@@ -33,7 +33,8 @@ function getIntakeFormRow(rescueID: string, surrenderInfo: SurrenderPkg): WideCS
 		col('S/N date', dateStr(catInfo.alteredDate)),
 		col('Check this box when added to Portal', ''),
 		col('Check this box when added to Pawlytics', ''),
-		col('Notes', '')
+		col('Notes', ''),
+		col('F & F Representative', catInfo.intakeFnFRepr)
 	]
 }
 
