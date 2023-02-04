@@ -7,6 +7,12 @@ function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): Row[]
 	const catInfo = surrenderInfo.catInfo
 	const recvdFrom = surrenderInfo.receivedFrom
 	// This is derived from IntakeForm.svelte.
+
+	// Issue #23: if spay/neuter status is either "Unknown" or "No",
+	// leave spay/neuter date blank.
+	const altered = catInfo.altered.toLowerCase() == 'yes'
+	const spayNeuterDate = altered ? dateStr(catInfo.alteredDate) : ''
+
 	return [
 		row('Intake Date', dateStr(catInfo.intakeDate)),
 		row('Intake By', catInfo.intakeFnFRepr),
@@ -31,7 +37,7 @@ function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): Row[]
 		row('Current Weight', catInfo.currentWeight),
 		row('Estimated Size at Maturity', catInfo.estMatureSize),
 		row('Distinctive Features', catInfo.distinctiveFeatures),
-		row('Spay/Neuter Date', dateStr(catInfo.alteredDate)),
+		row('Spay/Neuter Date', spayNeuterDate),
 		row('Where Done', catInfo.alteredFacility),
 		row('FVRCP #1', dateStr(catInfo.FVRCP1)),
 		row('FVRCP #2', dateStr(catInfo.FVRCP2)),
