@@ -3,8 +3,8 @@
 </script>
 
 <label>
-	Bite history
 	<input type="checkbox" bind:checked={$catPkg.biteHistory} />
+	Bite history
 </label>
 
 <style>

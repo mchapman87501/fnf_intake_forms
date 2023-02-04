@@ -3,8 +3,8 @@
 </script>
 
 <label>
-	Courtesy Listing (No Relinquishment)
 	<input type="checkbox" bind:checked={$recvdFromPkg.courtesyListingNoRelinquishment} />
+	Courtesy Listing (No Relinquishment)
 </label>
 
 <style>

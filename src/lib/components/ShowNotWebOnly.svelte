@@ -3,8 +3,8 @@
 </script>
 
 <label>
-	OK to show (Not Web only)
 	<input type="checkbox" bind:checked={$catPkg.oKToShow} />
+	OK to show (Not Web only)
 </label>
 
 <style>

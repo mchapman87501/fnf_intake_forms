@@ -6,3 +6,7 @@ textarea {
     border-color: #bbbbbb;
     border-radius: 2pt;
 }
+
+label {
+    margin: 0 0.25em;
+}

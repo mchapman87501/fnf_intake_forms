@@ -5,19 +5,19 @@
 
 <div class="shots_and_tests">
 	<label>
-		Current on Shots
 		<input type="checkbox" bind:checked={$catPkg.currentShots} />
+		Current on Shots
 	</label>
 	<br />
 	<label>
-		FELV/FIV Tested
 		<input type="checkbox" bind:checked={$catPkg.FELVFIVTested} />
+		FELV/FIV Tested
 	</label>
 
 	{#if $catPkg.FELVFIVTested}
-		<label
-			>Positive
+		<label>
 			<input type="checkbox" bind:checked={$catPkg.FELVFIVPositive} />
+			Positive
 		</label>
 		<label>
 			Date tested

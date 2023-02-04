@@ -3,8 +3,8 @@
 </script>
 
 <label>
-	Treatable Medical
 	<input type="checkbox" bind:checked={$catPkg.treatableMedical} />
+	Treatable Medical
 </label>
 
 <style>
