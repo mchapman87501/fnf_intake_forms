@@ -16,8 +16,7 @@
 		Surrender = 'Surrender',
 		Stray = 'Stray',
 		Rescue = 'Rescue',
-		PregnantNursing = 'Pregnant/Nursing',
-		Intake = 'Intake'
+		PregnantNursing = 'Pregnant/Nursing'
 	}
 
 	let forms = [
@@ -25,8 +24,7 @@
 		FormType.Surrender,
 		FormType.Stray,
 		FormType.Rescue,
-		FormType.PregnantNursing,
-		FormType.Intake
+		FormType.PregnantNursing
 	]
 
 	let pkg = {
@@ -97,8 +95,6 @@
 	<div class="fnf_form">
 		{#if pkg.selected_form == FormType.Surrender}
 			<OwnerSurrenderForm />
-		{:else if pkg.selected_form == FormType.Intake}
-			<IntakeForm />
 		{:else if pkg.selected_form == FormType.Stray}
 			<StraySurrenderForm />
 		{:else if pkg.selected_form == FormType.Rescue}
