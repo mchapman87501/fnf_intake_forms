@@ -94,9 +94,14 @@ Felines & Friends Intake Service
 		{
 			path: info.intakeSingleRowFormPath,
 			filename: path.basename(info.intakeSingleRowFormPath)
+		},
+		// Should PDFs be optional?
+		{
+			path: info.surrenderPDFPath,
+			filename: path.basename(info.surrenderPDFPath)
 		}
 	]
-	if (info.photoPath != null) {
+	if (info.photoPath !== undefined) {
 		attachments.push({
 			path: info.photoPath,
 			filename: path.basename(info.photoPath)

@@ -7,6 +7,7 @@ import { temporaryDirectoryTask } from 'tempy'
 import { testSmtpServer } from 'test-smtp-server'
 
 import * as emailer from './emailer'
+import type { ProcessedSurrenderInfo } from '../api_support/processed_surrender_info'
 
 let mockSMTP = new testSmtpServer({ smtpPort: 5025 })
 
@@ -62,7 +63,8 @@ describe('Test emailer basics', async () => {
 				rescueID: '<surrender ID>',
 				catName: 'Cat Hear Me Roar',
 				surrenderType: 'Stray',
-				surrenderFormPath: 'noSuchSurrender.csv',
+				surrenderFormPath: 'noSuchSurrender.xlsx',
+				surrenderPDFPath: 'noSuchSurrender.pdf',
 				intakeFormPath: 'noSuchIntake.xlsx',
 				intakeSingleRowFormPath: 'noSuchWideIntake.csv',
 				photoPath: 'noSuchPhoto.jpg'
@@ -105,10 +107,10 @@ describe('Test emailer basics', async () => {
 			rescueID: '<rescueID>',
 			catName: 'Attachment Issues',
 			surrenderType: 'Owner',
-			surrenderFormPath: 'noSuchSurrender.csv',
+			surrenderFormPath: 'noSuchSurrender.xlsx',
+			surrenderPDFPath: 'noSuch.pdf',
 			intakeFormPath: 'noSuchIntake.xlsx',
-			intakeSingleRowFormPath: 'noSuchWideIntake.csv',
-			photoPath: null
+			intakeSingleRowFormPath: 'noSuchWideIntake.csv'
 		})
 
 		await expect(didSend).rejects.toThrow(/no such file/)
@@ -134,9 +136,9 @@ describe('Test emailer basics', async () => {
 				catName: 'Fido',
 				surrenderType: 'Stray',
 				surrenderFormPath: await createTmpF('surrender.csv'),
+				surrenderPDFPath: await createTmpF('surrender.pdf'),
 				intakeFormPath: await createTmpF('intake.xlsx'),
-				intakeSingleRowFormPath: await createTmpF('intake-single-row.csv'),
-				photoPath: null
+				intakeSingleRowFormPath: await createTmpF('intake-single-row.csv')
 			})
 			expect(didSend).toBe(true)
 			const emails = mockSMTP.getEmails()
@@ -154,7 +156,8 @@ describe('Test emailer basics', async () => {
 			rescueID: '<surrender ID>',
 			catName: 'Unnamed Stray',
 			surrenderType: 'Stray',
-			surrenderFormPath: 'noSuchSurrender.csv',
+			surrenderFormPath: 'noSuchSurrender.xlsx',
+			surrenderPDFPath: 'noSuch.pdf',
 			intakeFormPath: 'noSuchIntake.xlsx',
 			intakeSingleRowFormPath: 'noSuchWideIntake.csv',
 			photoPath: 'noSuchPhoto.jpg'
@@ -183,15 +186,14 @@ describe('Test emailer basics', async () => {
 		expect(configured).toBe(true)
 		expect(emailer.canSend()).toBe(true)
 
-		const surrenderInfo = {
+		const surrenderInfo: ProcessedSurrenderInfo = {
 			rescueID: '<rescueID>',
 			catName: '<catName>',
 			surrenderType: 'Owner',
-			surrenderFormPath: 'noSuchSurrender.csv',
+			surrenderFormPath: 'noSuchSurrender.xlsx',
+			surrenderPDFPath: 'noSuch.pdf',
 			intakeFormPath: 'noSuchIntake.csv',
-			intakeFormExcelPath: 'noSuchIntake.xlsx',
-			intakeSingleRowFormPath: 'noSuchWideIntake.csv',
-			photoPath: null
+			intakeSingleRowFormPath: 'noSuchWideIntake.csv'
 		}
 
 		emailer.emailSurrenderInfoLater(surrenderInfo)
@@ -215,15 +217,14 @@ describe('Test emailer basics', async () => {
 			const createTmpF = getTmpfCreator(tempdir)
 			const rescueID = '<rescue_id>'
 			const catName = '<cat_name>'
-			const surrenderInfo = {
+			const surrenderInfo: ProcessedSurrenderInfo = {
 				rescueID: rescueID,
 				catName: catName,
 				surrenderType: 'Owner',
-				surrenderFormPath: await createTmpF('surrender.csv'),
-				intakeFormPath: await createTmpF('intake.csv'),
-				intakeFormExcelPath: await createTmpF('intake.xlsx'),
-				intakeSingleRowFormPath: await createTmpF('intake-single-row.csv'),
-				photoPath: null
+				surrenderFormPath: await createTmpF('surrender.xlsx'),
+				surrenderPDFPath: await createTmpF('surrender.pdf'),
+				intakeFormPath: await createTmpF('intake.xlsx'),
+				intakeSingleRowFormPath: await createTmpF('intake-single-row.csv')
 			}
 
 			await emailer.emailSurrenderInfo(surrenderInfo)

@@ -5,7 +5,6 @@
 	import { onMount } from 'svelte'
 	import { initForms, cloneForm, initSession } from '$lib/infrastructure/StoreFns.svelte'
 
-	import IntakeForm from './IntakeForm.svelte'
 	import OwnerSurrenderForm from './OwnerSurrenderForm.svelte'
 	import WantsMomBack from '$lib/components/WantsMomBack.svelte'
 	import RescueSurrenderForm from './RescueSurrenderForm.svelte'

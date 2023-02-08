@@ -29,14 +29,21 @@ export class FormFileNamer {
 		FormFileNamer.#dataDir = ensureDir(newValue)
 	}
 
-	#csvPathname(docSpecifier: string): string {
-		const pathname = this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + '.csv'
+	#path(docSpecifier: string, suffix: string): string {
+		const pathname = this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + suffix
 		return path.join(FormFileNamer.dataDir, pathname)
 	}
 
+	#csvPathname(docSpecifier: string): string {
+		return this.#path(docSpecifier, '.csv')
+	}
+
 	#excelPathname(docSpecifier: string): string {
-		const pathname = this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + '.xlsx'
-		return path.join(FormFileNamer.dataDir, pathname)
+		return this.#path(docSpecifier, '.xlsx')
+	}
+
+	#pdfPathname(docSpecifier: string): string {
+		return this.#path(docSpecifier, '.pdf')
 	}
 
 	// Create a sanitized filename from an unclean filename.
@@ -58,12 +65,24 @@ export class FormFileNamer {
 		return this.#excelPathname('surrender')
 	}
 
+	get #surrenderPDFPathname(): string {
+		return this.#pdfPathname('surrender')
+	}
+
 	get #strayPathname(): string {
 		return this.#excelPathname('stray')
 	}
 
+	get #strayPDFPathname(): string {
+		return this.#pdfPathname('stray')
+	}
+
 	get #rescuePathname(): string {
 		return this.#excelPathname('rescue')
+	}
+
+	get #rescuePDFPathname(): string {
+		return this.#pdfPathname('rescue')
 	}
 
 	// get #pregnantNursingPathname(): string {
@@ -97,9 +116,10 @@ export class FormFileNamer {
 			catName: this.#catName,
 			surrenderType: 'Owner',
 			surrenderFormPath: this.#surrenderPathname,
+			surrenderPDFPath: this.#surrenderPDFPathname,
 			intakeFormPath: this.#intakePathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
-			photoPath: null
+			photoPath: undefined
 		}
 	}
 
@@ -109,9 +129,10 @@ export class FormFileNamer {
 			catName: this.#catName,
 			surrenderType: 'Stray',
 			surrenderFormPath: this.#strayPathname,
+			surrenderPDFPath: this.#strayPDFPathname,
 			intakeFormPath: this.#intakePathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
-			photoPath: null
+			photoPath: undefined
 		}
 	}
 
@@ -121,9 +142,10 @@ export class FormFileNamer {
 			catName: this.#catName,
 			surrenderType: 'Rescue',
 			surrenderFormPath: this.#rescuePathname,
+			surrenderPDFPath: this.#rescuePDFPathname,
 			intakeFormPath: this.#intakePathname,
 			intakeSingleRowFormPath: this.#intakeWidePathname,
-			photoPath: null
+			photoPath: undefined
 		}
 	}
 }

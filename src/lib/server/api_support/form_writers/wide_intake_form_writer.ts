@@ -5,7 +5,6 @@ import { writeWideCSV, type WideCSVColumn, col } from './wide_csv_writer'
 
 function getIntakeFormRow(rescueID: string, surrenderInfo: SurrenderPkg): WideCSVColumn[] {
 	const catInfo = surrenderInfo.catInfo
-	const recvdFrom = surrenderInfo.receivedFrom
 	// See Github Issue #9
 	return [
 		col('Location', ''),
