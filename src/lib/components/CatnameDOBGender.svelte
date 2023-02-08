@@ -12,7 +12,7 @@
 	bind:value={$catPkg.catName}
 />
 <label>
-	DOB <input type="date" name="cat_age" bind:value={$catPkg.DOB} />
+	DOB <input type="date" name="cat_age" bind:value={$catPkg.DOB} required />
 </label>
 
 <Dropdown choiceList={genderChoices} name="cat_gender" bind:value={$catPkg.gender} />
