@@ -1,7 +1,7 @@
 import * as path from 'path'
 
 export class PDFTemplatePaths {
-	static #dataDir: string = path.join(process.cwd(), 'data', 'internal', 'pdf_templates')
+	static #dataDir: string = path.join(process.cwd(), 'pdf_templates')
 
 	static get dataDir(): string {
 		return PDFTemplatePaths.#dataDir
