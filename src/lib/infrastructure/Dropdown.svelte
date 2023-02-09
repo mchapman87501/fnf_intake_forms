@@ -15,9 +15,3 @@
 		{/each}
 	</select>
 </label>
-
-<style>
-	label {
-		font-size: 75%;
-	}
-</style>

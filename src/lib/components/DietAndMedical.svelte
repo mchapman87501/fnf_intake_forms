@@ -1,10 +1,12 @@
 <script lang="ts">
+	import TreatableMedical from '$lib/components/TreatableMedical.svelte'
 	import { catPkg } from '$lib/infrastructure/stores'
 </script>
 
 <div>
-	<span>Special needs/habits:</span><br />
-	<textarea bind:value={$catPkg.specialNeeds} />
+	<TreatableMedical /><br />
+	<span>Current diet/medications:</span><br />
+	<textarea bind:value={$catPkg.dietMedications} /><br />
 </div>
 
 <style>

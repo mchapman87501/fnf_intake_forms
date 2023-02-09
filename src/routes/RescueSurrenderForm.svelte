@@ -10,7 +10,6 @@
 	import ReceivedBy from '$lib/components/ReceivedBy.svelte'
 	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
 	import CatnameDOBGenderAltered from '$lib/components/AlteredWhenWhere.svelte'
-	import ShotsFIVTestedVetInfo from '$lib/components/ShotsFIVTestedVetInfo.svelte'
 	import OkWith from '$lib/components/OkWith.svelte'
 	import RescueLocation from '$lib/components/RescueLocation.svelte'
 	import Donation from '$lib/components/Donation.svelte'
@@ -22,6 +21,8 @@
 	import { surrenderChoiceRescue } from '$lib/infrastructure/Definitions.svelte'
 	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores'
 	import BiteHistory from '$lib/components/BiteHistory.svelte'
+	import VaccinesAndDiseaseTests from '$lib/components/VaccinesAndDiseaseTests.svelte'
+	import VetInfo from '$lib/components/VetInfo.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -83,9 +84,12 @@
 
 	<CatnameDOBGenderAltered /><br />
 	<BreedColorMarkings /><br />
-	<ShotsFIVTestedVetInfo /><br />
+	<VaccinesAndDiseaseTests />
+	<VetInfo /><br />
+
 	<BiteHistory />
 	<OkWith /><br />
+
 	<RescueLocation />
 	<CourtesyListingNoRelinquishment />
 	<ShowNotWebOnly />

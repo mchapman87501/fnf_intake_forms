@@ -17,6 +17,7 @@
 	import Donation from '$lib/components/Donation.svelte'
 	import { surrenderChoiceStray } from '$lib/infrastructure/Definitions.svelte'
 	import BiteHistory from '$lib/components/BiteHistory.svelte'
+	import VaccinesAndDiseaseTests from '$lib/components/VaccinesAndDiseaseTests.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -71,6 +72,7 @@
 	<hr />
 	<RescueLocation /><br />
 	<BreedColorMarkings />
+	<VaccinesAndDiseaseTests />
 
 	<input type="text" placeholder="Tame/Feral" bind:value={$catPkg.tameFeral} /> <br />
 

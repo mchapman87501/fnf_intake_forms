@@ -2,8 +2,10 @@
 	import { recvdFromPkg } from '$lib/infrastructure/stores'
 </script>
 
-<span>Location where cat was found:</span><br />
-<textarea bind:value={$recvdFromPkg.locationOfRescue} /><br />
+<div>
+	<span>Location where cat was found:</span><br />
+	<textarea bind:value={$recvdFromPkg.locationOfRescue} /><br />
+</div>
 
 <style>
 	span {
@@ -11,5 +13,8 @@
 	}
 	textarea {
 		width: 90%;
+	}
+	div {
+		margin: 0.5em 0;
 	}
 </style>

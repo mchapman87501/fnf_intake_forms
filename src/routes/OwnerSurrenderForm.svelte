@@ -15,7 +15,6 @@
 	import CatnameDOBGenderAltered from '$lib/components/CatnameDOBGenderAltered.svelte'
 	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
 	import Microchip from '$lib/components/Microchip.svelte'
-	import ShotsFivTestedVetInfo from '$lib/components/ShotsFIVTestedVetInfo.svelte'
 	import OkWith from '$lib/components/OkWith.svelte'
 	import IntakeReason from '$lib/components/IntakeReason.svelte'
 	import Donation from '$lib/components/Donation.svelte'
@@ -23,6 +22,10 @@
 	import ShowNotWebOnly from '$lib/components/ShowNotWebOnly.svelte'
 	import { surrenderChoiceSurrender } from '$lib/infrastructure/Definitions.svelte'
 	import BiteHistory from '$lib/components/BiteHistory.svelte'
+	import VaccinesAndDiseaseTests from '$lib/components/VaccinesAndDiseaseTests.svelte'
+	import VetInfo from '$lib/components/VetInfo.svelte'
+	import SpecialNeeds from '$lib/components/SpecialNeeds.svelte'
+	import DietAndMedical from '../lib/components/DietAndMedical.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -80,10 +83,18 @@
 
 	<CatnameDOBGenderAltered /><br />
 	<BreedColorMarkings /><br />
-	<Microchip /><br />
-	<ShotsFivTestedVetInfo /><br />
-	<BiteHistory />
-	<OkWith /><br />
+	<VaccinesAndDiseaseTests />
+	<Microchip />
+	<VetInfo />
+
+	<SpecialNeeds />
+	<DietAndMedical /><br />
+
+	<div>
+		<BiteHistory />
+		<OkWith />
+	</div>
+
 	<IntakeReason /><br />
 	<CourtesyListingNoRelinquishment />
 	<ShowNotWebOnly />
