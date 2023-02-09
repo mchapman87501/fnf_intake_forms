@@ -1,4 +1,4 @@
-import { dateStr } from '$lib/server/api_support/form_writers/value_converters'
+import { dateStr, boolStr } from '$lib/server/api_support/form_writers/value_converters'
 import * as fsPromises from 'fs/promises'
 
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
@@ -67,10 +67,12 @@ function annotatePage(page: PDFPage, info: SurrenderPkg) {
 
 	add(tf(163, 516, 89, 14), 'TBD') // Current shots
 
-	const ffTestedText = catInfo.FELVFIVTested ? 'Yes' : 'No'
+	const ffTestedText = boolStr(catInfo.FELVFIVTested)
 	add(tf(348, 516, 56, 14), ffTestedText)
-	add(ynu(404, 433, 505, 27, 14), catInfo.FELVFIVPositive)
-	add(tf(458, 516, 50, 14), catInfo.FELVFIVPositive ? 'Pos' : 'Neg')
+	if (ffTestedText == 'Yes') {
+		add(ynu(404, 433, 505, 27, 14), catInfo.FELVFIVPositive)
+		add(tf(458, 516, 50, 14), catInfo.FELVFIVPositive ? 'Pos' : 'Neg')
+	}
 
 	add(tf(198, 538, 161, 14), catInfo.namePrevVet)
 	add(tf(403, 538, 90, 14), catInfo.phonePrevVet)

@@ -1,4 +1,4 @@
-import { dateStr } from '$lib/server/api_support/form_writers/value_converters'
+import { dateStr, boolStr } from '$lib/server/api_support/form_writers/value_converters'
 import * as fsPromises from 'fs/promises'
 
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
@@ -72,11 +72,13 @@ function annotatePage(page: PDFPage, info: SurrenderPkg) {
 	add(tf(264.5, 496, 142.5, 14), catInfo.microchipNum)
 
 	add(tf(163.6, 518.3, 88.5, 14), 'TBD')
-	const ffTestedText = catInfo.FELVFIVTested ? 'Yes' : 'No'
+	const ffTestedText = boolStr(catInfo.FELVFIVTested)
 	add(tf(348.4, 518.3, 55, 14), ffTestedText)
-	add(tf(460, 518.3, 23.65, 14), catInfo.FELVFIVPositive ? 'Pos' : 'Neg')
 
-	add(ynu(405.6, 434.5, 507.3, 23.4, 14), catInfo.FELVFIVPositive)
+	if (ffTestedText == 'Yes') {
+		add(tf(460, 518.3, 23.65, 14), catInfo.FELVFIVPositive ? 'Pos' : 'Neg')
+		add(ynu(405.6, 434.5, 507.3, 23.4, 14), catInfo.FELVFIVPositive)
+	}
 
 	add(tf(198.7, 540.25, 161, 14), catInfo.namePrevVet)
 	add(tf(404, 540.25, 88, 14), catInfo.phonePrevVet)
@@ -88,7 +90,7 @@ function annotatePage(page: PDFPage, info: SurrenderPkg) {
 	add(tf(290, 628.6, 27, 14), catInfo.okCats)
 	add(tf(358, 628.6, 27, 14), catInfo.okDogs)
 
-	add(tf(210, 650.2, 328, 36), catInfo.intakeReason)
+	add(tf(210, 672, 328, 36), catInfo.intakeReason)
 
 	add(tf(229.5, 694, 50, 14), recvdFrom.donationAmount)
 	add(tf(434.5, 694, 103.5, 14), catInfo.intakeFnFRepr)

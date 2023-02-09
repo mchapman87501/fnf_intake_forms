@@ -1,4 +1,4 @@
-import { PDFFont, StandardFonts, rgb } from 'pdf-lib'
+import { PDFFont, StandardFonts } from 'pdf-lib'
 import type { IPage } from './pdf_interfaces'
 import { PageElement } from './page_element'
 import { fieldColor } from './settings'
@@ -72,7 +72,6 @@ export class TextField extends PageElement {
 			const meta = this.info
 			const clipped = await this.#clippedText(page, value, meta.width)
 
-			const yOffset = clipped.height
 			const y = this.yPage(page, meta.y) + clipped.yOffset
 			page.drawText(clipped.text, {
 				x: meta.x,

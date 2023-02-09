@@ -30,8 +30,6 @@ function annotatePage(page: PDFPage, info: SurrenderPkg) {
 		return fn
 	}
 
-	// 'predicate' returns true for female, false for male
-	const genderPred = yesNoUnknownFn('Female', 'Male')
 	// True for tame, false for Feral:
 	const tameFeralPred = yesNoUnknownFn('Tame', 'Feral')
 

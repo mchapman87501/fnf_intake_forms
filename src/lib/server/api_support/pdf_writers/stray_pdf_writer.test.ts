@@ -5,6 +5,8 @@ import { saveStraySurrenderPDF } from './stray_pdf_writer'
 // Goal: write PDFs and programmatically compare their
 // raster representations vs. human-approved rasters.
 import { describe, test } from 'vitest'
+import { uynChoicesUnknown, uynChoicesYes } from '$lib/infrastructure/Definitions.svelte'
+import { dateStr } from '../form_writers/value_converters'
 
 describe('Verify PDF annotations match reference images', async () => {
 	const runInteractive = process.env.RUN_INTERACTIVE_TESTS !== undefined
@@ -29,9 +31,9 @@ describe('Verify PDF annotations match reference images', async () => {
 				markings: 'yes',
 				microchipped: 'no',
 				microchipNum: '666-666',
-				FELVFIVTested: false,
+				FELVFIVTested: uynChoicesYes,
 				FELVFIVPositive: true,
-				FELVFIVTestedDate: undefined,
+				FELVFIVTestedDate: dateStr('2020-10-31'),
 				currentShots: true,
 				namePrevVet: 'I. M. Cut',
 				phonePrevVet: '(505) 505-5050',
@@ -53,6 +55,9 @@ describe('Verify PDF annotations match reference images', async () => {
 				FVRCP1: undefined,
 				FVRCP2: undefined,
 				FVRCP3: undefined,
+				receivedFVRCPVax: uynChoicesYes,
+				fvrcpExpirationDate: '2025-02-09',
+				receivedRabiesVax: uynChoicesUnknown,
 				rabiesExpirationDate: undefined,
 				hairLength: 'short and long',
 				currentWeight: '',

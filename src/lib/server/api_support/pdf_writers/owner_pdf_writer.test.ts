@@ -5,6 +5,7 @@ import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 // Goal: write PDFs and programmatically compare their
 // raster representations vs. human-approved rasters.
 import { describe, test } from 'vitest'
+import { uynChoicesUnknown, uynChoicesYes } from '$lib/infrastructure/Definitions.svelte'
 
 describe('Verify PDF annotations match reference images', async () => {
 	const runInteractive = process.env.RUN_INTERACTIVE_TESTS !== undefined
@@ -29,7 +30,7 @@ describe('Verify PDF annotations match reference images', async () => {
 				markings: 'yes',
 				microchipped: 'no',
 				microchipNum: '666-666',
-				FELVFIVTested: false,
+				FELVFIVTested: uynChoicesYes,
 				FELVFIVPositive: true,
 				FELVFIVTestedDate: undefined,
 				currentShots: true,
@@ -53,7 +54,12 @@ describe('Verify PDF annotations match reference images', async () => {
 				FVRCP1: undefined,
 				FVRCP2: undefined,
 				FVRCP3: undefined,
+				receivedFVRCPVax: uynChoicesYes,
+				fvrcpExpirationDate: '2025-02-05',
+
+				receivedRabiesVax: uynChoicesUnknown,
 				rabiesExpirationDate: undefined,
+
 				hairLength: 'short and long',
 				currentWeight: '',
 				estMatureSize: '',
