@@ -1,6 +1,6 @@
 import { row, writeFile, type Row } from './tall_excel_writer'
 import type { DownloadInfo } from '$lib/api_support/download_info'
-import { boolStr, dateStr, posNegStr } from './value_converters'
+import { boolStr, dateStr, posNegStr, dateIfApplicable } from './value_converters'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 
 function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): Row[] {
@@ -10,8 +10,10 @@ function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): Row[]
 
 	// Issue #23: if spay/neuter status is either "Unknown" or "No",
 	// leave spay/neuter date blank.
-	const altered = catInfo.altered.toLowerCase() == 'yes'
-	const spayNeuterDate = altered ? dateStr(catInfo.alteredDate) : ''
+	const spayNeuterDate = dateIfApplicable(catInfo.altered, catInfo.alteredDate)
+	const felvfivDate = dateIfApplicable(catInfo.FELVFIVTested, catInfo.FELVFIVTestedDate)
+	const rabiesExpires = dateIfApplicable(catInfo.receivedRabiesVax, catInfo.rabiesExpirationDate)
+	const fvrcpExpires = dateIfApplicable(catInfo.receivedFVRCPVax, catInfo.fvrcpExpirationDate)
 
 	return [
 		row('Intake Date', dateStr(catInfo.intakeDate)),
@@ -42,8 +44,9 @@ function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): Row[]
 		row('FVRCP #1', dateStr(catInfo.FVRCP1)),
 		row('FVRCP #2', dateStr(catInfo.FVRCP2)),
 		row('FVRCP #3', dateStr(catInfo.FVRCP3)),
-		row('Rabies Expires', dateStr(catInfo.rabiesExpirationDate)),
-		row('FELV/FIV Test Date', dateStr(catInfo.FELVFIVTestedDate)),
+		row('FVRCP Expires', fvrcpExpires),
+		row('Rabies Expires', rabiesExpires),
+		row('FELV/FIV Test Date', felvfivDate),
 		row('Pos/Neg?', posNegStr(catInfo.FELVFIVPositive)),
 		row('Microchip #', catInfo.microchipNum),
 		row('Likes Kids?', boolStr(catInfo.okKinder)),
