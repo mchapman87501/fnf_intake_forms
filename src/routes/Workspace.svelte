@@ -29,7 +29,6 @@
 	import DistinctiveFeatures from '$lib/components/DistinctiveFeatures.svelte'
 	import SpecialNeeds from '$lib/components/SpecialNeeds.svelte'
 	import SurrenderType from '$lib/components/SurrenderType.svelte'
-	import { query_selector_all } from 'svelte/internal'
 
 	function getPrintMap() {
 		var map = new Map()
@@ -83,9 +82,6 @@
 	}
 	function horizontalMap(map: Map<string, string>) {
 		return [Array.from(map.keys()), Array.from(map.values())]
-	}
-	function verticalMap(map: Map<string, string>) {
-		return Array.from(map.entries())
 	}
 
 	function getInfoAsTable(): Array<Array<string>> {

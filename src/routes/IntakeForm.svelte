@@ -83,9 +83,6 @@
 	function horizontalMap(map: Map<string, string>) {
 		return [Array.from(map.keys()), Array.from(map.values())]
 	}
-	function verticalMap(map: Map<string, string>) {
-		return Array.from(map.entries())
-	}
 
 	function getInfoAsTable(): Array<Array<string>> {
 		// Use standard 'yyyy-mm-dd' value format of <input type="date"> -- i.e.,

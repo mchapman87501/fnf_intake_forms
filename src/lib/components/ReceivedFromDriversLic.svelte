@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { recvdFromPkg } from '$lib/infrastructure/stores'
-
-	let zipCodePattern = '\\d{5}'
 </script>
 
 <input
