@@ -10,7 +10,6 @@
 	import ReceivedFromDriversLic from '$lib/components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '$lib/components/ReceivedFromName.svelte'
 	import ReceivedFromContactInfo from '$lib/components/ReceivedFromContactInfo.svelte'
-	import ReceivedBy from '$lib/components/ReceivedBy.svelte'
 	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
 	import IntakeDate from '$lib/components/IntakeDate.svelte'
 	import RescueLocation from '$lib/components/RescueLocation.svelte'
@@ -18,6 +17,7 @@
 	import { surrenderChoiceStray } from '$lib/infrastructure/Definitions.svelte'
 	import BiteHistory from '$lib/components/BiteHistory.svelte'
 	import VaccinesAndDiseaseTests from '$lib/components/VaccinesAndDiseaseTests.svelte'
+	import DownloadFormsBtn from '$lib/components/DownloadFormsBtn.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -65,43 +65,57 @@
 <LoginDialog />
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate /><br />
-	<ReceivedFromName />
-	<ReceivedFromDriversLic /><br />
-	<ReceivedFromContactInfo />
-	<hr />
-	<RescueLocation /><br />
-	<BreedColorMarkings />
-	<VaccinesAndDiseaseTests />
+	<fieldset>
+		<legend>Contact</legend>
+		<IntakeDate /><br />
+		<ReceivedFromName />
+		<ReceivedFromDriversLic /><br />
+		<ReceivedFromContactInfo />
+	</fieldset>
 
-	<input type="text" placeholder="Tame/Feral" bind:value={$catPkg.tameFeral} /> <br />
+	<fieldset>
+		<legend>Physical</legend>
+		<div>
+			<BreedColorMarkings />
+			<input type="text" placeholder="Tame/Feral" bind:value={$catPkg.tameFeral} /> <br />
+		</div>
+		<VaccinesAndDiseaseTests />
+	</fieldset>
 
-	<span>Illness or injuries observed</span><br />
-	<textarea bind:value={$catPkg.illnessInjuryObs} /><br />
+	<fieldset>
+		<legend>Stray</legend>
+		<RescueLocation />
+		<div>
+			<span>Illness or injuries observed</span><br />
+			<textarea bind:value={$catPkg.illnessInjuryObs} />
+		</div>
+	</fieldset>
 
-	<br />
-	<BiteHistory /><br /><br />
-	<span>Personality observed</span><br />
-	<textarea bind:value={$catPkg.personalityObs} /><br />
-	<span>Notes</span><br />
-	<textarea bind:value={$catPkg.strayNotes} /><br />
+	<fieldset>
+		<legend>Social</legend>
+		<div>
+			<BiteHistory />
+		</div>
+		<div>
+			<span>Personality observed</span><br />
+			<textarea bind:value={$catPkg.personalityObs} />
+		</div>
+		<div>
+			<span>Notes</span><br />
+			<textarea bind:value={$catPkg.strayNotes} />
+		</div>
+	</fieldset>
 
-	<Donation />
-	<ReceivedBy />
-	<span>Intake Notes</span><br />
-	<textarea bind:value={$catPkg.intakeNotes} /><br />
+	<fieldset>
+		<legend>Intake</legend>
+		<div>
+			<span>Intake Notes</span><br />
+			<textarea bind:value={$catPkg.intakeNotes} />
+		</div>
+		<Donation />
+	</fieldset>
 
-	<hr />
-
-	<div class="btns">
-		<button
-			type="submit"
-			disabled={!formValid}
-			title="Save this stray surrender form and download the resulting intake form."
-		>
-			Download Intake Form
-		</button>
-	</div>
+	<DownloadFormsBtn />
 </form>
 
 <style>

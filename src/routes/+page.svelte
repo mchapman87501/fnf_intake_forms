@@ -138,9 +138,20 @@
 
 	.fnf_form {
 		margin-top: 1em;
+		/* border: 1px solid #c8c8c8;
+		border-radius: 5pt; */
+	}
+
+	:global(fieldset) {
+		margin-top: 0.25em;
 		border: 1px solid #dddddd;
-		border-radius: 5pt;
-		padding: 1em;
+		border-radius: 3pt;
 		background-color: #f8f8f8;
+		padding-bottom: 0.1em;
+	}
+	:global(legend) {
+		display: none;
+		/* font-style: italic;
+		font-size: 90%; */
 	}
 </style>

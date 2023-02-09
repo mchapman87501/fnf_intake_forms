@@ -2,13 +2,13 @@
 	import ReceivedByName from './ReceivedByName.svelte'
 </script>
 
-<p class="rep">
+<span class="rep">
 	Surrender accepted by
 	<ReceivedByName />
-</p>
+</span>
 
 <style>
-	p.rep {
+	.rep {
 		font-style: italic;
 		font-size: 80%;
 	}

@@ -5,16 +5,18 @@
 	// import CatnameDOBGender from '$lib/components/CatnameDOBGender.svelte'
 </script>
 
-<Dropdown title="Spayed/Neutered" choiceList={uynChoices} bind:value={$catPkg.altered} />
-{#if $catPkg.altered == uynChoicesYes}
-	<label>
-		Date spayed/neutered? <input type="date" bind:value={$catPkg.alteredDate} />
-	</label>
-	<label>
-		Where spayed/neutered?
-		<input type="text" bind:value={$catPkg.alteredFacility} />
-	</label>
-{/if}
+<div>
+	<Dropdown title="Spayed/Neutered" choiceList={uynChoices} bind:value={$catPkg.altered} />
+	{#if $catPkg.altered == uynChoicesYes}
+		<label>
+			Date spayed/neutered? <input type="date" bind:value={$catPkg.alteredDate} />
+		</label>
+		<label>
+			Where spayed/neutered?
+			<input type="text" bind:value={$catPkg.alteredFacility} />
+		</label>
+	{/if}
+</div>
 
 <style>
 	label {

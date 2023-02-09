@@ -7,7 +7,6 @@
 	import ReceivedFromName from '$lib/components/ReceivedFromName.svelte'
 	import ReceivedFromDriversLic from '$lib/components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromContactInfo from '$lib/components/ReceivedFromContactInfo.svelte'
-	import ReceivedBy from '$lib/components/ReceivedBy.svelte'
 	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
 	import CatnameDOBGenderAltered from '$lib/components/AlteredWhenWhere.svelte'
 	import OkWith from '$lib/components/OkWith.svelte'
@@ -23,6 +22,7 @@
 	import BiteHistory from '$lib/components/BiteHistory.svelte'
 	import VaccinesAndDiseaseTests from '$lib/components/VaccinesAndDiseaseTests.svelte'
 	import VetInfo from '$lib/components/VetInfo.svelte'
+	import DownloadFormsBtn from '$lib/components/DownloadFormsBtn.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -71,44 +71,42 @@
 <LoginDialog />
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate /><br />
-	<ReceivedFromName />
-	<ReceivedFromDriversLic /> <br />
-	<ReceivedFromContactInfo />
+	<fieldset>
+		<legend>Contact</legend>
+		<IntakeDate /><br />
+		<ReceivedFromName />
+		<ReceivedFromDriversLic /> <br />
+		<ReceivedFromContactInfo />
+	</fieldset>
 
-	<hr />
+	<fieldset>
+		<legend>Physical</legend>
+		<CatnameDOBGenderAltered />
+		<BreedColorMarkings />
+		<VaccinesAndDiseaseTests />
+		<VetInfo />
+	</fieldset>
 
-	<PrevShelterInfo />
+	<fieldset>
+		<legend>Social</legend>
+		<BiteHistory />
+		<OkWith />
+	</fieldset>
 
-	<hr />
+	<fieldset>
+		<legend>Rescue</legend>
+		<RescueLocation />
+		<PrevShelterInfo />
+	</fieldset>
 
-	<CatnameDOBGenderAltered /><br />
-	<BreedColorMarkings />
-	<VaccinesAndDiseaseTests />
-	<VetInfo /><br />
+	<fieldset>
+		<legend>Intake</legend>
+		<CourtesyListingNoRelinquishment />
+		<ShowNotWebOnly />
+		<Donation />
+	</fieldset>
 
-	<BiteHistory />
-	<OkWith /><br />
-
-	<RescueLocation />
-	<CourtesyListingNoRelinquishment />
-	<ShowNotWebOnly />
-	<hr />
-
-	<Donation />
-	<ReceivedBy />
-
-	<hr />
-
-	<div class="btns">
-		<button
-			type="submit"
-			disabled={!formValid}
-			title="Save this rescue surrender form and download the resulting intake form."
-		>
-			Download Intake Form
-		</button>
-	</div>
+	<DownloadFormsBtn />
 </form>
 
 <style>

@@ -14,7 +14,4 @@
 	textarea {
 		width: 90%;
 	}
-	div {
-		margin: 0.5em 0;
-	}
 </style>

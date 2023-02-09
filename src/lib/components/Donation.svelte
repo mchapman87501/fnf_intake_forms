@@ -1,22 +1,27 @@
 <script lang="ts">
 	import { recvdFromPkg } from '$lib/infrastructure/stores'
+	import ReceivedBy from './ReceivedBy.svelte'
 
 	let donationPattern = '\\d+(\\.\\d{2})?'
 </script>
 
-<p class="rep">
-	<input
-		class="currency"
-		type="text"
-		placeholder="Donation"
-		bind:value={$recvdFromPkg.donationAmount}
-		pattern={donationPattern}
-	/>
-	<input type="text" placeholder="Form of Payment" bind:value={$recvdFromPkg.donationForm} />
-</p>
+<div>
+	<span class="rep">
+		<input
+			class="currency"
+			type="text"
+			placeholder="Donation"
+			bind:value={$recvdFromPkg.donationAmount}
+			pattern={donationPattern}
+		/>
+		<input type="text" placeholder="Form of Payment" bind:value={$recvdFromPkg.donationForm} />
+	</span>
+	<ReceivedBy />
+</div>
 
 <style>
-	p.rep {
+	.rep {
+		margin: 0.5em 0;
 		font-style: italic;
 		font-size: 80%;
 	}

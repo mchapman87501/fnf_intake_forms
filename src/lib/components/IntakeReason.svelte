@@ -2,8 +2,10 @@
 	import { catPkg } from '$lib/infrastructure/stores'
 </script>
 
-<span>Reason for surrender:</span><br />
-<textarea bind:value={$catPkg.intakeReason} />
+<div>
+	<span>Reason for surrender:</span><br />
+	<textarea bind:value={$catPkg.intakeReason} />
+</div>
 
 <style>
 	span {

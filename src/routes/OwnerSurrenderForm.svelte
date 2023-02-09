@@ -10,7 +10,6 @@
 	import ReceivedFromDriversLic from '$lib/components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '$lib/components/ReceivedFromName.svelte'
 	import ReceivedFromContactInfo from '$lib/components/ReceivedFromContactInfo.svelte'
-	import ReceivedBy from '$lib/components/ReceivedBy.svelte'
 	import IntakeDate from '$lib/components/IntakeDate.svelte'
 	import CatnameDOBGenderAltered from '$lib/components/CatnameDOBGenderAltered.svelte'
 	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
@@ -26,6 +25,7 @@
 	import VetInfo from '$lib/components/VetInfo.svelte'
 	import SpecialNeeds from '$lib/components/SpecialNeeds.svelte'
 	import DietAndMedical from '../lib/components/DietAndMedical.svelte'
+	import DownloadFormsBtn from '$lib/components/DownloadFormsBtn.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -74,45 +74,46 @@
 <LoginDialog />
 
 <form on:submit|preventDefault={handleSubmit}>
-	<IntakeDate /><br />
-	<ReceivedFromName />
-	<ReceivedFromDriversLic /> <br />
-	<ReceivedFromContactInfo />
-	<template id="mom-paragraph"><p><slot name="mom-slot" /></p></template>
-	<hr />
+	<fieldset>
+		<legend>Contact</legend>
+		<IntakeDate /><br />
+		<ReceivedFromName />
+		<ReceivedFromDriversLic /> <br />
+		<ReceivedFromContactInfo />
+		<template id="mom-paragraph"><div><slot name="mom-slot" /></div></template>
+	</fieldset>
 
-	<CatnameDOBGenderAltered /><br />
-	<BreedColorMarkings />
-	<VaccinesAndDiseaseTests />
-	<Microchip />
-	<VetInfo />
+	<fieldset>
+		<legend>Physical</legend>
+		<CatnameDOBGenderAltered />
+		<div>
+			<BreedColorMarkings />
+		</div>
+		<VaccinesAndDiseaseTests />
+		<Microchip />
+		<VetInfo />
+		<DietAndMedical />
+		<SpecialNeeds />
+	</fieldset>
 
-	<SpecialNeeds />
-	<DietAndMedical /><br />
+	<fieldset>
+		<legend>Social</legend>
+		<div>
+			<BiteHistory />
+			<OkWith />
+		</div>
+		<IntakeReason />
+	</fieldset>
 
-	<div>
-		<BiteHistory />
-		<OkWith />
-	</div>
+	<fieldset>
+		<legend>Intake</legend>
+		<CourtesyListingNoRelinquishment />
+		<ShowNotWebOnly />
 
-	<IntakeReason /><br />
-	<CourtesyListingNoRelinquishment />
-	<ShowNotWebOnly />
-	<hr />
-	<Donation />
-	<ReceivedBy />
+		<Donation />
+	</fieldset>
 
-	<hr />
-
-	<div class="btns">
-		<button
-			type="submit"
-			disabled={!formValid}
-			title="Save this surrender form and download the resulting intake form."
-		>
-			Download Intake Form
-		</button>
-	</div>
+	<DownloadFormsBtn />
 </form>
 
 <style>
