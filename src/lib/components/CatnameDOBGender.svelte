@@ -12,7 +12,13 @@
 	bind:value={$catPkg.catName}
 />
 <label>
-	DOB <input type="date" name="cat_age" bind:value={$catPkg.DOB} required />
+	DOB <input
+		type="date"
+		name="cat_age"
+		bind:value={$catPkg.DOB}
+		required
+		title="Cat's date of birth (required - estimate if necessary)"
+	/>
 </label>
 
 <Dropdown choiceList={genderChoices} name="cat_gender" bind:value={$catPkg.gender} />
@@ -20,5 +26,12 @@
 <style>
 	label {
 		font-size: 75%;
+	}
+
+	*:required::after {
+		font-size: 125%;
+		content: '*';
+		vertical-align: top;
+		color: red;
 	}
 </style>
