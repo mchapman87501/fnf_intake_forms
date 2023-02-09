@@ -80,7 +80,7 @@
 		temp.phonePrevVet = ''
 		temp.dietMedications = ''
 		temp.tameFeral = ''
-		temp.biteHistory = false
+		temp.biteHistory = uynChoices[0]
 		temp.declawed = false
 		temp.illnessInjuryObs = ''
 		temp.personalityObs = ''

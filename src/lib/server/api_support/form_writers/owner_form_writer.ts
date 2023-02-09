@@ -40,6 +40,7 @@ function getOwnerSurrenderFormRows(info: SurrenderPkg): Row[] {
 		row('Likes Kids?', boolStr(catInfo.okKinder)),
 		row('Likes Cats?', boolStr(catInfo.okCats)),
 		row('Likes Dogs?', boolStr(catInfo.okDogs)),
+		row('Bite History?', boolStr(catInfo.biteHistory)),
 
 		row('Reason for Surrender', catInfo.intakeReason),
 		row('Courtesy listing (no relinquishment)', boolStr(recvdFrom.courtesyListingNoRelinquishment)),

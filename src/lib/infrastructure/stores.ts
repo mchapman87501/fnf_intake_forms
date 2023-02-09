@@ -1,3 +1,4 @@
+import { uynChoices } from './Definitions.svelte'
 import type { CatPkg, ReceivedFromPkg } from './info_packages'
 import { writable } from 'svelte/store'
 
@@ -53,16 +54,16 @@ let cat: CatPkg = {
 	phonePrevVet: '',
 	dietMedications: '',
 	tameFeral: '',
-	biteHistory: false,
+	biteHistory: uynChoices[0],
 	declawed: false,
 	illnessInjuryObs: '',
 	personalityObs: '',
 	strayNotes: '',
 	intakeNotes: '',
 	specialNeeds: '',
-	okKinder: '',
-	okCats: '',
-	okDogs: '',
+	okKinder: uynChoices[0],
+	okCats: uynChoices[0],
+	okDogs: uynChoices[0],
 	intakeReason: '',
 	oKToShow: true,
 	intakeFnFRepr: '',

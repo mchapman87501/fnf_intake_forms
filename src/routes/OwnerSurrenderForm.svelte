@@ -22,6 +22,7 @@
 	import CourtesyListingNoRelinquishment from '$lib/components/CourtesyListingNoRelinquishment.svelte'
 	import ShowNotWebOnly from '$lib/components/ShowNotWebOnly.svelte'
 	import { surrenderChoiceSurrender } from '$lib/infrastructure/Definitions.svelte'
+	import BiteHistory from '$lib/components/BiteHistory.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -81,6 +82,7 @@
 	<BreedColorMarkings /><br />
 	<Microchip /><br />
 	<ShotsFivTestedVetInfo /><br />
+	<BiteHistory />
 	<OkWith /><br />
 	<IntakeReason /><br />
 	<CourtesyListingNoRelinquishment />

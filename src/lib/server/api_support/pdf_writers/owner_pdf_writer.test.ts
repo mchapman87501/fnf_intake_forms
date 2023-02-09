@@ -37,7 +37,7 @@ describe('Verify PDF annotations match reference images', async () => {
 				phonePrevVet: '(505) 505-5050',
 				dietMedications: 'Food & Drugs',
 				tameFeral: '',
-				biteHistory: false,
+				biteHistory: 'Unknown',
 				declawed: false,
 				illnessInjuryObs: '',
 				personalityObs: '',

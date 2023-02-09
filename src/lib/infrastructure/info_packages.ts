@@ -43,16 +43,16 @@ export type CatPkg = {
 	phonePrevVet: string
 	dietMedications: string
 	tameFeral: string
-	biteHistory: boolean
+	biteHistory: string // Yes/No/Unknown
 	declawed: boolean
 	illnessInjuryObs: string
 	personalityObs: string
 	strayNotes: string
 	intakeNotes: string
 	specialNeeds: string
-	okKinder: string
-	okCats: string
-	okDogs: string
+	okKinder: string // Yes/No/Unknown
+	okCats: string // Yes/No/Unknown
+	okDogs: string // Yes/No/Unknown
 	intakeReason: string
 	oKToShow: boolean
 	intakeFnFRepr: string

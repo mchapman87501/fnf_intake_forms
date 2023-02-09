@@ -10,3 +10,8 @@ textarea {
 label {
     margin: 0 0.25em;
 }
+
+/* XXX FIX this don't indent first label on a layout "line" */
+br+label, div>label {
+    margin: 0;
+}

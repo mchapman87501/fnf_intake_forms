@@ -1,5 +1,5 @@
 import { row, writeFile, type Row } from './tall_excel_writer'
-import { dateStr } from './value_converters'
+import { dateStr, boolStr } from './value_converters'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 import type { DownloadInfo } from '$lib/api_support/download_info'
 
@@ -22,6 +22,8 @@ function getStrayFormRows(info: SurrenderPkg): Row[] {
 		row('Color', catInfo.color),
 		row('Markings', catInfo.markings),
 		row('Tame/Feral', catInfo.tameFeral),
+		row('Bite History?', boolStr(catInfo.biteHistory)),
+
 		row('Illness or Injuries Observed', catInfo.illnessInjuryObs),
 		row('Personality Observed', catInfo.personalityObs),
 		row('Notes', catInfo.strayNotes),

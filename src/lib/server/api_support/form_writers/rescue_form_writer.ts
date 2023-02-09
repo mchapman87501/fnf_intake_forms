@@ -48,6 +48,7 @@ function getRescueFormRows(info: SurrenderPkg): Row[] {
 		row('Likes Kids?', boolStr(catInfo.okKinder)),
 		row('Likes Cats?', boolStr(catInfo.okCats)),
 		row('Likes Dogs?', boolStr(catInfo.okDogs)),
+		row('Bite History?', boolStr(catInfo.biteHistory)),
 
 		row('Location of Rescue', recvdFrom.locationOfRescue),
 		row('Courtesy listing (no relinquishment)', boolStr(recvdFrom.courtesyListingNoRelinquishment)),

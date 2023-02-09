@@ -16,6 +16,7 @@
 	import RescueLocation from '$lib/components/RescueLocation.svelte'
 	import Donation from '$lib/components/Donation.svelte'
 	import { surrenderChoiceStray } from '$lib/infrastructure/Definitions.svelte'
+	import BiteHistory from '$lib/components/BiteHistory.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -75,6 +76,9 @@
 
 	<span>Illness or injuries observed</span><br />
 	<textarea bind:value={$catPkg.illnessInjuryObs} /><br />
+
+	<br />
+	<BiteHistory /><br /><br />
 	<span>Personality observed</span><br />
 	<textarea bind:value={$catPkg.personalityObs} /><br />
 	<span>Notes</span><br />

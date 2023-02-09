@@ -21,6 +21,7 @@
 	import { onMount } from 'svelte'
 	import { surrenderChoiceRescue } from '$lib/infrastructure/Definitions.svelte'
 	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores'
+	import BiteHistory from '$lib/components/BiteHistory.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -83,6 +84,7 @@
 	<CatnameDOBGenderAltered /><br />
 	<BreedColorMarkings /><br />
 	<ShotsFIVTestedVetInfo /><br />
+	<BiteHistory />
 	<OkWith /><br />
 	<RescueLocation />
 	<CourtesyListingNoRelinquishment />

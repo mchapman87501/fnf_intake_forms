@@ -16,7 +16,7 @@
 	import CourtesyListingNoRelinquishment from '$lib/components/CourtesyListingNoRelinquishment.svelte'
 	import AlteredWhenWhere from '$lib/components/AlteredWhenWhere.svelte'
 	import Declawed from '$lib/components/Declawed.svelte'
-	import PrevShelterBiteHistory from '$lib/components/PrevShelterBiteHistory.svelte'
+	import BiteHistory from '$lib/components/BiteHistory.svelte'
 	import FVRCPDates from '$lib/components/FVRCPDates.svelte'
 	import RabiesExpirationDate from '$lib/components/RabiesExpirationDate.svelte'
 	import Temperament from '$lib/components/Temperament.svelte'
@@ -156,7 +156,7 @@
 	<Microchip /><br />
 	<!-- TBD - FELV/FIV test date and result - what if not tested?<br /> -->
 	<OkWith /><br />
-	<PrevShelterBiteHistory />
+	<BiteHistory /><br />
 	<Declawed /><br />
 	<SpecialNeeds /><br />
 	<Temperament /><br />
