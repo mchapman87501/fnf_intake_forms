@@ -1,3 +1,5 @@
+import { uynChoicesUnknown } from './Definitions.svelte'
+
 export type ReceivedFromPkg = {
 	fromName: string
 	driversLic: string
@@ -35,7 +37,8 @@ export type CatPkg = {
 	markings: string
 	microchipped: string
 	microchipNum: string
-	FELVFIVTested: boolean
+
+	FELVFIVTested: string // Yes/No/Unknown
 	FELVFIVPositive: boolean
 	FELVFIVTestedDate: string | undefined
 	currentShots: boolean
@@ -59,7 +62,13 @@ export type CatPkg = {
 	FVRCP1: string | undefined
 	FVRCP2: string | undefined
 	FVRCP3: string | undefined
+
+	receivedRabiesVax: string // Yes/No/Unknown
 	rabiesExpirationDate: string | undefined
+
+	receivedFVRCPVax: string // Yes/No/Unknown
+	fvrcpExpirationDate: string | undefined
+
 	hairLength: string
 	currentWeight: string
 	estMatureSize: string
@@ -115,7 +124,7 @@ export function newCatPkg(): CatPkg {
 		markings: '',
 		microchipped: '',
 		microchipNum: '',
-		FELVFIVTested: false,
+		FELVFIVTested: uynChoicesUnknown,
 		FELVFIVPositive: false,
 		FELVFIVTestedDate: '',
 		currentShots: false,
@@ -123,7 +132,7 @@ export function newCatPkg(): CatPkg {
 		phonePrevVet: '',
 		dietMedications: '',
 		tameFeral: '',
-		biteHistory: false,
+		biteHistory: uynChoicesUnknown,
 		declawed: false,
 		illnessInjuryObs: '',
 		personalityObs: '',
@@ -136,10 +145,20 @@ export function newCatPkg(): CatPkg {
 		intakeReason: '',
 		oKToShow: false,
 		intakeFnFRepr: '',
-		FVRCP1: '',
-		FVRCP2: '',
-		FVRCP3: '',
-		rabiesExpirationDate: '',
+
+		receivedRabiesVax: uynChoicesUnknown,
+		rabiesExpirationDate: undefined,
+
+		// TODO resolve UI/model inconsistency.
+		// Issue #29 suggests a single date for FVRCP expiration,
+		// but intake form shows there are three separate doses for
+		// this vaccine.
+		FVRCP1: undefined,
+		FVRCP2: undefined,
+		FVRCP3: undefined,
+		receivedFVRCPVax: uynChoicesUnknown,
+		fvrcpExpirationDate: undefined,
+
 		hairLength: '',
 		currentWeight: '',
 		estMatureSize: '',

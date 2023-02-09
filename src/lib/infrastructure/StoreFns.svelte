@@ -2,7 +2,7 @@
 	import { catPkg, firstRun, recvdFromPkg } from './stores'
 	import { get } from 'svelte/store'
 	import {
-		uynChoices,
+		uynChoicesUnknown,
 		genderChoices,
 		surrenderChoices
 	} from '$lib/infrastructure/Definitions.svelte'
@@ -63,24 +63,24 @@
 		temp.treatableMedical = false
 		temp.DOB = ''
 		temp.gender = genderChoices[0]
-		temp.altered = uynChoices[0]
+		temp.altered = uynChoicesUnknown
 		temp.alteredDate = undefined
 		temp.alteredFacility = ''
 		temp.breed = ''
 		temp.color = ''
 		temp.markings = ''
-		temp.microchipped = uynChoices[0]
+		temp.microchipped = uynChoicesUnknown
 		temp.microchipNum = ''
 
 		temp.FELVFIVPositive = false
-		temp.FELVFIVTested = false
+		temp.FELVFIVTested = uynChoicesUnknown
 		temp.FELVFIVTestedDate = undefined
 		temp.currentShots = false
 		temp.namePrevVet = ''
 		temp.phonePrevVet = ''
 		temp.dietMedications = ''
 		temp.tameFeral = ''
-		temp.biteHistory = uynChoices[0]
+		temp.biteHistory = uynChoicesUnknown
 		temp.declawed = false
 		temp.illnessInjuryObs = ''
 		temp.personalityObs = ''
@@ -88,9 +88,9 @@
 		temp.intakeNotes = ''
 
 		temp.specialNeeds = ''
-		temp.okKinder = uynChoices[0]
-		temp.okCats = uynChoices[0]
-		temp.okDogs = uynChoices[0]
+		temp.okKinder = uynChoicesUnknown
+		temp.okCats = uynChoicesUnknown
+		temp.okDogs = uynChoicesUnknown
 
 		temp.intakeReason = ''
 		temp.oKToShow = true

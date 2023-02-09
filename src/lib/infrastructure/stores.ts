@@ -1,4 +1,4 @@
-import { uynChoices } from './Definitions.svelte'
+import { uynChoicesUnknown } from './Definitions.svelte'
 import type { CatPkg, ReceivedFromPkg } from './info_packages'
 import { writable } from 'svelte/store'
 
@@ -46,7 +46,7 @@ let cat: CatPkg = {
 	markings: '',
 	microchipped: '',
 	microchipNum: '',
-	FELVFIVTested: false,
+	FELVFIVTested: uynChoicesUnknown,
 	FELVFIVPositive: false,
 	FELVFIVTestedDate: undefined,
 	currentShots: false,
@@ -54,23 +54,33 @@ let cat: CatPkg = {
 	phonePrevVet: '',
 	dietMedications: '',
 	tameFeral: '',
-	biteHistory: uynChoices[0],
+	biteHistory: uynChoicesUnknown,
 	declawed: false,
 	illnessInjuryObs: '',
 	personalityObs: '',
 	strayNotes: '',
 	intakeNotes: '',
 	specialNeeds: '',
-	okKinder: uynChoices[0],
-	okCats: uynChoices[0],
-	okDogs: uynChoices[0],
+	okKinder: uynChoicesUnknown,
+	okCats: uynChoicesUnknown,
+	okDogs: uynChoicesUnknown,
 	intakeReason: '',
 	oKToShow: true,
 	intakeFnFRepr: '',
+
+	receivedRabiesVax: uynChoicesUnknown,
+	rabiesExpirationDate: undefined,
+
+	// TODO resolve UI/model inconsistency.
+	// Issue #29 suggests a single date for FVRCP expiration,
+	// but intake form shows there are three separate doses for
+	// this vaccine.
 	FVRCP1: undefined,
 	FVRCP2: undefined,
 	FVRCP3: undefined,
-	rabiesExpirationDate: undefined,
+	receivedFVRCPVax: uynChoicesUnknown,
+	fvrcpExpirationDate: undefined,
+
 	hairLength: '',
 	currentWeight: '',
 	estMatureSize: '',
