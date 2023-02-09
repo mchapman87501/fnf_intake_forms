@@ -20,7 +20,6 @@
 	import IntakeReason from '$lib/components/IntakeReason.svelte'
 	import Donation from '$lib/components/Donation.svelte'
 	import CourtesyListingNoRelinquishment from '$lib/components/CourtesyListingNoRelinquishment.svelte'
-	import TreatableMedical from '$lib/components/TreatableMedical.svelte'
 	import ShowNotWebOnly from '$lib/components/ShowNotWebOnly.svelte'
 	import { surrenderChoiceSurrender } from '$lib/infrastructure/Definitions.svelte'
 
@@ -85,7 +84,6 @@
 	<OkWith /><br />
 	<IntakeReason /><br />
 	<CourtesyListingNoRelinquishment />
-	<TreatableMedical />
 	<ShowNotWebOnly />
 	<hr />
 	<Donation />

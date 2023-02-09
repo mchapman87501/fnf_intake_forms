@@ -17,7 +17,6 @@
 	import IntakeDate from '$lib/components/IntakeDate.svelte'
 	import PrevShelterInfo from '$lib/components/PrevShelterInfo.svelte'
 	import CourtesyListingNoRelinquishment from '$lib/components/CourtesyListingNoRelinquishment.svelte'
-	import TreatableMedical from '$lib/components/TreatableMedical.svelte'
 	import ShowNotWebOnly from '$lib/components/ShowNotWebOnly.svelte'
 	import { onMount } from 'svelte'
 	import { surrenderChoiceRescue } from '$lib/infrastructure/Definitions.svelte'
@@ -87,7 +86,6 @@
 	<OkWith /><br />
 	<RescueLocation />
 	<CourtesyListingNoRelinquishment />
-	<TreatableMedical />
 	<ShowNotWebOnly />
 	<hr />
 

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { catPkg } from '$lib/infrastructure/stores'
 	import SpecialNeeds from './SpecialNeeds.svelte'
+	import TreatableMedical from './TreatableMedical.svelte'
 </script>
 
 <div class="shots_and_tests">
@@ -28,9 +29,11 @@
 
 <input type="text" placeholder="Previous Vet" bind:value={$catPkg.namePrevVet} />
 <input type="tel" placeholder="Vet phone" bind:value={$catPkg.phonePrevVet} /><br />
+<br />
+<SpecialNeeds />
 
-<SpecialNeeds /><br />
-
+<br />
+<TreatableMedical /><br />
 <span>Current diet/medications:</span><br />
 <textarea bind:value={$catPkg.dietMedications} /><br />
 
