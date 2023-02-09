@@ -82,7 +82,7 @@
 	<hr />
 
 	<CatnameDOBGenderAltered /><br />
-	<BreedColorMarkings /><br />
+	<BreedColorMarkings />
 	<VaccinesAndDiseaseTests />
 	<Microchip />
 	<VetInfo />

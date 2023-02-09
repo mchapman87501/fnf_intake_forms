@@ -83,7 +83,7 @@
 	<hr />
 
 	<CatnameDOBGenderAltered /><br />
-	<BreedColorMarkings /><br />
+	<BreedColorMarkings />
 	<VaccinesAndDiseaseTests />
 	<VetInfo /><br />
 
