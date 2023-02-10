@@ -2,6 +2,13 @@
 	import { catPkg } from '$lib/infrastructure/stores'
 	import Dropdown from '$lib/infrastructure/Dropdown.svelte'
 	import { genderChoices } from '$lib/infrastructure/Definitions.svelte'
+
+	let dobControl: HTMLInputElement
+	export function validateCatDOB() {
+		if (dobControl.validity.valueMissing) {
+			dobControl.setCustomValidity("Please select the cat's date of birth.\nIt's okay to guess.")
+		}
+	}
 </script>
 
 <input
@@ -15,8 +22,12 @@
 	DOB <input
 		type="date"
 		name="cat_age"
+		bind:this={dobControl}
 		bind:value={$catPkg.DOB}
 		required
+		on:invalid={validateCatDOB}
+		on:change={validateCatDOB}
+		on:input={validateCatDOB}
 		title="Cat's date of birth (required - estimate if necessary)"
 	/>
 </label>
