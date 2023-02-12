@@ -21,6 +21,7 @@ import {
 import * as Tokens from '$lib/server/auth/tokens'
 import * as Emailer from '$lib/server/intake_emails/emailer'
 import * as AppDB from '$lib/server/db/app_db'
+import * as Scrubber from '$lib/server/old_file_scrubber/old_file_scrubber'
 
 // Verify that all required envs are defined
 if (
@@ -72,6 +73,8 @@ await Emailer.configure({
 	verbose: true
 })
 
+await Scrubber.configure()
+
 // Some API endpoints can be accessed only by authenticated (and, someday, authorized) clients.
 const authenticatedEndPoints = new Set([
 	'owner_surrender_form',
@@ -102,7 +105,7 @@ function extractSessionInfo(event: RequestEvent) {
 	}
 }
 
-export const handle: Handle = async function ({ event, resolve }) {
+export const handle = async function ({ event, resolve }) {
 	extractSessionInfo(event)
 
 	const needsAuth = needsAuthentication(event.request)
@@ -120,4 +123,4 @@ export const handle: Handle = async function ({ event, resolve }) {
 	}
 
 	return response
-}
+} satisfies Handle
