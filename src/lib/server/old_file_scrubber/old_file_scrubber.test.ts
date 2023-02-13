@@ -18,14 +18,6 @@ describe('Old File Scrubber tests', async () => {
 		await fsPromises.rm(FormFileNamer.dataDir, { recursive: true, force: true })
 	})
 
-	async function delay(msec: number = 200): Promise<string> {
-		return new Promise((resolve, _) => {
-			setTimeout(() => {
-				resolve('Timeout elapsed')
-			}, msec)
-		})
-	}
-
 	test('Can scrub once', async () => {
 		// Create a file that should not be scrubbed, and one that should
 		// be scrubbed.
@@ -42,7 +34,7 @@ describe('Old File Scrubber tests', async () => {
 		ageDate.setTime(age)
 		const oldPath = path.join(dataDir, 'old_file.txt')
 		await fsPromises.writeFile(oldPath, 'I am old')
-		const result = await fsPromises.utimes(oldPath, ageDate, ageDate)
+		await fsPromises.utimes(oldPath, ageDate, ageDate)
 
 		await scrubber.scrubOnce()
 

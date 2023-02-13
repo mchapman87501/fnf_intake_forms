@@ -60,12 +60,6 @@
 		}
 	}
 
-	let formValid = false
-	function getFormValid() {
-		return true
-	}
-	$: formValid = getFormValid()
-
 	onMount(() => {
 		$recvdFromPkg.surrenderType = surrenderChoiceSurrender
 	})

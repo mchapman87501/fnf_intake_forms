@@ -11,17 +11,10 @@
 	}
 </script>
 
-<input
-	class="name"
-	type="text"
-	name="cat_name"
-	placeholder="Cat's name"
-	bind:value={$catPkg.catName}
-/>
+<input type="text" placeholder="Cat's name" bind:value={$catPkg.catName} />
 <label>
 	DOB <input
 		type="date"
-		name="cat_age"
 		bind:this={dobControl}
 		bind:value={$catPkg.DOB}
 		required

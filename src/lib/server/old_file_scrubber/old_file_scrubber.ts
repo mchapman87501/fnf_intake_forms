@@ -8,7 +8,6 @@ import { FormFileNamer } from '../api_support/form_file_namer'
 const scrubInterval = 1000 * 60 * 60 * 24 // msec/sec * sec/min * min/scrub_pass = msec/scrub_pass
 
 const retirementMs = 1000 * 60 * 5 // age threshold for files to be removed.
-let timerID = null
 
 export async function scrubOnce() {
 	const nowDate = new Date()
@@ -30,7 +29,7 @@ export async function scrubOnce() {
 
 // Async is just for consistency w. other configure functions
 export async function configure() {
-	timerID = setInterval(async () => {
+	setInterval(async () => {
 		try {
 			scrubOnce()
 		} catch (e) {
