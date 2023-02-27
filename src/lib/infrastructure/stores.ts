@@ -9,7 +9,7 @@ export const firstRun = writable(true)
 // Information about the party from
 // whom the cat was received
 
-let recvdFrom: ReceivedFromPkg = {
+const recvdFrom: ReceivedFromPkg = {
 	fromName: '',
 	driversLic: '',
 	address: '',
@@ -32,7 +32,7 @@ let recvdFrom: ReceivedFromPkg = {
 export const recvdFromPkg = writable(recvdFrom)
 
 // Information about the cat
-let cat: CatPkg = {
+const cat: CatPkg = {
 	intakeDate: '',
 	catName: '',
 	treatableMedical: false,
