@@ -7,6 +7,8 @@
 	export function validateCatDOB() {
 		if (dobControl.validity.valueMissing) {
 			dobControl.setCustomValidity("Please select the cat's date of birth.\nIt's okay to guess.")
+		} else {
+			dobControl.setCustomValidity('')
 		}
 	}
 </script>
