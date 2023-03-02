@@ -45,7 +45,7 @@ function getRescueFormRows(info: SurrenderPkg): Row[] {
 		row('Previous Vet', catInfo.namePrevVet),
 		row('Vet Phone', catInfo.phonePrevVet),
 
-		row('Special Needs', catInfo.specialNeeds),
+		row('Special Needs', catInfo.specialNeedsHabitsPersonality),
 		row('Current Diet/Medications', catInfo.dietMedications),
 
 		row('Likes Kids?', boolStr(catInfo.okKinder)),

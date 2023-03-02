@@ -3,7 +3,7 @@
 </script>
 
 <span>Temperament:</span><br />
-<textarea bind:value={$catPkg.temperament} /><br />
+<textarea bind:value={$catPkg.specialNeedsHabitsPersonality} /><br />
 
 <style>
 	span {

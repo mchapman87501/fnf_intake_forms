@@ -49,10 +49,9 @@ export type CatPkg = {
 	biteHistory: string // Yes/No/Unknown
 	declawed: boolean
 	illnessInjuryObs: string
-	personalityObs: string
 	strayNotes: string
 	intakeNotes: string
-	specialNeeds: string
+	specialNeedsHabitsPersonality: string
 	okKinder: string // Yes/No/Unknown
 	okCats: string // Yes/No/Unknown
 	okDogs: string // Yes/No/Unknown
@@ -73,7 +72,6 @@ export type CatPkg = {
 	currentWeight: string
 	estMatureSize: string
 	distinctiveFeatures: string
-	temperament: string
 	motherLittermates: string
 	knownHistory: string
 	otherCommentsInternalUseOnly: string
@@ -135,10 +133,9 @@ export function newCatPkg(): CatPkg {
 		biteHistory: uynChoicesUnknown,
 		declawed: false,
 		illnessInjuryObs: '',
-		personalityObs: '',
 		strayNotes: '',
 		intakeNotes: '',
-		specialNeeds: '',
+		specialNeedsHabitsPersonality: '',
 		okKinder: '',
 		okCats: '',
 		okDogs: '',
@@ -163,7 +160,6 @@ export function newCatPkg(): CatPkg {
 		currentWeight: '',
 		estMatureSize: '',
 		distinctiveFeatures: '',
-		temperament: '',
 		motherLittermates: '',
 		knownHistory: '',
 		otherCommentsInternalUseOnly: '',

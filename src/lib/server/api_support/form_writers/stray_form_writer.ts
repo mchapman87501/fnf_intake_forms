@@ -37,7 +37,7 @@ function getStrayFormRows(info: SurrenderPkg): Row[] {
 		row('Bite History?', boolStr(catInfo.biteHistory)),
 
 		row('Illness or Injuries Observed', catInfo.illnessInjuryObs),
-		row('Personality Observed', catInfo.personalityObs),
+		row('Special Needs / Habits / Personality Observed', catInfo.specialNeedsHabitsPersonality),
 		row('Notes', catInfo.strayNotes),
 
 		row('Donation Amount', recvdFrom.donationAmount),

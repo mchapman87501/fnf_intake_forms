@@ -3,8 +3,8 @@
 </script>
 
 <div>
-	<span>Special needs/habits:</span><br />
-	<textarea bind:value={$catPkg.specialNeeds} />
+	<span>Personality, habits, special needs:</span><br />
+	<textarea bind:value={$catPkg.specialNeedsHabitsPersonality} />
 </div>
 
 <style>

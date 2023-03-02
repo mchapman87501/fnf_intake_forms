@@ -78,7 +78,7 @@ function annotatePage(page: PDFPage, info: SurrenderPkg) {
 	add(tf(198, 538, 161, 14), catInfo.namePrevVet)
 	add(tf(403, 538, 90, 14), catInfo.phonePrevVet)
 
-	add(tf(195, 560, 340, 14), catInfo.specialNeeds)
+	add(tf(195, 560, 340, 14), catInfo.specialNeedsHabitsPersonality)
 	add(tf(150, 582, 384, 14), catInfo.dietMedications)
 
 	add(tf(230, 604, 28, 14), catInfo.okKinder)

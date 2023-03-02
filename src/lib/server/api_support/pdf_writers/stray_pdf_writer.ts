@@ -37,7 +37,7 @@ function annotatePage(page: PDFPage, info: SurrenderPkg) {
 		feralStatusToYesNo(catInfo.tameFeral)
 	)
 	add(tf(222, 335, 307), catInfo.illnessInjuryObs)
-	add(tf(205, 357, 323), catInfo.personalityObs)
+	add(tf(205, 357, 323), catInfo.specialNeedsHabitsPersonality)
 
 	add(tf(109, 401, 430, 36), catInfo.strayNotes)
 

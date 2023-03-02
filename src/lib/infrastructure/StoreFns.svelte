@@ -84,11 +84,10 @@
 		temp.biteHistory = uynChoicesUnknown
 		temp.declawed = false
 		temp.illnessInjuryObs = ''
-		temp.personalityObs = ''
 		temp.strayNotes = ''
 		temp.intakeNotes = ''
 
-		temp.specialNeeds = ''
+		temp.specialNeedsHabitsPersonality = ''
 		temp.okKinder = uynChoicesUnknown
 		temp.okCats = uynChoicesUnknown
 		temp.okDogs = uynChoicesUnknown
@@ -104,7 +103,6 @@
 		temp.currentWeight = ''
 		temp.estMatureSize = ''
 		temp.distinctiveFeatures = ''
-		temp.temperament = ''
 		temp.motherLittermates = ''
 		temp.knownHistory = ''
 		temp.otherCommentsInternalUseOnly = ''
@@ -115,7 +113,6 @@
 		temp.currentWeight = ''
 		temp.estMatureSize = ''
 		temp.distinctiveFeatures = ''
-		temp.temperament = ''
 		temp.motherLittermates = ''
 		temp.knownHistory = ''
 		temp.otherCommentsInternalUseOnly = ''

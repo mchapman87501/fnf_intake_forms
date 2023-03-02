@@ -65,11 +65,12 @@
 			<BreedColorMarkings />
 			<CatFeralStatus />
 		</div>
+		<SpecialNeeds />
+
 		<VaccinesAndDiseaseTests />
 		<Microchip />
 		<VetInfo />
 		<DietAndMedical />
-		<SpecialNeeds />
 	</fieldset>
 
 	<fieldset>

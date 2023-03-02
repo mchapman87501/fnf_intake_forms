@@ -20,6 +20,7 @@
 	import AlteredWhenWhere from '$lib/components/AlteredWhenWhere.svelte'
 	import CatFeralStatus from '$lib/components/CatFeralStatus.svelte'
 	import IntakeNotes from '$lib/components/IntakeNotes.svelte'
+	import SpecialNeeds from '$lib/components/SpecialNeeds.svelte'
 
 	onMount(() => {
 		$recvdFromPkg.surrenderType = surrenderChoiceStray
@@ -54,6 +55,8 @@
 			<BreedColorMarkings />
 			<CatFeralStatus />
 		</div>
+		<SpecialNeeds />
+
 		<VaccinesAndDiseaseTests />
 	</fieldset>
 
@@ -73,7 +76,7 @@
 		</div>
 		<div>
 			<span>Personality observed</span><br />
-			<textarea bind:value={$catPkg.personalityObs} />
+			<textarea bind:value={$catPkg.specialNeedsHabitsPersonality} />
 		</div>
 		<div>
 			<span>Notes</span><br />

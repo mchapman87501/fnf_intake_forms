@@ -25,6 +25,7 @@
 	import AlteredWhenWhere from '$lib/components/AlteredWhenWhere.svelte'
 	import CatFeralStatus from '$lib/components/CatFeralStatus.svelte'
 	import IntakeNotes from '$lib/components/IntakeNotes.svelte'
+	import SpecialNeeds from '$lib/components/SpecialNeeds.svelte'
 
 	onMount(() => {
 		$recvdFromPkg.surrenderType = surrenderChoiceRescue
@@ -54,8 +55,13 @@
 			<CatGender />
 		</div>
 		<AlteredWhenWhere />
-		<BreedColorMarkings />
-		<CatFeralStatus />
+
+		<div>
+			<BreedColorMarkings />
+			<CatFeralStatus />
+		</div>
+
+		<SpecialNeeds />
 		<VaccinesAndDiseaseTests />
 		<VetInfo />
 	</fieldset>
