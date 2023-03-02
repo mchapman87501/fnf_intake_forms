@@ -11,14 +11,9 @@ export class YesNoUnknownRect {
 		this.#noRect = new Rect(no)
 	}
 
-	async addToPage(page: IPage, value: any): Promise<void> {
-		if (typeof value == 'boolean') {
-			const rect = value ? this.#yesRect : this.#noRect
-			rect.addToPage(page)
-		}
-		// If value is not a boolean -- e.g., if it is null || undefined,
-		// draw no annotations.  The goal is to handle cases for which users
-		// may have provided no value.
+	async addToPage(page: IPage, value: boolean): Promise<void> {
+		const rect = value ? this.#yesRect : this.#noRect
+		rect.addToPage(page)
 	}
 }
 

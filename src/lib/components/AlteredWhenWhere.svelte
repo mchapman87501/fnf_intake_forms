@@ -2,7 +2,6 @@
 	import { catPkg } from '$lib/infrastructure/stores'
 	import Dropdown from '$lib/infrastructure/Dropdown.svelte'
 	import { uynChoices, uynChoicesYes } from '$lib/infrastructure/Definitions.svelte'
-	// import CatnameDOBGender from '$lib/components/CatnameDOBGender.svelte'
 </script>
 
 <div>

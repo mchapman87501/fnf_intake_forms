@@ -1,7 +1,11 @@
 <script lang="ts">
 	import AlteredWhenWhere from './AlteredWhenWhere.svelte'
-	import CatnameDOBGender from './CatnameDOBGender.svelte'
+	import CatDob from './CatDOB.svelte'
+	import CatGender from './CatGender.svelte'
+	import CatName from './CatName.svelte'
 </script>
 
-<CatnameDOBGender />
+<CatName />
+<CatDob />
+<CatGender />
 <AlteredWhenWhere />

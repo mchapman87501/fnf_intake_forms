@@ -5,7 +5,11 @@ import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 // Goal: write PDFs and programmatically compare their
 // raster representations vs. human-approved rasters.
 import { describe, test } from 'vitest'
-import { uynChoicesUnknown, uynChoicesYes } from '$lib/infrastructure/Definitions.svelte'
+import {
+	feralChoicesUnknown,
+	uynChoicesUnknown,
+	uynChoicesYes
+} from '$lib/infrastructure/Definitions.svelte'
 
 describe('Verify PDF annotations match reference images', async () => {
 	const runInteractive = process.env.RUN_INTERACTIVE_TESTS !== undefined
@@ -15,7 +19,7 @@ describe('Verify PDF annotations match reference images', async () => {
 		// to specify test input data paths relative to the project
 		// root directory.
 		// But I still don't know how to compare PDF images..
-		let info: SurrenderPkg = {
+		const info: SurrenderPkg = {
 			catInfo: {
 				intakeDate: '2023-02-07',
 				catName: 'Felix',
@@ -37,7 +41,7 @@ describe('Verify PDF annotations match reference images', async () => {
 				namePrevVet: 'I. M. Cut',
 				phonePrevVet: '(505) 505-5050',
 				dietMedications: 'Food & Drugs',
-				tameFeral: '',
+				tameFeral: feralChoicesUnknown,
 				biteHistory: 'Unknown',
 				declawed: false,
 				illnessInjuryObs: '',

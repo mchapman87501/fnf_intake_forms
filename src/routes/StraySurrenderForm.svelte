@@ -10,6 +10,8 @@
 	import ReceivedFromDriversLic from '$lib/components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '$lib/components/ReceivedFromName.svelte'
 	import ReceivedFromContactInfo from '$lib/components/ReceivedFromContactInfo.svelte'
+	import CatDob from '$lib/components/CatDOB.svelte'
+	import CatGender from '$lib/components/CatGender.svelte'
 	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
 	import IntakeDate from '$lib/components/IntakeDate.svelte'
 	import RescueLocation from '$lib/components/RescueLocation.svelte'
@@ -18,6 +20,8 @@
 	import BiteHistory from '$lib/components/BiteHistory.svelte'
 	import VaccinesAndDiseaseTests from '$lib/components/VaccinesAndDiseaseTests.svelte'
 	import DownloadFormsBtn from '$lib/components/DownloadFormsBtn.svelte'
+	import AlteredWhenWhere from '$lib/components/AlteredWhenWhere.svelte'
+	import CatFeralStatus from '$lib/components/CatFeralStatus.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -69,9 +73,16 @@
 
 	<fieldset>
 		<legend>Physical</legend>
+
+		<div>
+			<CatDob />
+			<CatGender />
+		</div>
+		<AlteredWhenWhere />
+
 		<div>
 			<BreedColorMarkings />
-			<input type="text" placeholder="Tame/Feral" bind:value={$catPkg.tameFeral} /> <br />
+			<CatFeralStatus />
 		</div>
 		<VaccinesAndDiseaseTests />
 	</fieldset>
@@ -113,7 +124,6 @@
 </form>
 
 <style>
-	input:invalid,
 	textarea:invalid {
 		color: red;
 	}

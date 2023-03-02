@@ -7,31 +7,19 @@ import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_in
 import { PDFDocument, PDFPage } from 'pdf-lib'
 
 import { TextField, tf } from './page_elements/text_field'
-import { YesNoUnknownRect, ynuRect } from './page_elements/yes_no_unknown_rect'
+import { ynuRect } from './page_elements/yes_no_unknown_rect'
 import { PDFTemplatePaths } from './pdf_template_paths'
+import { feralChoicesFriendly } from '$lib/infrastructure/Definitions.svelte'
 
 function annotatePage(page: PDFPage, info: SurrenderPkg) {
-	function add(annotation: TextField | YesNoUnknownRect, value: any) {
+	function add(annotation: TextField, value: string) {
 		annotation.addToPage(page, value)
 	}
 
-	function yesNoUnknownFn(yesVal: string, noVal: string) {
-		const lcYesVal = yesVal.toLowerCase()
-		const lcNoVal = noVal.toLowerCase()
-		function fn(sval: string): boolean | undefined {
-			const lcSVal = sval.toLowerCase()
-			if (lcSVal == lcYesVal) {
-				return true
-			} else if (lcSVal == lcNoVal) {
-				return false
-			}
-			return undefined
-		}
-		return fn
+	function feralStatusToYesNo(feralStatus: string): boolean {
+		// Return true only if known friendly.
+		return feralStatus.toLowerCase() === feralChoicesFriendly.toLowerCase()
 	}
-
-	// True for tame, false for Feral:
-	const tameFeralPred = yesNoUnknownFn('Tame', 'Feral')
 
 	const catInfo = info.catInfo
 	const recvdFrom = info.receivedFrom
@@ -44,9 +32,9 @@ function annotatePage(page: PDFPage, info: SurrenderPkg) {
 	add(tf(112, 313, 56), catInfo.breed)
 	add(tf(211, 313, 84), catInfo.color)
 	add(tf(356, 313, 79), catInfo.markings)
-	add(
-		ynuRect({ x: 440, y: 315, w: 32, h: 13 }, { x: 476, y: 315, w: 36, h: 13 }),
-		tameFeralPred(catInfo.tameFeral)
+	ynuRect({ x: 440, y: 315, w: 32, h: 13 }, { x: 476, y: 315, w: 36, h: 13 }).addToPage(
+		page,
+		feralStatusToYesNo(catInfo.tameFeral)
 	)
 	add(tf(222, 335, 307), catInfo.illnessInjuryObs)
 	add(tf(205, 357, 323), catInfo.personalityObs)

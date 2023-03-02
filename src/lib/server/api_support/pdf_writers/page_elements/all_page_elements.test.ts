@@ -3,7 +3,6 @@ import { tf } from './text_field'
 import type {
 	DrawEllipseOptions,
 	DrawRectangleOptions,
-	DrawTextOptions,
 	IDoc,
 	IPage,
 	IPosition
@@ -73,7 +72,7 @@ class MockPage implements IPage {
 		this.drawnEllipseXCoords.push(options.x)
 	}
 
-	drawText(text: string, _: DrawTextOptions): void {
+	drawText(text: string): void {
 		this.numDrawTextCalls += 1
 		this.drawnTexts.push(text)
 	}
@@ -170,8 +169,5 @@ describe('Test TextField and YesNoUnknownOval', async () => {
 		expect(page.numDrawRectangleCalls).toBe(2)
 		expect(page.drawnRectOptions[1].x).toBe(50)
 		expect(page.drawnRectOptions[1].width).toBe(125)
-
-		field.addToPage(page, undefined)
-		expect(page.numDrawRectangleCalls).toBe(2)
 	})
 })

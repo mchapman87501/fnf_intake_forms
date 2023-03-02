@@ -4,7 +4,8 @@
 	import {
 		uynChoicesUnknown,
 		genderChoices,
-		surrenderChoices
+		surrenderChoices,
+		feralChoicesUnknown
 	} from '$lib/infrastructure/Definitions.svelte'
 	import { todayStr } from './UtilFns.svelte'
 
@@ -79,7 +80,7 @@
 		temp.namePrevVet = ''
 		temp.phonePrevVet = ''
 		temp.dietMedications = ''
-		temp.tameFeral = ''
+		temp.tameFeral = feralChoicesUnknown
 		temp.biteHistory = uynChoicesUnknown
 		temp.declawed = false
 		temp.illnessInjuryObs = ''

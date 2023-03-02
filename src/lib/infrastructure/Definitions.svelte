@@ -3,8 +3,10 @@
 	export const uynChoicesUnknown = 'Unknown'
 	export const uynChoices = [uynChoicesUnknown, uynChoicesYes, 'No']
 
+	export const genderChoiceUnknown = 'F/M Unknown'
 	export const genderChoiceFemale = 'Female'
-	export const genderChoices = ['F/M Unknown', genderChoiceFemale, 'Male']
+	export const genderChoiceMale = 'Male'
+	export const genderChoices = [genderChoiceUnknown, genderChoiceFemale, genderChoiceMale]
 
 	export const surrenderChoiceTransfer = 'Transfer'
 	export const surrenderChoiceSurrender = 'Surrender'
@@ -18,5 +20,16 @@
 		surrenderChoiceTransfer,
 		surrenderChoiceStray,
 		surrenderChoicePregnant
+	]
+
+	export const feralChoicesUnknown = 'Friendly/Feral Unknown'
+	export const feralChoicesFriendly = 'Friendly'
+	export const feralChoicesSemiferal = 'Semi-feral'
+	export const feralChoicesFeral = 'Feral'
+	export const feralChoices = [
+		feralChoicesUnknown,
+		feralChoicesFriendly,
+		feralChoicesSemiferal,
+		feralChoicesFeral
 	]
 </script>

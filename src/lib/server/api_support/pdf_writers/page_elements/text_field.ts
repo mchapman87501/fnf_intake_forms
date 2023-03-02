@@ -67,27 +67,25 @@ export class TextField extends PageElement {
 		}
 	}
 
-	async addToPage(page: IPage, value: any) {
-		if (typeof value == 'string') {
-			const meta = this.info
-			const clipped = await this.#clippedText(page, value, meta.width)
+	async addToPage(page: IPage, value: string) {
+		const meta = this.info
+		const clipped = await this.#clippedText(page, value, meta.width)
 
-			const y = this.yPage(page, meta.y) + clipped.yOffset
-			page.drawText(clipped.text, {
-				x: meta.x,
-				y: y,
-				maxWidth: meta.width,
-				color: fieldColor,
-				font: clipped.font,
-				lineHeight: clipped.height,
-				size: clipped.size
-			})
-		}
+		const y = this.yPage(page, meta.y) + clipped.yOffset
+		page.drawText(clipped.text, {
+			x: meta.x,
+			y: y,
+			maxWidth: meta.width,
+			color: fieldColor,
+			font: clipped.font,
+			lineHeight: clipped.height,
+			size: clipped.size
+		})
 	}
 }
 
 // Convenience factory function
-export function tf(x: number, y: number, w: number, h: number = 14): TextField {
+export function tf(x: number, y: number, w: number, h = 14): TextField {
 	return new TextField({
 		x: x,
 		y: y,

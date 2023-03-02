@@ -8,7 +8,6 @@
 	import ReceivedFromDriversLic from '$lib/components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromContactInfo from '$lib/components/ReceivedFromContactInfo.svelte'
 	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
-	import CatnameDOBGenderAltered from '$lib/components/AlteredWhenWhere.svelte'
 	import OkWith from '$lib/components/OkWith.svelte'
 	import RescueLocation from '$lib/components/RescueLocation.svelte'
 	import Donation from '$lib/components/Donation.svelte'
@@ -23,6 +22,11 @@
 	import VaccinesAndDiseaseTests from '$lib/components/VaccinesAndDiseaseTests.svelte'
 	import VetInfo from '$lib/components/VetInfo.svelte'
 	import DownloadFormsBtn from '$lib/components/DownloadFormsBtn.svelte'
+	import CatName from '$lib/components/CatName.svelte'
+	import CatDob from '$lib/components/CatDOB.svelte'
+	import CatGender from '$lib/components/CatGender.svelte'
+	import AlteredWhenWhere from '$lib/components/AlteredWhenWhere.svelte'
+	import CatFeralStatus from '$lib/components/CatFeralStatus.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -75,8 +79,14 @@
 
 	<fieldset>
 		<legend>Physical</legend>
-		<CatnameDOBGenderAltered />
+		<div>
+			<CatName />
+			<CatDob />
+			<CatGender />
+		</div>
+		<AlteredWhenWhere />
 		<BreedColorMarkings />
+		<CatFeralStatus />
 		<VaccinesAndDiseaseTests />
 		<VetInfo />
 	</fieldset>

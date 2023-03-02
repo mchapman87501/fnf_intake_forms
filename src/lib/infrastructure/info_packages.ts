@@ -1,4 +1,4 @@
-import { uynChoicesUnknown } from './Definitions.svelte'
+import { uynChoicesUnknown, genderChoiceUnknown, feralChoicesUnknown } from './Definitions.svelte'
 
 export type ReceivedFromPkg = {
 	fromName: string
@@ -115,7 +115,7 @@ export function newCatPkg(): CatPkg {
 		catName: '',
 		treatableMedical: false,
 		DOB: '',
-		gender: '',
+		gender: genderChoiceUnknown,
 		altered: '',
 		alteredDate: '',
 		alteredFacility: '',
@@ -131,7 +131,7 @@ export function newCatPkg(): CatPkg {
 		namePrevVet: '',
 		phonePrevVet: '',
 		dietMedications: '',
-		tameFeral: '',
+		tameFeral: feralChoicesUnknown,
 		biteHistory: uynChoicesUnknown,
 		declawed: false,
 		illnessInjuryObs: '',
