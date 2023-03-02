@@ -47,6 +47,9 @@ function getIntakeFormRow(rescueID: string, surrenderInfo: SurrenderPkg): WideCS
 		col('Check this box when added to Portal', ''),
 		col('Check this box when added to Pawlytics', ''),
 		col('Notes', ''),
+
+		// Additional columns:
+		col('Friendly/Feral', catInfo.tameFeral),
 		col('F & F Representative', catInfo.intakeFnFRepr)
 	]
 }
