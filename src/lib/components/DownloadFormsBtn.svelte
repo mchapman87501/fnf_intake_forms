@@ -8,7 +8,6 @@
 	import type { SurrenderDownloads } from '$lib/api_support/surrender_and_intake_info'
 
 	let downloading = writable(false)
-	downloading.set(false)
 	let downloadBtn: HTMLInputElement
 
 	downloading.subscribe((is_downloading) => {
