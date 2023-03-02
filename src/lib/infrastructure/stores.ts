@@ -31,6 +31,19 @@ const recvdFrom: ReceivedFromPkg = {
 }
 export const recvdFromPkg = writable(recvdFrom)
 
+/**
+ * Get a cat's name, or a default name if it is not known.
+ * @param info Info about a cat
+ * @returns The cat's name if known, else a default value
+ */
+export function getCatName(info: CatPkg): string {
+	const name = info.catName
+	if (name === undefined || name === '') {
+		return 'Unknown'
+	}
+	return name
+}
+
 // Information about the cat
 const cat: CatPkg = {
 	intakeDate: '',

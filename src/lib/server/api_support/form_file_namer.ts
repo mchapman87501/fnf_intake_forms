@@ -4,6 +4,7 @@ import fsPromises from 'fs/promises'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 import type { ProcessedSurrenderInfo } from './processed_surrender_info'
 import * as AppDB from '$lib/server/db/app_db'
+import { getCatName } from '$lib/infrastructure/stores'
 
 function ensureDir(dirname: string): string {
 	fsPromises.mkdir(dirname, { recursive: true })
@@ -16,7 +17,7 @@ export class FormFileNamer {
 
 	constructor(info: SurrenderPkg) {
 		this.#rescueID = AppDB.shared?.rescueID.getID(info, new Date()) || ''
-		this.#catName = info.catInfo.catName || '(no name given)'
+		this.#catName = getCatName(info.catInfo)
 	}
 
 	static #dataDir: string = ensureDir(path.join(process.cwd(), 'data', 'out'))

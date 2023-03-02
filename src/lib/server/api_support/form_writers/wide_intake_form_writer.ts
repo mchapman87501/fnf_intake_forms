@@ -1,6 +1,7 @@
 import { getDownloadInfo, type DownloadInfo } from '$lib/api_support/download_info'
 import { dateStr, dateIfApplicable } from './value_converters'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
+import { getCatName } from '$lib/infrastructure/stores'
 import { writeWideCSV, type WideCSVColumn, col } from './wide_csv_writer'
 
 function getIntakeFormRow(rescueID: string, surrenderInfo: SurrenderPkg): WideCSVColumn[] {
@@ -17,7 +18,7 @@ function getIntakeFormRow(rescueID: string, surrenderInfo: SurrenderPkg): WideCS
 		col('Location', ''),
 
 		// How to know which of these should take the catName?
-		col('Adult cat/mama cat name', catInfo.catName),
+		col('Adult cat/mama cat name', getCatName(catInfo)),
 		col('KITTEN NAME', ''),
 
 		col('INTAKE DATE', dateStr(catInfo.intakeDate)),

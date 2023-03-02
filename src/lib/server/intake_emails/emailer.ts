@@ -29,7 +29,7 @@ async function validateRecipients(recipients: string): Promise<boolean> {
 	const addressesLookPlausible = items.every((addr) => {
 		// This is just a basic sanity check, nothing so hairy as
 		// https://www.abstractapi.com/guides/email-address-pattern-validation
-		let match = addr.match(/.+@.+\..+/)
+		const match = addr.match(/.+@.+\..+/)
 		if (match === null) {
 			config.verbose && console.warn('This email address looks wonky: %o', addr)
 		}
@@ -42,8 +42,8 @@ export async function reset() {
 	transporter = null
 }
 
-export async function configure(newConfig: Configuration): Promise<Boolean> {
-	let newTransporter = nodemailer.createTransport({
+export async function configure(newConfig: Configuration): Promise<boolean> {
+	const newTransporter = nodemailer.createTransport({
 		host: newConfig.smtpServer,
 		port: newConfig.smtpPort,
 		secure: true,
@@ -82,7 +82,7 @@ Here is more info about the ${info.surrenderType} surrender.
 Felines & Friends Intake Service
 `
 
-	let attachments = [
+	const attachments = [
 		{
 			path: info.surrenderFormPath,
 			filename: path.basename(info.surrenderFormPath)

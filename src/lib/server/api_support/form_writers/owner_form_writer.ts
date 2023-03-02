@@ -2,6 +2,7 @@ import { row, writeFile, type Row } from './tall_excel_writer'
 import { boolStr, dateStr } from './value_converters'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
 import type { DownloadInfo } from '$lib/api_support/download_info'
+import { getCatName } from '$lib/infrastructure/stores'
 
 function getOwnerSurrenderFormRows(info: SurrenderPkg): Row[] {
 	const catInfo = info.catInfo
@@ -18,7 +19,7 @@ function getOwnerSurrenderFormRows(info: SurrenderPkg): Row[] {
 		row('Phone', recvdFrom.phone),
 		row('Email', recvdFrom.email),
 
-		row('Name of Cat', catInfo.catName),
+		row('Name of Cat', getCatName(catInfo)),
 		row('DOB', dateStr(catInfo.DOB)),
 		row('Gender', catInfo.gender),
 		row('Spayed/Neutered', boolStr(catInfo.altered)),

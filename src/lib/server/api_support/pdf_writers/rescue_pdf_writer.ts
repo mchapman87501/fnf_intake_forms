@@ -9,6 +9,7 @@ import { PDFDocument, PDFPage } from 'pdf-lib'
 import { TextField, tf } from './page_elements/text_field'
 import { YesNoUnknownOval, ynu } from './page_elements/yes_no_unknown_oval'
 import { PDFTemplatePaths } from './pdf_template_paths'
+import { getCatName } from '$lib/infrastructure/stores'
 
 function annotatePage(page: PDFPage, info: SurrenderPkg) {
 	function add(annotation: TextField | YesNoUnknownOval, value: any) {
@@ -54,7 +55,7 @@ function annotatePage(page: PDFPage, info: SurrenderPkg) {
 
 	add(tf(107, 439, 245, 14), recvdFrom.email)
 
-	add(tf(144, 472, 112, 14), catInfo.catName)
+	add(tf(144, 472, 112, 14), getCatName(catInfo))
 	add(tf(339, 472, 55, 14), dateStr(catInfo.DOB))
 
 	add(ynu(411, 396, 461, 11, 14), genderPred(catInfo.gender))

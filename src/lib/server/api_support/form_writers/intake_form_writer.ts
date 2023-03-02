@@ -2,6 +2,7 @@ import { row, writeFile, type Row } from './tall_excel_writer'
 import type { DownloadInfo } from '$lib/api_support/download_info'
 import { boolStr, dateStr, posNegStr, dateIfApplicable } from './value_converters'
 import type { SurrenderPkg } from '$lib/infrastructure/info_packages'
+import { getCatName } from '$lib/infrastructure/stores'
 
 function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): Row[] {
 	const catInfo = surrenderInfo.catInfo
@@ -30,7 +31,7 @@ function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): Row[]
 		row('Courtesy listing (no relinquishment)', boolStr(recvdFrom.courtesyListingNoRelinquishment)),
 		row('Ok to show (not Web only)', boolStr(catInfo.oKToShow)),
 		row('Rescue ID', rescueID),
-		row('Name of Cat', catInfo.catName),
+		row('Name of Cat', getCatName(catInfo)),
 		row('DOB', dateStr(catInfo.DOB)),
 		row('Gender', catInfo.gender),
 		row('Breed', catInfo.breed),
