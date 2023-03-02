@@ -9,7 +9,7 @@ describe('Test generation of filenames for various forms', async () => {
 	test('Can get owner surrender info', async () => {
 		await AppDB.configure({ dbPath: ':memory:' })
 		const pkg: SurrenderPkg = {
-			catInfo: { ...newCatPkg(), treatableMedical: true },
+			catInfo: { ...newCatPkg(), catName: 'Der Cat FFNT', treatableMedical: true },
 			receivedFrom: { ...newReceivedFromPkg(), shelterNum: 'P' }
 		}
 		const dataDir = '/tmp/data_dir'
@@ -19,8 +19,10 @@ describe('Test generation of filenames for various forms', async () => {
 		expect(info.rescueID).toMatch(/^TM-/)
 		expect(info.surrenderType.toLowerCase()).toBe('owner')
 		expect(info.intakeFormPath.startsWith(dataDir)).toBe(true)
-		expect(path.basename(info.intakeFormPath)).toMatch(/^TM-\d{6}-P\d{2}-intake\.xlsx/)
+		expect(path.basename(info.intakeFormPath)).toMatch(/^Der-Cat-FFNT_intake_TM-\d{6}-P\d{2}\.xlsx/)
 		expect(info.surrenderFormPath.startsWith(dataDir)).toBe(true)
-		expect(path.basename(info.surrenderFormPath)).toMatch(/^TM-\d{6}-P\d{2}-surrender\.xlsx/)
+		expect(path.basename(info.surrenderFormPath)).toMatch(
+			/^Der-Cat-FFNT_surrender_TM-\d{6}-P\d{2}\.xlsx/
+		)
 	})
 })

@@ -31,7 +31,8 @@ export class FormFileNamer {
 	}
 
 	#path(docSpecifier: string, suffix: string): string {
-		const pathname = this.#sanitizedName(`${this.#rescueID}-${docSpecifier}`) + suffix
+		const nameTemplate = `${this.#catName}_${docSpecifier}_${this.#rescueID}`
+		const pathname = this.#sanitizedName(nameTemplate) + suffix
 		return path.join(FormFileNamer.dataDir, pathname)
 	}
 
@@ -54,12 +55,12 @@ export class FormFileNamer {
 			if (c.match(/(\w|-)/)) {
 				return c
 			} else if (c.match(/\s/)) {
-				return '_'
+				return '-'
 			} else {
 				return ''
 			}
 		})
-		return validStemChars.join('').replaceAll(/[_-][_-]+/g, '_')
+		return validStemChars.join('').replaceAll(/[_-][_-]+/g, '-')
 	}
 
 	get #surrenderPathname(): string {

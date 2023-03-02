@@ -45,40 +45,36 @@ describe('Surrender Processing tests', async () => {
 
 	async function testProcessMethod(method: ProcMethod, formTypeName: string) {
 		const pkg: SurrenderPkg = {
-			catInfo: { ...newCatPkg(), treatableMedical: true },
+			catInfo: { ...newCatPkg(), catName: 'Buddy Boy', treatableMedical: true },
 			receivedFrom: { ...newReceivedFromPkg(), shelterNum: 'P' }
 		}
 
 		const result = await method(pkg)
 
-		expect(result.intake.filename.startsWith('TM-')).toBe(true)
-		expect(result.intake.filename.endsWith('-intake.xlsx'), result.intake.filename).toBe(true)
+		const intakeFName = result.intake.filename
+		const expectedIntakeFName = /^Buddy-Boy_intake_TM-.*\.xlsx$/
+		expect(intakeFName.match(expectedIntakeFName), intakeFName).not.toBeNull()
 
-		expect(result.intakeSingleRow.filename.startsWith('TM-')).toBe(true)
-		expect(
-			result.intakeSingleRow.filename.endsWith('-intake-single-row.csv'),
-			result.intakeSingleRow.filename
-		).toBe(true)
+		const intakeSRFName = result.intakeSingleRow.filename
+		const expectedIntakeSRFName = /^Buddy-Boy_intake-single-row_TM-.*\.csv$/
+		expect(intakeSRFName.match(expectedIntakeSRFName), intakeSRFName).not.toBeNull()
 
-		const intakeCoreName = result.intake.filename.replace(/.[^.]+$/, '')
+		const intakeCoreName = intakeFName.replace(/.[^.]+$/, '')
 		expect(result.surrender.filename, result.surrender.filename).toMatch(
-			intakeCoreName.replace('-intake', formTypeName)
-		)
-		expect(result.intakeSingleRow.filename, result.intakeSingleRow.filename).toMatch(
-			intakeCoreName.replace('-intake', '-intake-single-row')
+			intakeCoreName.replace('_intake', formTypeName)
 		)
 		expect(resultFilesExist(result)).toBe(true)
 	}
 
 	test('Can process an owner surrender form', async () => {
-		await testProcessMethod(processOwnerSurrender, '-surrender')
+		await testProcessMethod(processOwnerSurrender, '_surrender')
 	})
 
 	test('Can process a stray surrender form', async () => {
-		await testProcessMethod(processStraySurrender, '-stray')
+		await testProcessMethod(processStraySurrender, '_stray')
 	})
 
 	test('Can process a rescue surrender form', async () => {
-		await testProcessMethod(processRescueSurrender, '-rescue')
+		await testProcessMethod(processRescueSurrender, '_rescue')
 	})
 })
