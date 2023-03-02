@@ -27,6 +27,7 @@
 	import CatGender from '$lib/components/CatGender.svelte'
 	import AlteredWhenWhere from '$lib/components/AlteredWhenWhere.svelte'
 	import CatFeralStatus from '$lib/components/CatFeralStatus.svelte'
+	import IntakeNotes from '$lib/components/IntakeNotes.svelte'
 
 	async function handleSubmit() {
 		const username = $session_username || ''
@@ -107,6 +108,7 @@
 		<legend>Intake</legend>
 		<CourtesyListingNoRelinquishment />
 		<ShowNotWebOnly />
+		<IntakeNotes />
 		<Donation />
 	</fieldset>
 

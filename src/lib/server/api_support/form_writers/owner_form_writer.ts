@@ -55,6 +55,7 @@ function getOwnerSurrenderFormRows(info: SurrenderPkg): Row[] {
 		row('Donation Amount', recvdFrom.donationAmount),
 		row('Form of Payment', recvdFrom.donationForm),
 
+		row('Intake Notes', catInfo.intakeNotes),
 		row('Received By', catInfo.intakeFnFRepr)
 	]
 }

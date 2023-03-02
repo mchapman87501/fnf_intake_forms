@@ -28,6 +28,8 @@ function getIntakeFormRows(rescueID: string, surrenderInfo: SurrenderPkg): Row[]
 		row('Intake Type', recvdFrom.surrenderType),
 		row('Shelter Number', recvdFrom.shelterNum),
 
+		row('Intake Notes', catInfo.intakeNotes),
+
 		row('Courtesy listing (no relinquishment)', boolStr(recvdFrom.courtesyListingNoRelinquishment)),
 		row('Ok to show (not Web only)', boolStr(catInfo.oKToShow)),
 		row('Rescue ID', rescueID),
