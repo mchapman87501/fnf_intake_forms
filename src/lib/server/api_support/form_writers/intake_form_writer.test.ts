@@ -8,7 +8,7 @@ import { newCatPkg, newReceivedFromPkg, type SurrenderPkg } from '$lib/infrastru
 import { saveIntakeForm } from './intake_form_writer'
 
 describe('Test writing intake forms', async () => {
-	let dataDir: string = ''
+	let dataDir = ''
 	beforeEach(() => {
 		dataDir = temporaryDirectory()
 	})

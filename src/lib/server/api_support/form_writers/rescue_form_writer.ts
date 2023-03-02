@@ -25,14 +25,17 @@ function getRescueFormRows(info: SurrenderPkg): Row[] {
 
 		row('Shelter Code', recvdFrom.shelterNum),
 		row('ID at Previous Shelter', recvdFrom.shelterPrevID),
-		row('Bite History', boolStr(catInfo.biteHistory)),
 
+		row('DOB', dateStr(catInfo.DOB)),
+		row('Gender', catInfo.gender),
+		row('Spayed/Neutered', boolStr(catInfo.altered)),
 		row('Spay/Neuter Date', spayNeuterDate),
 		row('Spay/Neuter Location', catInfo.alteredFacility),
 
 		row('Breed', catInfo.breed),
 		row('Color', catInfo.color),
 		row('Markings', catInfo.markings),
+		row('Friendly/Feral', catInfo.tameFeral),
 
 		row('Current on Shots', boolStr(catInfo.currentShots)),
 		row('FELV/FIV Tested', boolStr(catInfo.FELVFIVTested)),

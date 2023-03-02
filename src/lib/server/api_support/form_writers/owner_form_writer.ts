@@ -22,9 +22,12 @@ function getOwnerSurrenderFormRows(info: SurrenderPkg): Row[] {
 		row('DOB', dateStr(catInfo.DOB)),
 		row('Gender', catInfo.gender),
 		row('Spayed/Neutered', boolStr(catInfo.altered)),
+		// Are spayed/neutered date and facility needed, for owner surrender?
+
 		row('Breed', catInfo.breed),
 		row('Color', catInfo.color),
 		row('Markings', catInfo.markings),
+		row('Friendly/Feral', catInfo.tameFeral),
 		row('Microchipped', boolStr(catInfo.microchipped)),
 		row('Microchip #', catInfo.microchipNum),
 		row('Current on Shots', boolStr(catInfo.currentShots)),
