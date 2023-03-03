@@ -16,9 +16,12 @@ export function getDownloadInfo(pathname: string): DownloadInfo {
 
 // Intended for client-side:
 export async function downloadCompletedForm(downloadInfo: DownloadInfo) {
+	const downloadMSec = 1000
 	// Automatically download the generated intake form.
 	// https://stackoverflow.com/a/42274086/2826337
-	const downloadResp = await fetch(downloadInfo.srcURL)
+	const downloadResp = await fetch(downloadInfo.srcURL, {
+		signal: AbortSignal.timeout(downloadMSec)
+	})
 	if (downloadResp.status == 200) {
 		// Need to do this in order to save to downloadInfo.filename, instead
 		// of saving to a randomly generated UUID.
@@ -34,8 +37,12 @@ export async function downloadCompletedForm(downloadInfo: DownloadInfo) {
 			}, 100)
 		})
 		anchor.click()
-		await timeoutPromise
+		try {
+			await timeoutPromise
+		} catch (e: unknown) {
+			// Ignore
+		}
 	} else {
-		console.error('Failed to download %o: %o', downloadInfo.srcURL, downloadResp.statusText)
+		throw new Error(`Failed to download ${downloadInfo.srcURL}: ${downloadResp.statusText}`)
 	}
 }
