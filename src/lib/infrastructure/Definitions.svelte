@@ -23,12 +23,14 @@
 	]
 
 	export const feralChoicesUnknown = 'Friendly/Feral Unknown'
-	export const feralChoicesFriendly = 'Friendly'
+	export const feralChoicesFriendlyOutgoing = 'Friendly-Outgoing'
+	export const feralChoicesFriendlyShy = 'Friendly-Shy'
 	export const feralChoicesSemiferal = 'Semi-feral'
 	export const feralChoicesFeral = 'Feral'
 	export const feralChoices = [
 		feralChoicesUnknown,
-		feralChoicesFriendly,
+		feralChoicesFriendlyOutgoing,
+		feralChoicesFriendlyShy,
 		feralChoicesSemiferal,
 		feralChoicesFeral
 	]

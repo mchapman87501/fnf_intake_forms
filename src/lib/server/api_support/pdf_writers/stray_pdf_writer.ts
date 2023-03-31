@@ -9,7 +9,7 @@ import { PDFDocument, PDFPage } from 'pdf-lib'
 import { TextField, tf } from './page_elements/text_field'
 import { ynuRect } from './page_elements/yes_no_unknown_rect'
 import { PDFTemplatePaths } from './pdf_template_paths'
-import { feralChoicesFriendly } from '$lib/infrastructure/Definitions.svelte'
+import { feralChoicesFriendlyOutgoing, feralChoicesFriendlyShy } from '$lib/infrastructure/Definitions.svelte'
 
 function annotatePage(page: PDFPage, info: SurrenderPkg) {
 	function add(annotation: TextField, value: string) {
@@ -18,7 +18,9 @@ function annotatePage(page: PDFPage, info: SurrenderPkg) {
 
 	function feralStatusToYesNo(feralStatus: string): boolean {
 		// Return true only if known friendly.
-		return feralStatus.toLowerCase() === feralChoicesFriendly.toLowerCase()
+		return (feralStatus.toLowerCase() === feralChoicesFriendlyOutgoing.toLowerCase()) ||
+		(feralStatus.toLowerCase() === feralChoicesFriendlyShy.toLowerCase())
+
 	}
 
 	const catInfo = info.catInfo
