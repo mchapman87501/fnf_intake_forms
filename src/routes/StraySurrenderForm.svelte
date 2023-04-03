@@ -74,10 +74,7 @@
 		<div>
 			<BiteHistory />
 		</div>
-		<div>
-			<span>Personality observed</span><br />
-			<textarea bind:value={$catPkg.specialNeedsHabitsPersonality} />
-		</div>
+	
 		<div>
 			<span>Notes</span><br />
 			<textarea bind:value={$catPkg.strayNotes} />
