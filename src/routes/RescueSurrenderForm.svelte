@@ -83,7 +83,10 @@
 		<CourtesyListingNoRelinquishment />
 		<ShowNotWebOnly />
 		<IntakeNotes />
-		<Donation />
+		<Donation>
+			<span slot="accepted-by-slot"> Transfer accepted by </span>
+		</Donation> 
+
 	</fieldset>
 
 	<DownloadFormsBtn />
