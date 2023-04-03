@@ -48,7 +48,7 @@
 		<ReceivedFromName />
 		<ReceivedFromDriversLic /> <br />
 		<ReceivedFromContactInfo />
-		<template id="mom-paragraph"><div><slot name="mom-slot" /></div></template>
+		
 	</fieldset>
 
 	<fieldset>
@@ -85,8 +85,8 @@
 	<fieldset>
 		<legend>Intake</legend>
 		<CourtesyListingNoRelinquishment />
+		<template id="mom-paragraph"><slot name="mom-slot" /></template>
 		<ShowNotWebOnly />
-
 		<IntakeNotes />
 		<Donation />
 	</fieldset>
