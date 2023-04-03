@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { recvdFromPkg } from '$lib/infrastructure/stores'
-	import ReceivedBy from './ReceivedBy.svelte'
+	import ReceivedByName from './ReceivedByName.svelte'
 
 	let donationPattern = '\\d+(\\.\\d{2})?'
 </script>
@@ -16,7 +16,12 @@
 		/>
 		<input type="text" placeholder="Form of Payment" bind:value={$recvdFromPkg.donationForm} />
 	</span>
-	<ReceivedBy />
+	<span class="rep">
+	<template id="accepted-by-paragraph"><slot name="accepted-by-slot" >
+		Surrender accepted by
+	</slot></template>
+</span>
+	<ReceivedByName />
 </div>
 
 <style>
