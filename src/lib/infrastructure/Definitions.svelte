@@ -1,7 +1,8 @@
 <script lang="ts" context="module">
 	export const uynChoicesYes = 'Yes'
 	export const uynChoicesUnknown = 'Unknown'
-	export const uynChoices = [uynChoicesUnknown, uynChoicesYes, 'No']
+	export const uynChoicesNo = 'No'
+	export const uynChoices = [uynChoicesUnknown, uynChoicesYes, uynChoicesNo]
 
 	export const genderChoiceUnknown = 'F/M Unknown'
 	export const genderChoiceFemale = 'Female'

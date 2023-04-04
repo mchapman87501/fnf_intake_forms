@@ -93,13 +93,13 @@
 
 	<div class="fnf_form">
 		{#if pkg.selected_form == FormType.Surrender}
-			<OwnerSurrenderForm />
+			<OwnerSurrenderForm isPregnantNursing={false}/>
 		{:else if pkg.selected_form == FormType.Stray}
 			<StraySurrenderForm />
 		{:else if pkg.selected_form == FormType.Rescue}
 			<RescueSurrenderForm />
 		{:else if pkg.selected_form == FormType.PregnantNursing}
-			<OwnerSurrenderForm>
+			<OwnerSurrenderForm isPregnantNursing={true}>
 				<span slot="mom-slot"> <WantsMomBack /> </span>
 			</OwnerSurrenderForm>
 		{:else if pkg.selected_form == null || pkg.selected_form == FormType.Unspecified}
