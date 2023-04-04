@@ -2,7 +2,8 @@
 	import { onMount } from 'svelte'
 	import LoginDialog from '$lib/components/LoginDialog.svelte'
 
-	import { recvdFromPkg } from '$lib/infrastructure/stores'
+	import { catPkg, recvdFromPkg } from '$lib/infrastructure/stores'
+	import { genderChoiceFemale, uynChoicesNo } from '$lib/infrastructure/Definitions.svelte'
 
 	import ReceivedFromDriversLic from '$lib/components/ReceivedFromDriversLic.svelte'
 	import ReceivedFromName from '$lib/components/ReceivedFromName.svelte'
@@ -15,7 +16,7 @@
 	import Donation from '$lib/components/Donation.svelte'
 	import CourtesyListingNoRelinquishment from '$lib/components/CourtesyListingNoRelinquishment.svelte'
 	import ShowNotWebOnly from '$lib/components/ShowNotWebOnly.svelte'
-	import { surrenderChoiceSurrender } from '$lib/infrastructure/Definitions.svelte'
+	import { surrenderChoicePregnant, surrenderChoiceSurrender } from '$lib/infrastructure/Definitions.svelte'
 	import BiteHistory from '$lib/components/BiteHistory.svelte'
 	import VaccinesAndDiseaseTests from '$lib/components/VaccinesAndDiseaseTests.svelte'
 	import VetInfo from '$lib/components/VetInfo.svelte'
@@ -30,8 +31,16 @@
 	import CatFeralStatus from '$lib/components/CatFeralStatus.svelte'
 	import IntakeNotes from '$lib/components/IntakeNotes.svelte'
 
+	export let isPregnantNursing = false
+
 	onMount(() => {
-		$recvdFromPkg.surrenderType = surrenderChoiceSurrender
+		if (isPregnantNursing) {
+			$recvdFromPkg.surrenderType = surrenderChoicePregnant
+			$catPkg.altered	= uynChoicesNo
+			$catPkg.gender = genderChoiceFemale
+		} else {
+			$recvdFromPkg.surrenderType = surrenderChoiceSurrender
+		}
 	})
 
 	async function submitForm() {
