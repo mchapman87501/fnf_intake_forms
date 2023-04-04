@@ -12,7 +12,7 @@ describe('Test generation of filenames for various forms', async () => {
 			catInfo: { ...newCatPkg(), catName: 'Der Cat FFNT', treatableMedical: true },
 			receivedFrom: { ...newReceivedFromPkg(), shelterNum: 'P' }
 		}
-		const dataDir = '/tmp/data_dir'
+		const dataDir = path.resolve('/tmp/data_dir')
 		FormFileNamer.dataDir = dataDir
 		const namer = new FormFileNamer(pkg)
 		const info = namer.ownerSurrenderInfo()
