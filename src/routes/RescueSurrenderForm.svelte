@@ -6,7 +6,6 @@
 	import ReceivedFromContactInfo from '$lib/components/ReceivedFromContactInfo.svelte'
 	import BreedColorMarkings from '$lib/components/BreedColorMarkings.svelte'
 	import OkWith from '$lib/components/OkWith.svelte'
-	import RescueLocation from '$lib/components/RescueLocation.svelte'
 	import Donation from '$lib/components/Donation.svelte'
 	import IntakeDate from '$lib/components/IntakeDate.svelte'
 	import PrevShelterInfo from '$lib/components/PrevShelterInfo.svelte'
@@ -74,7 +73,6 @@
 
 	<fieldset>
 		<legend>Rescue</legend>
-		<RescueLocation />
 		<PrevShelterInfo />
 	</fieldset>
 
