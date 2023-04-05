@@ -35,4 +35,31 @@
 		feralChoicesSemiferal,
 		feralChoicesFeral
 	]
+
+	export const shelterIDOther = 'Other'
+	export const shelterIDSFAS = 'SFAS'
+	export const shelterIDEH = 'EH'
+	export const shelterIDABQ = 'ABQ'
+	export const shelterIDROS = 'ROS'
+	export const shelterIDFK = 'FK'
+	export const shelterIDKHS = 'KHS'
+	export const shelterIDPORT = 'PORT'
+	export const shelterIDART = 'ART'
+	export const shelterIDSNC = 'SNC'
+	export const shelterIDSCH = 'SCH'
+	export const shelterIDVC = 'VC'
+	export const shelterIDChoices = [
+	    shelterIDOther,
+	    shelterIDSFAS,
+	    shelterIDEH,
+        shelterIDABQ,
+	    shelterIDROS,
+	    shelterIDFK,
+	    shelterIDKHS,
+	    shelterIDPORT,
+	    shelterIDART,
+	    shelterIDSNC,
+	    shelterIDSCH,
+	    shelterIDVC
+	]
 </script>
