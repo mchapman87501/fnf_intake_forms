@@ -14,7 +14,7 @@
 	import { onMount } from 'svelte'
 	import { surrenderChoiceRescue } from '$lib/infrastructure/Definitions.svelte'
 	import { recvdFromPkg } from '$lib/infrastructure/stores'
-	import DietAndMedical from '../lib/components/DietAndMedical.svelte'
+	import DietAndMedical from '$lib/components/DietAndMedical.svelte'	
 	import BiteHistory from '$lib/components/BiteHistory.svelte'
 	import VaccinesAndDiseaseTests from '$lib/components/VaccinesAndDiseaseTests.svelte'
 	import VetInfo from '$lib/components/VetInfo.svelte'
